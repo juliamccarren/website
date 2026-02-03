@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julia McCarren | Neural Fusion Sound</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            background-color: #000;
+            color: #fff;
+        }
+
+        .hero-text-julia { color: rgba(255, 255, 255, 0.7); }
+
+        .hero-text-mccarren {
+            background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            opacity: 0.7;
+        }
+
+        .glass-button {
+            background: rgba(217, 70, 239, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 70, 239, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button:hover {
+            background: rgba(217, 70, 239, 0.3);
+            border-color: rgba(217, 70, 239, 0.5);
+            box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .nav-hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .sticky-banner {
+            position: sticky;
+            top: 0;
+            z-index: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            background: #000;
+            box-shadow: 0 -50px 100px rgba(0,0,0,1);
+        }
+
+        .tech-mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-10 transition-all duration-500 ease-in-out">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex-1">
+                <a href="#home" id="nav-title" class="nav-hidden text-xl md:text-2xl font-black tracking-tighter block">
+                    <span class="text-white/90">Julia</span>
+                    <span class="hero-text-mccarren" style="opacity: 1;">McCarren</span>
+                </a>
+            </div>
+
+            <div class="hidden lg:flex gap-14 flex-1 justify-center">
+                <a href="#home" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Home</a>
+                <a href="#fusion" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Neural Fusion</a>
+                <a href="#about" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Research</a>
+                <a href="#contact" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Contact</a>
+            </div>
+
+            <div class="hidden lg:flex gap-8 items-center flex-1 justify-end text-neutral-500">
+                <a href="#" class="hover:text-fuchsia-500 transition-colors"><i data-lucide="youtube" size="18"></i></a>
+                <a href="#" class="hover:text-fuchsia-500 transition-colors"><i data-lucide="twitter" size="18"></i></a>
+            </div>
+
+            <button id="menu-toggle" class="lg:hidden text-white p-2">
+                <i data-lucide="menu" size="28"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[60] hidden flex-col items-center justify-center gap-10 text-4xl font-black tracking-tighter">
+        <button id="menu-close" class="absolute top-10 right-10 text-white"><i data-lucide="x" size="40"></i></button>
+        <a href="#home" class="mobile-link uppercase hover:text-fuchsia-500">Home</a>
+        <a href="#fusion" class="mobile-link uppercase hover:text-fuchsia-500">Neural Fusion</a>
+        <a href="#about" class="mobile-link uppercase hover:text-fuchsia-500">Research</a>
+        <a href="#contact" class="mobile-link uppercase hover:text-fuchsia-500">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <div id="home" class="sticky-banner">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black z-10"></div>
+        <img src="Hero.jpg" 
+             alt="Julia McCarren Hero" 
+             id="hero-image"
+             class="w-full h-full object-cover contrast-[1.1] brightness-[0.7]"
+             onerror="this.src='https://images.unsplash.com/photo-1514525253344-a812df99b796?auto=format&fit=crop&q=80&w=1600'">
+        
+        <div id="hero-content" class="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center will-change-transform">
+            <div class="flex flex-col items-center">
+                <h1 class="text-7xl md:text-[12vw] font-black tracking-tighter leading-[0.8] hero-text-julia mb-2">Julia</h1>
+                <h1 class="text-7xl md:text-[12vw] font-black tracking-tighter leading-[0.8] hero-text-mccarren">McCarren</h1>
+            </div>
+            
+            <p class="mt-12 text-sm md:text-xl font-bold tracking-[0.6em] uppercase text-neutral-400">Neural Fusion Sound</p>
+            
+            <div class="mt-16 flex flex-col md:flex-row gap-6">
+                <a href="#fusion" class="glass-button text-white px-14 py-4 rounded-full font-black uppercase tracking-widest leading-loose flex items-center justify-center gap-3 group">
+                    Explore Fusion
+                </a>
+            </div>
+
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
+                <i data-lucide="arrow-down" size="32"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-wrapper">
+        
+        <!-- Neural Fusion Section -->
+        <section id="fusion" class="py-24 bg-neutral-950 border-y border-neutral-900 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-fuchsia-500/5 to-transparent pointer-events-none"></div>
+            
+            <div class="container mx-auto px-6">
+                <div class="mb-16">
+                    <h2 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none">
+                        Neural <br> <span class="hero-text-mccarren">Fusion</span>
+                    </h2>
+                    <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs">The Philosophy of Superhuman Sound</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
+                    <!-- Left: Narrative -->
+                    <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
+                        <p>
+                            Julia defines her music as <strong class="text-white font-bold">Neural Fusion Sound</strong>, a crossover fusion of rock, funk, pop, edm and classic. It is "Superhuman" because it contains elements that are very hard or even impossible for humans to achieve: complex rhythms, fast rap sections, and extreme vocal ranges.
+                        </p>
+                        <p>
+                            Neural Fusion refers to the interaction between biological and artificial networks. In this high-dimensional latent space, Julia acts as the <strong class="text-fuchsia-400">Pilot</strong>, steering 12,000-dimensional neural states toward specific emotional resonance.
+                        </p>
+                        <p>
+                            When a human translates abstract thoughts into language, the AI maps those words into its latent space, connecting human intent with billions of learned associations.
+                        </p>
+                    </div>
+
+                    <!-- Right: Technical Breakdown -->
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="p-8 bg-neutral-900/50 rounded-2xl border border-white/5 backdrop-blur-sm">
+                            <div class="flex items-center gap-4 mb-3">
+                                <i data-lucide="layers" class="text-fuchsia-500" size="20"></i>
+                                <h4 class="text-lg font-black tracking-tight uppercase">High Resolution Canvas</h4>
+                            </div>
+                            <p class="text-sm text-neutral-500 mb-4 leading-relaxed">Unlike MIDI which operates in 3 dimensions, Neural Fusion operates in a 12,000-dimensional hidden state, capturing subtle textures perceiveable as "soul."</p>
+                            <div class="tech-mono text-[10px] text-fuchsia-400/70 overflow-hidden whitespace-nowrap opacity-50">
+                                [0.45, -0.12, 0.89, 0.33, -0.56, 0.21, 0.77, -0.04...]
+                            </div>
+                        </div>
+
+                        <div class="p-8 bg-neutral-900/50 rounded-2xl border border-white/5 backdrop-blur-sm">
+                            <div class="flex items-center gap-4 mb-3">
+                                <i data-lucide="navigation" class="text-fuchsia-500" size="20"></i>
+                                <h4 class="text-lg font-black tracking-tight uppercase">The Art of Navigation</h4>
+                            </div>
+                            <p class="text-sm text-neutral-500 leading-relaxed">Traditional prompting is a "vending machine" approach. Julia's Neural Fusion is a high-speed synchronization between biological intent and artificial depth.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highlight Quote Section -->
+                <div class="max-w-4xl mx-auto py-12 border-y border-white/5 text-center relative">
+                    <!-- Icon with transparent background -->
+                    <div class="absolute -top-6 left-1/2 -translate-x-1/2 px-4 flex justify-center items-center">
+                        <i data-lucide="quote" class="text-fuchsia-500 opacity-50" size="32"></i>
+                    </div>
+                    <p class="text-2xl md:text-4xl font-black tracking-tight leading-tight text-white italic">
+                        "While others are using AI to make music <span class="text-neutral-500">easier</span>, Julia is using it to make music <span class="hero-text-mccarren" style="opacity: 1;">deeper</span>."
+                    </p>
+                    <p class="mt-6 text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600">Visionary Direction in the Age of Automation</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About / Research Section -->
+        <section id="about" class="py-24 container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8">Research & Productivity</h2>
+                <p class="text-lg text-neutral-400 leading-relaxed mb-10">
+                    Julia experienced an enormous gain in productivity using AI in the production pipeline, bridging and fusioning genres that would otherwise be economically prohibitive.
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">12k</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Dimensions</div>
+                    </div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">100Hz</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Sync Rate</div>
+                    </div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">6mo</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Research Burst</div>
+                    </div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">∞</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Neural Flow</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-neutral-950/20 border-t border-neutral-900">
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="text-center mb-16">
+                    <i data-lucide="send" class="mx-auto text-fuchsia-500 mb-6" size="32"></i>
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tighter italic mb-4 uppercase">Contact</h2>
+                </div>
+                <div class="text-center">
+                    <p class="text-neutral-500 uppercase font-black tracking-[0.5em] text-[10px] mb-8">Inquiries & Research Collaboration</p>
+                    <a href="mailto:hello@juliamccarren.com" class="text-2xl md:text-4xl font-black hover:text-fuchsia-500 transition-colors">hello@juliamccarren.com</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-16 border-t border-neutral-900 text-center">
+            <div class="flex justify-center gap-12 mb-8 text-neutral-500">
+                <a href="#" class="hover:text-fuchsia-500 transition-colors uppercase font-black text-[9px] tracking-[0.5em]">Youtube</a>
+                <a href="#" class="hover:text-fuchsia-500 transition-colors uppercase font-black text-[9px] tracking-[0.5em]">Spotify</a>
+            </div>
+
+            <div class="flex justify-center gap-8 mb-6 text-neutral-700">
+                <a href="../impressum.html" class="hover:text-fuchsia-500 transition-colors uppercase font-bold text-xs tracking-[0.2em]">Impressum</a>
+                <a href="../datenschutz.html" class="hover:text-fuchsia-500 transition-colors uppercase font-bold text-xs tracking-[0.2em]">Datenschutz</a>
+            </div>
+
+            <p class="text-[9px] text-neutral-800 font-black tracking-[0.6em] uppercase pb-6">© 2026 Julia McCarren | Neural Fusion Framework</p>
+        </footer>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        const navbar = document.getElementById('navbar');
+        const navTitle = document.getElementById('nav-title');
+        const heroContent = document.getElementById('hero-content');
+        const heroImage = document.getElementById('hero-image');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const triggerPoint = 450;
+
+            if (scrollY < window.innerHeight) {
+                const upOffset = scrollY * -0.55; 
+                heroContent.style.transform = `translateY(${upOffset}px)`;
+                const zoomFactor = 1 + (scrollY * 0.00015);
+                heroImage.style.transform = `scale(${zoomFactor})`;
+            }
+
+            if (scrollY > triggerPoint) {
+                navbar.classList.add('glass-nav', 'py-4');
+                navbar.classList.remove('py-10');
+                navTitle.classList.add('nav-visible');
+                navTitle.classList.remove('nav-hidden');
+            } else {
+                navbar.classList.remove('glass-nav', 'py-4');
+                navbar.classList.add('py-10');
+                navTitle.classList.remove('nav-visible');
+                navTitle.classList.add('nav-hidden');
+            }
+        });
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.onclick = () => { mobileMenu.classList.remove('hidden'); mobileMenu.classList.add('flex'); document.body.style.overflow = 'hidden'; };
+        const closeMenu = () => { mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex'); document.body.style.overflow = 'auto'; };
+        menuClose.onclick = closeMenu;
+        mobileLinks.forEach(l => l.onclick = closeMenu);
+    </script>
+</body>
+</html>
+

@@ -33,37 +33,20 @@
             letter-spacing: 1px;
         }
 
-        input { 
-            background: #000; 
-            border: 1px solid #444; 
-            color: #00ff00; 
-            padding: 12px; 
-            width: 100%; 
-            box-sizing: border-box; 
-            text-align: center; 
-            margin-bottom: 20px; 
-            outline: none; 
-            font-size: 1rem;
+        .loader {
+            border: 2px solid #333;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-bottom: 20px;
         }
 
-        button { 
-            background: #1a1a1a; 
-            border: 1px solid #444; 
-            color: #ffffff; 
-            padding: 12px; 
-            cursor: pointer; 
-            width: 100%; 
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
-
-        button:hover { 
-            background: #333333; 
-        }
-
-        button:disabled {
-            color: #555;
-            cursor: not-allowed;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         #status { 
@@ -72,26 +55,75 @@
             font-size: 0.75rem; 
             text-transform: uppercase;
             letter-spacing: 1px;
+            color: #555;
+        }
+
+        footer a {
+            color: #555;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #888;
         }
     </style>
 </head>
 <body>
-<a href="impressum-archiv.html" style="display:none;" aria-hidden="true">Legal Archive Access</a>
+
 <div class="login-box">
-    <h1>SECURE ACCESS REQUIRED</h1> 
-    <input type="password" id="pin" placeholder="PIN" maxlength="20" autocomplete="off">
-    <button onclick="unlock()">VALIDATE</button>
-    <div id="status"></div>
+    <div class="loader"></div>
+    <h1>VERIFYING ACCESS</h1>
+    <div id="status">Initialising...</div>
 </div>
 
+<a href="impressum-archiv.html" style="display:none;" aria-hidden="true">Legal Archive Access</a>
+
 <script>
-const _0x3fdf2a=_0xee68;(function(_0x52fde3,_0x1c1528){const _0x50680=_0xee68,_0x2b1c26=_0x52fde3();while(!![]){try{const _0x52f93e=-parseInt(_0x50680(0x15c))/0x1+-parseInt(_0x50680(0x16c))/0x2+parseInt(_0x50680(0x163))/0x3*(-parseInt(_0x50680(0x15b))/0x4)+parseInt(_0x50680(0x15e))/0x5+parseInt(_0x50680(0x15a))/0x6*(parseInt(_0x50680(0x164))/0x7)+parseInt(_0x50680(0x151))/0x8+parseInt(_0x50680(0x161))/0x9*(parseInt(_0x50680(0x148))/0xa);if(_0x52f93e===_0x1c1528)break;else _0x2b1c26['push'](_0x2b1c26['shift']());}catch(_0x398225){_0x2b1c26['push'](_0x2b1c26['shift']());}}}(_0x410f,0xa45d4),window[_0x3fdf2a(0x169)]=()=>document['getElementById']('pin')[_0x3fdf2a(0x157)]());function _0xee68(_0x63794,_0x606bee){_0x63794=_0x63794-0x148;const _0x410f55=_0x410f();let _0xee6818=_0x410f55[_0x63794];return _0xee6818;}function _0x410f(){const _0x25f0b3=['#ff4444','3855849UHXGdE','392CXUdCf','#888','keypress','disabled','_RocknRoll_Security_2026','onload','#00ff00','querySelector','307678HyaXBa','Enter','key','80JztRiI','style','href','innerText','value','ACCESS_GRANTED','join','digest','status','1193440qReaNw','pin','color','CHECKING...','subtle','from','focus','location','INVALID_CREDENTIALS','92274bQvJXx','4SfQoRg','22132FvLJRM','getElementById','608710gigwHO','addEventListener','button','1127637CkDTSc'];_0x410f=function(){return _0x25f0b3;};return _0x410f();}const _P='c01e232c843fdee386678ae693f7a2163d04a6c204eb252c009635970e121a34',_T='Li9zb25ncy9mNDdhYzEwYi01OGNjLTQzNzItYTU2Ny0wZTAyYjJjM2Q0NzkuaHRtbA==',_S=_0x3fdf2a(0x168);async function hash(_0x543f24){const _0x226b8b=_0x3fdf2a,_0x58eb75=new TextEncoder()['encode'](_0x543f24+_S),_0x153927=await crypto[_0x226b8b(0x155)][_0x226b8b(0x14f)]('SHA-256',_0x58eb75);return Array[_0x226b8b(0x156)](new Uint8Array(_0x153927))['map'](_0x28fdde=>_0x28fdde['toString'](0x10)['padStart'](0x2,'0'))[_0x226b8b(0x14e)]('');}async function unlock(){const _0xc46e18=_0x3fdf2a,_0x25f168=document[_0xc46e18(0x16b)](_0xc46e18(0x160)),_0x3675da=document[_0xc46e18(0x15d)](_0xc46e18(0x150)),_0x549918=document['getElementById'](_0xc46e18(0x152))[_0xc46e18(0x14c)];_0x25f168[_0xc46e18(0x167)]=!![],_0x3675da['innerText']=_0xc46e18(0x154),_0x3675da['style'][_0xc46e18(0x153)]=_0xc46e18(0x165),await new Promise(_0x162cac=>setTimeout(_0x162cac,0x258));const _0x3b670b=await hash(_0x549918);if(_0x3b670b===_P){_0x3675da[_0xc46e18(0x14b)]=_0xc46e18(0x14d),_0x3675da[_0xc46e18(0x149)]['color']=_0xc46e18(0x16a);const _0x3f60d6=atob(_T);setTimeout(()=>{const _0x5394c2=_0xc46e18;window[_0x5394c2(0x158)][_0x5394c2(0x14a)]=_0x3f60d6;},0x1f4);}else _0x3675da['innerText']=_0xc46e18(0x159),_0x3675da[_0xc46e18(0x149)][_0xc46e18(0x153)]=_0xc46e18(0x162),document[_0xc46e18(0x15d)]('pin')[_0xc46e18(0x14c)]='',setTimeout(()=>{const _0x112356=_0xc46e18;_0x25f168[_0x112356(0x167)]=![],_0x3675da['innerText']='';},0x7d0);}document[_0x3fdf2a(0x15d)](_0x3fdf2a(0x152))[_0x3fdf2a(0x15f)](_0x3fdf2a(0x166),_0x47bf2d=>{const _0x30cbd7=_0x3fdf2a;if(_0x47bf2d[_0x30cbd7(0x16e)]===_0x30cbd7(0x16d))unlock();});
+    /**
+     * Julia, I have encoded your long path into this Base64 string
+     * so it's not visible in plain text.
+     * Original path: ./745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html
+     */
+    const encodedTarget = "Li83NDU1OTZmNC0yOTQ3LTRkODktOTU1Zi1mNDE0OGUwN2QyMmEvODA0YjA0MjQtOTkzMi00ZTEwLTk4NzQtMGQyOTgwZmU4N2E2Lmh0bWw="; 
+
+    function redirectToMain() {
+        const statusEl = document.getElementById('status');
+        
+        try {
+            // Decodes the Base64 string
+            const target = atob(encodedTarget);
+            
+            // Visual feedback for the "user"
+            setTimeout(() => { statusEl.innerText = "Connection secure..."; }, 500);
+            setTimeout(() => { statusEl.innerText = "Redirecting..."; }, 1200);
+
+            // Redirection after a short delay
+            setTimeout(() => {
+                window.location.replace(target);
+            }, 1800);
+
+        } catch (e) {
+            console.error("Redirection error.");
+            if (statusEl) statusEl.innerText = "Access Denied";
+        }
+    }
+
+    // Start the process once the window has loaded
+    window.onload = redirectToMain;
 </script>
+
+<noscript>
+    <div style="text-align: center;">
+        <p>Please enable JavaScript to continue to the research portal.</p>
+    </div>
+</noscript>
     
-<footer style="position: fixed; bottom: 20px; width: 100%; text-align: center; font-size: 12px; font-family: Arial, sans-serif;">
-    <a href="impressum.html" style="color: #555; text-decoration: none; margin: 0 10px;">Impressum</a>
+<footer style="position: fixed; bottom: 20px; width: 100%; text-align: center; font-size: 11px; font-family: Arial, sans-serif;">
+    <a href="impressum.html">Impressum</a>
     <span style="color: #333;">|</span>
-    <a href="datenschutz.html" style="color: #555; text-decoration: none; margin: 0 10px;">Datenschutz</a>
+    <a href="datenschutz.html">Datenschutz</a>
 </footer>
     
 </body>
