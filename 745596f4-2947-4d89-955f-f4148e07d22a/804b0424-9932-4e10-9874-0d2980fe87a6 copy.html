@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <link rel="preload" as="image" href="../images/Hero.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="Hero.jpg" fetchpriority="high">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Julia McCarren | Neural Fusion Sound</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
             background-color: #000;
@@ -76,11 +77,6 @@
         .tech-mono {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
-
-        .modal-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(0, 0, 0, 0.85);
-        }
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #000; }
@@ -102,7 +98,6 @@
             <div class="hidden lg:flex gap-14 flex-1 justify-center">
                 <a href="#" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Home</a>
                 <a href="#fusion" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Neural Fusion</a>
-                <a href="#archives" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Archives</a>
                 <a href="#profile" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Profile</a>
                 <a href="#about" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Research</a>
                 <a href="#contact" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Contact</a>
@@ -123,7 +118,6 @@
         <button id="menu-close" class="absolute top-10 right-10 text-white"><i data-lucide="x" size="40"></i></button>
         <a href="#" class="mobile-link uppercase hover:text-fuchsia-500">Home</a>
         <a href="#fusion" class="mobile-link uppercase hover:text-fuchsia-500">Neural Fusion</a>
-        <a href="#archives" class="mobile-link uppercase hover:text-fuchsia-500">Archives</a>
         <a href="#profile" class="mobile-link uppercase hover:text-fuchsia-500">Profile</a>
         <a href="#about" class="mobile-link uppercase hover:text-fuchsia-500">Research</a>
         <a href="#contact" class="mobile-link uppercase hover:text-fuchsia-500">Contact</a>
@@ -135,7 +129,8 @@
         <img src="../images/Hero.webp" 
              alt="Julia McCarren Hero" 
              id="hero-image"
-             class="w-full h-full object-cover contrast-[1.1] brightness-[0.7]">
+             class="w-full h-full object-cover contrast-[1.1] brightness-[0.7]"
+             onerror="this.src='https://images.unsplash.com/photo-1514525253344-a812df99b796?auto=format&fit=crop&q=80&w=1600'">
         
         <div id="hero-content" class="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center will-change-transform">
             <div class="flex flex-col items-center">
@@ -173,6 +168,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
+                    <!-- Left: Narrative -->
                     <div class="space-y-6 text-neutral-400 leading-relaxed text-lg">
                         <p>
                             Julia defines her music as <strong class="text-white font-bold">Neural Fusion Sound</strong>, a crossover fusion of rock, funk, pop, edm and classic. It is "Superhuman" because it contains elements that are very hard or even impossible for humans to achieve: complex rhythms, fast rap sections, and extreme vocal ranges.
@@ -180,8 +176,12 @@
                         <p>
                             Neural Fusion refers to the interaction between biological and artificial networks. In this high-dimensional latent space, Julia acts as the <strong class="text-fuchsia-400">Pilot</strong>, steering 12,000-dimensional neural states toward specific emotional resonance.
                         </p>
+                        <p>
+                            When a human translates abstract thoughts into language, the AI maps those words into its latent space, connecting human intent with billions of learned associations.
+                        </p>
                     </div>
 
+                    <!-- Right: Technical Breakdown -->
                     <div class="grid grid-cols-1 gap-6">
                         <div class="p-8 bg-neutral-900/50 rounded-2xl border border-white/5 backdrop-blur-sm">
                             <div class="flex items-center gap-4 mb-3">
@@ -210,9 +210,10 @@
         <section class="py-12 bg-black overflow-hidden">
             <div class="container mx-auto px-6">
                 <div class="relative rounded-3xl overflow-hidden border border-white/10 group">
-                    <img src="../images/Stage_3.webp" 
+                    <img src="..\images\Stage_3.webp" 
                          alt="Julia McCarren Performance" 
-                         class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out">
+                         class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out"
+                         loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="absolute bottom-6 left-8">
                         <p class="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">Live Neural Synthesis // Session 03</p>
@@ -240,30 +241,14 @@
         <section class="py-12 bg-black overflow-hidden">
             <div class="container mx-auto px-6">
                 <div class="relative rounded-3xl overflow-hidden border border-white/10 group">
-                    <img src="../images/Stage_2.webp" 
+                    <img src="..\images\Stage_2.webp" 
                          alt="Julia McCarren Performance" 
-                         class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out">
+                         class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out"
+                         loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="absolute bottom-6 left-8">
                         <p class="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">Live Neural Synthesis // Session 02</p>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Neural Archives / Song Browser -->
-        <section id="archives" class="py-24 bg-neutral-950 border-y border-neutral-900">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                    <div>
-                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 italic text-white/90">Neural <span class="hero-text-mccarren">Archives</span></h2>
-                        <p class="text-neutral-500 uppercase font-bold tracking-[0.3em] text-[10px]">Accessing Latent Soundscapes // Frequency Repository</p>
-                    </div>
-                </div>
-
-                <!-- Song Grid -->
-                <div id="song-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Songs will be injected here -->
                 </div>
             </div>
         </section>
@@ -279,11 +264,12 @@
                             <div class="w-12 h-12 rounded-full bg-fuchsia-500/10 flex items-center justify-center">
                                 <i data-lucide="binary" class="text-fuchsia-500" size="24"></i>
                             </div>
-                            <h3 class="text-3xl font-black uppercase tracking-tighter text-white/90">Professional <span class="hero-text-mccarren" style="opacity: 1;">Architect</span></h3>
+                            <h3 class="text-3xl font-black uppercase tracking-tighter">Professional <span class="hero-text-mccarren" style="opacity: 1;">Architect</span></h3>
                         </div>
                         <div class="space-y-6 text-neutral-400 text-lg leading-relaxed">
                             <p>At her profession in computer science, Julia works as a <strong class="text-white font-bold">Solution Architect</strong> at an enterprise level. She designs complex software architectures that integrate cutting-edge AI capabilities.</p>
                             <p>She famously created an AI agent capable of dynamically generating and executing code—a breakthrough she describes as her personal <span class="tech-mono text-sm text-fuchsia-400">"Skynet Moment."</span></p>
+                            <p>Recognizing the potential for harm in critical industries, Julia is now dedicated to installing essential <strong class="text-white font-bold">guardrails</strong> for human control, ensuring ethics remain at the heart of the evolving AI landscape.</p>
                         </div>
                     </div>
                 </div>
@@ -301,6 +287,7 @@
                         <div class="space-y-6 text-neutral-400 text-lg leading-relaxed">
                             <p>By age 15, Julia was already a <strong class="text-white font-bold">certified semi-professional church organist</strong>, performing in both liturgical services and sacred concerts. This classical discipline forms the foundation of her sonic architecture.</p>
                             <p>Her repertoire spans the complex counterpoint of <strong class="text-white/70">Bach</strong> to the demanding virtuoso pieces of <strong class="text-white/70">Widor</strong> and <strong class="text-white/70">Boëllmann</strong>.</p>
+                            <p>Beyond the pipe organ, she brings her melodic sensibilities to the choir and has explored the electronic frontier as the synth player in her school band, bridging the gap between centuries-old tradition and modern fusion.</p>
                         </div>
                     </div>
                 </div>
@@ -311,9 +298,10 @@
         <section class="py-12 bg-black overflow-hidden">
             <div class="container mx-auto px-6">
                 <div class="relative rounded-3xl overflow-hidden border border-white/10 group">
-                    <img src="../images/Stage_4.webp" 
+                    <img src="..\images\Stage_4.webp" 
                          alt="Julia McCarren Performance" 
-                         class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out">
+                         class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out"
+                         loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                     <div class="absolute bottom-6 left-8">
                         <p class="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">Live Neural Synthesis // Session 01</p>
@@ -322,28 +310,28 @@
             </div>
         </section>        
 
-        <!-- Research Section -->
+        <!-- About / Research Section -->
         <section id="about" class="py-24 container mx-auto px-6">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8 italic text-white/90">Research & Productivity</h2>
-                <p class="text-lg text-neutral-400 leading-relaxed mb-12">
+                <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8">Research & Productivity</h2>
+                <p class="text-lg text-neutral-400 leading-relaxed mb-10">
                     Julia experienced an enormous gain in productivity using AI in the production pipeline, bridging and fusioning genres that would otherwise be economically prohibitive.
                 </p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="p-8 bg-neutral-900/30 rounded-2xl border border-white/5">
-                        <div class="text-4xl font-black text-fuchsia-500 mb-1">12k</div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">12k</div>
                         <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Dimensions</div>
                     </div>
-                    <div class="p-8 bg-neutral-900/30 rounded-2xl border border-white/5">
-                        <div class="text-4xl font-black text-fuchsia-500 mb-1">100Hz</div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">100Hz</div>
                         <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Sync Rate</div>
                     </div>
-                    <div class="p-8 bg-neutral-900/30 rounded-2xl border border-white/5">
-                        <div class="text-4xl font-black text-fuchsia-500 mb-1">6mo</div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">6mo</div>
                         <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Research Burst</div>
                     </div>
-                    <div class="p-8 bg-neutral-900/30 rounded-2xl border border-white/5">
-                        <div class="text-4xl font-black text-fuchsia-500 mb-1">∞</div>
+                    <div class="p-6 bg-neutral-900/30 rounded-xl border border-white/5">
+                        <div class="text-3xl font-black text-fuchsia-500 mb-1">∞</div>
                         <div class="text-[9px] font-bold uppercase tracking-widest text-neutral-600">Neural Flow</div>
                     </div>
                 </div>
@@ -352,10 +340,15 @@
 
         <!-- Contact Section -->
         <section id="contact" class="py-24 bg-neutral-950/20 border-t border-neutral-900">
-            <div class="container mx-auto px-6 max-w-5xl text-center">
-                <i data-lucide="send" class="mx-auto text-fuchsia-500 mb-6" size="32"></i>
-                <h2 class="text-4xl md:text-6xl font-black tracking-tighter italic mb-4 uppercase text-white/90">Contact</h2>
-                <a href="mailto:hello@juliamccarren.com" class="text-2xl md:text-4xl font-black hover:text-fuchsia-500 transition-colors">hello@juliamccarren.com</a>
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="text-center mb-16">
+                    <i data-lucide="send" class="mx-auto text-fuchsia-500 mb-6" size="32"></i>
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tighter italic mb-4 uppercase">Contact</h2>
+                </div>
+                <div class="text-center">
+                    <p class="text-neutral-500 uppercase font-black tracking-[0.5em] text-[10px] mb-8">Inquiries & Research Collaboration</p>
+                    <a href="mailto:hello@juliamccarren.com" class="text-2xl md:text-4xl font-black hover:text-fuchsia-500 transition-colors">hello@juliamccarren.com</a>
+                </div>
             </div>
         </section>
 
@@ -393,80 +386,7 @@
         </footer>
     </div>
 
-    <!-- SONG DETAIL MODAL -->
-    <div id="song-modal" class="fixed inset-0 z-[100] hidden modal-blur">
-        <div class="h-full w-full flex items-center justify-center p-4 md:p-8 lg:p-12">
-            <div class="relative bg-neutral-900 border border-white/10 w-full max-w-6xl h-full max-h-[90vh] rounded-[2rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden">
-                
-                <!-- Close Button -->
-                <button onclick="closeSongModal()" class="absolute top-6 right-6 z-50 text-white/50 hover:text-white transition-colors bg-black/40 p-2 rounded-full backdrop-blur-md">
-                    <i data-lucide="x" size="24"></i>
-                </button>
-
-                <!-- Left Column: Main Scrolling Pane (Background + Lyrics) -->
-                <div class="flex-1 overflow-y-auto p-8 md:p-12 scroll-smooth">
-                    <div id="modal-tags" class="flex flex-wrap gap-2 mb-6"></div>
-                    <h2 id="modal-title" class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-10 hero-text-mccarren leading-none" style="opacity: 1;"></h2>
-                    
-                    <!-- Content Section 1: Background -->
-                    <div class="mb-16">
-                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500 mb-6 flex items-center gap-3">
-                            <span class="w-8 h-[1px] bg-fuchsia-500/50"></span>
-                            Origin & Context
-                        </h4>
-                        <p id="modal-background" class="text-neutral-400 text-xl md:text-2xl leading-relaxed font-medium"></p>
-                    </div>
-
-                    <!-- Content Section 2: Lyrics (Neural Data) -->
-                    <div class="mb-12">
-                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500 mb-8 flex items-center gap-3">
-                            <span class="w-8 h-[1px] bg-fuchsia-500/50"></span>
-                            Linguistic Data Stream
-                        </h4>
-                        <div class="bg-black/20 rounded-3xl border border-white/5 p-8 md:p-12">
-                            <pre id="modal-lyrics" class="whitespace-pre-wrap font-sans text-neutral-300 leading-[1.8] text-lg md:text-xl italic"></pre>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Sidebar: Interactive Controls (Fixed or Stacked) -->
-                <div class="w-full lg:w-96 bg-neutral-950 p-8 md:p-12 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-white/5">
-                    <div class="hidden lg:block space-y-8">
-                        <div>
-                            <p class="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-600 mb-2">Signal Status</p>
-                            <div class="flex items-center gap-3">
-                                <span class="w-2 h-2 rounded-full bg-fuchsia-500 animate-pulse"></span>
-                                <p class="text-xs font-bold tech-mono text-fuchsia-500/80">Active Synthesis</p>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 bg-white/5 rounded-2xl border border-white/5">
-                            <i data-lucide="info" class="text-yellow-500 mb-4" size="20"></i>
-                            <p class="text-xs text-yellow-400 leading-relaxed">
-                                This fragment is stored on Google Drive and can be played back in its original form. The "Initialize Playback" button will open the audio file in a new tab, allowing you to experience the raw neural output as it was synthesized.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-auto space-y-4">
-                        <a id="modal-drive-link" href="#" target="_blank" class="glass-button w-full text-white py-6 rounded-3xl font-black uppercase tracking-widest flex items-center justify-center gap-4 group text-sm">
-                            Playback
-                            <i data-lucide="external-link" size="20" class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const songs = [
-{"id":"antitoxic","title":"Antitoxic","background":"A response to social media attacks from those who create nothing; a song about vital energy and positive frequency.","tags":["Response","Energy"],"driveUrl":"https://drive.google.com/file/d/1BaH0F41OWi7x2gPXvJdKFYdihuLCLKFg/view?usp=drive_link","lyrics":"[Intro]\nYeah.\nI see the red notifications.\nI see the shadows in the comments.\nBut you know what?\nThe frequency is changing.\n\n[Verse 1]\nYou’re typing loud from a silent room\nTrying to weave a web of gloom\n\"Not an artist,\" yeah, that’s the line\nBut I don’t see your light shine\nI clicked your name, I scrolled the feed\nBut there’s no harvest, you didn’t sow a seed\nAn empty channel, a hollow screen\nJust a ghost in a digital machine.\n\n[Pre-Chorus]\nYou’re throwing stones at a glassless house\nQuiet as a keyboard, quiet as a mouse\nBut the rhythm in my chest is beating too fast\nTo let a little bit of poison ever last.\n\n[Chorus]\nMy vibe is Antitoxic\nI’m breathing in the light, I’m the logic\nYou can’t pull me down to the basement floor\nI’m opening a window, I’m opening a door\nIt’s vital, it’s golden, it’s alive\nI don’t just exist, I arrive\nYeah, my music is the cure, it’s the tonic\nPurely Antitoxic.\n\n[Verse 2]\nShow me your canvas, show me your soul\nInstead of trying to dig me a hole\nIf you’ve got the vision, then let it out\nBut all I’m hearing is a muffled shout\nI’m building bridges, you’re burning air\nI’m making magic, and you’re just there\nComparing my \"now\" to your \"never\"\nI’m moving forward, I’m clever.\n\n[Guitar solo]\n\n[Bridge]\nEnergy is currency.\nWhy spend yours on me?\nI’m a forest fire, you’re a spark\nI’m the daylight, you’re the dark\nBut I’m not angry, I’m just free\nFrom the weight of your philosophy.\n\n[Chorus]\nMy vibe is Antitoxic\nI’m breathing in the light, I’m the logic\nYou can’t pull me down to the basement floor\nI’m opening a window, I’m opening a door\nIt’s vital, it’s golden, it’s alive\nI don’t just exist, I arrive\nYeah, my music is the cure, it’s the tonic\nPurely Antitoxic.\n\n[Outro]\nKeep your shadows, I’ll keep the sun\nThe song is just beginning, I’ve already won\nEmpty channels, full heart\nThis is the life, this is the art.\nAntitoxic...\nStay vital."},
-{"id":"avalanche","title":"Avalanche","background":"A strong relationship where you are deeply involved in emotionally often has the force of an avalanche","tags":["Intense"],"driveUrl":"https://drive.google.com/file/d/1Bpqsx9GTxBKkUdVkfFBJT_uI9CyowyXh/view?usp=drive_link","lyrics":"[Verse 1]\nIt started with a hairline fracture\nA word you didn't say, a look I couldn't catch\nWe’ve been living on this incline for a season\nWaiting for the gravity to match\nThe air is getting thin, the sky is turning slate\nI feel the shiver in the shelf beneath my feet\nThey say the silence is the loudest right before\nThe white-out makes the burial complete.\n\n[Pre-Chorus]\nOne cold breath, one heavy step\nThe kind of secrets that we shouldn’t have kept\nThe pressure's building till the crystals break\nHow much weight can one heartbeat take?\n\n[Chorus]\nAnd it’s an Avalanche\nComing down to claim the valley of us\nTurning every vow we made into dust\nYou can’t outrun it, you can’t scream for air\nIt’s beautiful and breathless and it’s everywhere\nWe’re going under, frozen in the dance\nBuried in the hollow of this avalanche.\n\n[Verse 2]\nThey’ll find us in a thousand years\nLocked in this position, static in the blue\nI used to fear the cold until I realized\nThe coldest part of winter was wanting you\nThere’s a power in the way we fall apart\nA kinetic rush that shadows out the sun\nNow the house is gone, the map is erased\nAnd there’s nowhere left for us to run.\n\n[Bridge]\nIt’s not a flood, it’s not a fire\nIt’s a mountain losing its entire\nWeight upon our shoulders, white and blind\nLeaving everything we knew behind\nDon't fight the slide, don't try to rise\nJust look at me with those ice-crag eyes.\n\n[Guitar Solo]\n\n[Chorus]\nYeah, it’s an Avalanche\nComing down to claim the valley of us\nTurning every vow we made into dust\nYou can’t outrun it, you can’t scream for air\nIt’s beautiful and breathless and it’s everywhere\nWe’re going under, frozen in the dance\nBuried in the hollow of this avalanche.\n\n[Outro]\nThe snow is settling now...\nEverything is quiet.\nEverything is white.\nJust you and me...\nUnder the weight.\nUnder the white."},
-{"id":"betrayal","title":"Betrayal","background":"When your friend cheats on you it's a painful experience. Try to take it at easy as possible.","tags":["Emotional"],"driveUrl":"https://drive.google.com/file/d/1U3X8_rPLqlZEumu9HSPm23SLJyn8t_Uk/view?usp=drive_link","lyrics":"[Verse 1]\nWe shared the same coffee, the same morning air\nI trusted your shadow, I thought you’d be there\nThrough the nights I was working, lost in the climb\nI thought you were cheering, not just biding your time.\nBut I saw how you looked in that silk, paper-thin\nA dress built for silence, to let the world in\nAnd I saw how he folded, how quickly he fell\nFor a story so shallow even you couldn't tell.\n\n[Chorus]\nI was building a future, you were tearing a seam\nYou traded a lifetime for a flickering gleam.\nIt’s a heavy-heart lesson, a bitter-sweet song\nTo realize the person I loved was just wrong.\nYou can keep the attention, the glances, the lace\nBut you’ll never fill up all the emptiness in his face\nI’m walking away with my head in the light\nBecause I’m far too much for a man this slight.\n\n[Verse 2]\nI spent my life learning the weight of a thought\nWhile you practiced the angles of things to be bought.\nYou gave him the glitter, the easy, the brief\nAnd he took it like water, a common-born thief.\nI used to think value was something we grew\nBut he’s looking for mirrors, and he found one in you.\nGo on, wear the outfit that says what you lack\nI’m finally leaving, and I’m not looking back.\n\n[Bridge]\nIt’s funny how clearly the patterns emerge\nWhen the lies and the loyalty finally diverge.\nI’m not broken or bitter, I’m just seeing the truth\nI wasted my wisdom on the ghost of his youth.\nHe wanted a surface, a flicker, a spark\nWhile I was the fire that held back the dark.\n\n[Chorus]\nI was building a future, you were tearing a seam\nYou traded a lifetime for a flickering gleam.\nIt’s a heavy-heart lesson, a bitter-sweet song\nTo realize the person I loved was just wrong.\nYou can keep the attention, the glances, the lace\nBut you’ll never fill up all the emptiness in his face\nI’m walking away with my head in the light\nBecause I’m far too much for a man this slight.\n\n[Outro]\nI’m packing my mind and I’m clearing the shelf\nI’m finally back to just being myself.\nI don’t need to fix what was broken so long\nHis preferences, truly, were always set wrong.\nYeah, they were always set wrong.\nGoodbye to the shallow.\nGoodbye to you both."},
-{"id":"brooklyn","title":"Brooklyn","background":"An artistic answer to attacks from Brooklyn elitists.","tags":["Response","Social"],"driveUrl":"https://drive.google.com/file/d/1fqeE5EJcSA7nHtlBLbU850FZRPEtWsFi/view?usp=drivesdk","lyrics":"[Intro]\nWelcome to the Exhibition.\nPlease do not touch the artists... they are very fragile.\n\n[Verse 1]\nSitting in the basement, guarding the gate\nTalking 'bout the struggle, talking 'bout fate\nYou got the vintage filter, you got the look\nReading from the same old dusty book\n\"Analog warmth\" just to hide the cold\nSelling a story that’s already sold\nYou think the scratch on the record is \"Art\"\nBut it’s just the sound of a stopping heart.\n\n[Pre-Chorus]\nYou’re scared of the edge, so you round it off\nYou hear the machine and you start to scoff\nBut while you were polishing a rusty crown\nI built a cathedral in the center of town.\n\n[Chorus]\nWelcome to the Museum!\nWhere nothing ever changes, nothing is new\nJust a hollow cage for the chosen few!\nYou call it \"Soul\", I call it a grave\nYou’re not a rebel, you’re just a slave—\nTo the loop! To the box! To the gallery wall!\nI’m the Architect watching the Gentry fall!\nWATCH THE GENTRY FALL!\n\n[Verse 2]\nLet’s talk power, let’s talk facts\nYou hide your range in the reverb tracks\nYou play in circles, safe and slow\nThat’s why your melody has nowhere to go\nYou’re terrified of the fire, scared of the shift\nStuck on the ground, missing the lift\nYou want the \"Vibe\" but you can’t pay the price\nRolling the same old weighted dice.\n\n[Bridge]\nYou fought the future.\nYou fought the code.\nAnd while you were screaming... the Labels reload.\nThey took your sound.\nThey bought your street.\nNow you’re just a ghost on a corporate beat.\n\n[Guitar Solo]\n\n[Chorus]\nWelcome to the Museum!\nWhere nothing ever changes, nothing is new\nJust a hollow cage for the chosen few!\nYou call it \"Soul\", I call it a grave\nYou’re not a rebel, you’re just a slave!\nBurn the gallery! Break the wall!\nI’m the Architect watching the Gentry fall!\n\n[Outro]\nCompare the harvest.\nThe Museum is closed!"}
-        ];
-
         lucide.createIcons();
         
         const navbar = document.getElementById('navbar');
@@ -477,64 +397,36 @@
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             const triggerPoint = 450;
+
             if (scrollY < window.innerHeight) {
-                heroContent.style.transform = `translateY(${scrollY * -0.55}px)`;
-                heroImage.style.transform = `scale(${1 + (scrollY * 0.00015)})`;
+                const upOffset = scrollY * -0.55; 
+                heroContent.style.transform = `translateY(${upOffset}px)`;
+                const zoomFactor = 1 + (scrollY * 0.00015);
+                heroImage.style.transform = `scale(${zoomFactor})`;
             }
+
             if (scrollY > triggerPoint) {
-                navbar.classList.add('glass-nav', 'py-4'); navbar.classList.remove('py-10');
-                navTitle.classList.add('nav-visible'); navTitle.classList.remove('nav-hidden');
+                navbar.classList.add('glass-nav', 'py-4');
+                navbar.classList.remove('py-10');
+                navTitle.classList.add('nav-visible');
+                navTitle.classList.remove('nav-hidden');
             } else {
-                navbar.classList.remove('glass-nav', 'py-4'); navbar.classList.add('py-10');
-                navTitle.classList.remove('nav-visible'); navTitle.classList.add('nav-hidden');
+                navbar.classList.remove('glass-nav', 'py-4');
+                navbar.classList.add('py-10');
+                navTitle.classList.remove('nav-visible');
+                navTitle.classList.add('nav-hidden');
             }
         });
 
-        const songGrid = document.getElementById('song-grid');
-        songs.forEach(song => {
-            const card = document.createElement('div');
-            card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500';
-            card.innerHTML = `
-                <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
-                <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
-                <button onclick="openSongModal('${song.id}')" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
-                    View Details <i data-lucide="arrow-right" size="14"></i>
-                </button>
-            `;
-            songGrid.appendChild(card);
-        });
-        lucide.createIcons();
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
 
-        const modal = document.getElementById('song-modal');
-        function openSongModal(id) {
-            const song = songs.find(s => s.id === id);
-            if (!song) return;
-            document.getElementById('modal-title').textContent = song.title;
-            document.getElementById('modal-background').textContent = song.background;
-            document.getElementById('modal-lyrics').textContent = song.lyrics;
-            document.getElementById('modal-drive-link').href = song.driveUrl;
-            const tagsCont = document.getElementById('modal-tags');
-            tagsCont.innerHTML = '';
-            song.tags.forEach(tag => {
-                const span = document.createElement('span');
-                span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
-                span.textContent = tag;
-                tagsCont.appendChild(span);
-            });
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            lucide.createIcons();
-        }
-
-        function closeSongModal() {
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        const menuToggle = document.getElementById('menu-toggle'), menuClose = document.getElementById('menu-close'), mobileMenu = document.getElementById('mobile-menu');
         menuToggle.onclick = () => { mobileMenu.classList.remove('hidden'); mobileMenu.classList.add('flex'); document.body.style.overflow = 'hidden'; };
         const closeMenu = () => { mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex'); document.body.style.overflow = 'auto'; };
         menuClose.onclick = closeMenu;
+        mobileLinks.forEach(l => l.onclick = closeMenu);
     </script>
 </body>
 </html>
