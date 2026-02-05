@@ -88,6 +88,34 @@
     </style>
 </head>
 <body class="overflow-x-hidden">
+    <!-- AGREEMENT DIALOG -->
+    <div id="agreement-dialog" class="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/90 backdrop-blur-2xl">
+        <div class="max-w-xl w-full bg-neutral-900 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl animate-modal">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-fuchsia-500/10 flex items-center justify-center mb-8">
+                    <i data-lucide="shield-check" class="text-fuchsia-500" size="32"></i>
+                </div>
+                
+                <h2 class="text-3xl md:text-4xl font-black tracking-tighter uppercase mb-4 text-white/90">
+                    Neural <span class="hero-text-mccarren" style="opacity: 1;">Access</span>
+                </h2>
+                
+                <p class="text-neutral-400 text-sm md:text-base leading-relaxed mb-10">
+                    We use cookies and similar technologies to recognize your repeat visits and preferences, as well as to measure the effectiveness of campaigns and analyze traffic. To learn more about cookies, including how to disable them, view our Privacy Policy. By clicking 'I Accept' on this banner, you consent to the use of cookies.
+                </p>
+
+                <div class="w-full flex flex-col gap-4">
+                    <button id="agree-btn" class="glass-button w-full text-white py-5 rounded-3xl font-black uppercase tracking-[0.2em] text-sm flex items-center justify-center gap-3">
+                        Accept Connection
+                        <i data-lucide="zap" size="18"></i>
+                    </button>
+                    <button id="decline-btn" class="text-neutral-600 hover:text-neutral-400 transition-colors text-[10px] font-bold uppercase tracking-[0.3em]">
+                        Decline Connection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-10 transition-all duration-500 ease-in-out">
@@ -458,7 +486,29 @@
         ];
 
         lucide.createIcons();
+
+        // Agreement Dialog Logic
+        const agreeDialog = document.getElementById('agreement-dialog');
+        const agreeBtn = document.getElementById('agree-btn');
+        const declineBtn = document.getElementById('decline-btn');
+
+        // Prevent scrolling while dialog is active
+        document.body.style.overflow = 'hidden';
+
+        agreeBtn.addEventListener('click', () => {
+            agreeDialog.style.opacity = '0';
+            agreeDialog.style.transition = 'opacity 0.8s ease';
+            setTimeout(() => {
+                agreeDialog.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 800);
+        });
+
+        declineBtn.addEventListener('click', () => {
+            window.location.href = "https://www.google.com"; // Redirect away if they decline
+        });        
         
+        // Sticky Nav & Parallax Logic
         const navbar = document.getElementById('navbar');
         const navTitle = document.getElementById('nav-title');
         const heroContent = document.getElementById('hero-content');
