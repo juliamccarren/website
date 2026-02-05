@@ -451,105 +451,6 @@
     </div>
 
     <script>
-    // 1. Zentrale Funktion zum Laden und Anzeigen
-    // Globale Variable für die aktuell angezeigten Songs
-let currentArchiveSongs = [];
-
-async function loadAndDisplayArchive() {
-    const songGrid = document.getElementById('song-grid');
-    try {
-        // 1. Lade die gesamte JSON-Datei
-        const response = await fetch('songs.json'); 
-        if (!response.ok) throw new Error('songs.json konnte nicht geladen werden');
-        
-        // 2. Direktes Parsen des gesamten Arrays (kein Split nötig!)
-        const allSongs = await response.json();
-
-        // 3. Zufällige Auswahl von 4 Songs
-        currentArchiveSongs = allSongs
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 4);
-
-        songGrid.innerHTML = ''; 
-
-        currentArchiveSongs.forEach((song, index) => {
-            const card = document.createElement('div');
-            card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500';
-            card.innerHTML = `
-                <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
-                <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
-                <button onclick="openSongFromArchive(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
-                    View Details <i data-lucide="arrow-right" size="14"></i>
-                </button>
-            `;
-            songGrid.appendChild(card);
-        });
-
-        lucide.createIcons();
-    } catch (error) {
-        console.error('Archiv-Fehler:', error);
-        songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
-    }
-}
-
-// Neue Funktion, die auf das globale Array zugreift
-function openSongFromArchive(index) {
-    const song = currentArchiveSongs[index];
-    if (!song) return;
-
-    const modal = document.getElementById('song-modal');
-    document.getElementById('modal-title').textContent = song.title;
-    document.getElementById('modal-background').textContent = song.background;
-    document.getElementById('modal-lyrics').textContent = song.lyrics;
-    document.getElementById('modal-drive-link').href = song.driveUrl;
-    
-    const tagsCont = document.getElementById('modal-tags');
-    tagsCont.innerHTML = '';
-    song.tags.forEach(tag => {
-        const span = document.createElement('span');
-        span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
-        span.textContent = tag;
-        tagsCont.appendChild(span);
-    });
-    
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    lucide.createIcons();
-}
-/*
-    // 2. Die fehlende Modal-Funktion hinzufügen
-    function openSongModalFromData(songDataString) {
-        const song = JSON.parse(songDataString);
-        const modal = document.getElementById('song-modal');
-        
-        document.getElementById('modal-title').textContent = song.title;
-        document.getElementById('modal-background').textContent = song.background;
-        document.getElementById('modal-lyrics').textContent = song.lyrics;
-        document.getElementById('modal-drive-link').href = song.driveUrl;
-        
-        const tagsCont = document.getElementById('modal-tags');
-        tagsCont.innerHTML = '';
-        song.tags.forEach(tag => {
-            const span = document.createElement('span');
-            span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
-            span.textContent = tag;
-            tagsCont.appendChild(span);
-        });
-        
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        lucide.createIcons();
-    }*/
-
-    function closeSongModal() {
-        document.getElementById('song-modal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }
-
-    // 3. Initialisierung
-    loadAndDisplayArchive();
-
-      /*  // Old hardcoded songs (can be removed after confirming JSONL loading works)
         const songs = [
 {"id":"antitoxic","title":"Antitoxic","background":"A response to social media attacks from those who create nothing; a song about vital energy and positive frequency.","tags":["Response","Energy"],"driveUrl":"https://drive.google.com/file/d/1BaH0F41OWi7x2gPXvJdKFYdihuLCLKFg/view?usp=drive_link","lyrics":"[Intro]\nYeah.\nI see the red notifications.\nI see the shadows in the comments.\nBut you know what?\nThe frequency is changing.\n\n[Verse 1]\nYou’re typing loud from a silent room\nTrying to weave a web of gloom\n\"Not an artist,\" yeah, that’s the line\nBut I don’t see your light shine\nI clicked your name, I scrolled the feed\nBut there’s no harvest, you didn’t sow a seed\nAn empty channel, a hollow screen\nJust a ghost in a digital machine.\n\n[Pre-Chorus]\nYou’re throwing stones at a glassless house\nQuiet as a keyboard, quiet as a mouse\nBut the rhythm in my chest is beating too fast\nTo let a little bit of poison ever last.\n\n[Chorus]\nMy vibe is Antitoxic\nI’m breathing in the light, I’m the logic\nYou can’t pull me down to the basement floor\nI’m opening a window, I’m opening a door\nIt’s vital, it’s golden, it’s alive\nI don’t just exist, I arrive\nYeah, my music is the cure, it’s the tonic\nPurely Antitoxic.\n\n[Verse 2]\nShow me your canvas, show me your soul\nInstead of trying to dig me a hole\nIf you’ve got the vision, then let it out\nBut all I’m hearing is a muffled shout\nI’m building bridges, you’re burning air\nI’m making magic, and you’re just there\nComparing my \"now\" to your \"never\"\nI’m moving forward, I’m clever.\n\n[Guitar solo]\n\n[Bridge]\nEnergy is currency.\nWhy spend yours on me?\nI’m a forest fire, you’re a spark\nI’m the daylight, you’re the dark\nBut I’m not angry, I’m just free\nFrom the weight of your philosophy.\n\n[Chorus]\nMy vibe is Antitoxic\nI’m breathing in the light, I’m the logic\nYou can’t pull me down to the basement floor\nI’m opening a window, I’m opening a door\nIt’s vital, it’s golden, it’s alive\nI don’t just exist, I arrive\nYeah, my music is the cure, it’s the tonic\nPurely Antitoxic.\n\n[Outro]\nKeep your shadows, I’ll keep the sun\nThe song is just beginning, I’ve already won\nEmpty channels, full heart\nThis is the life, this is the art.\nAntitoxic...\nStay vital."},
 {"id":"avalanche","title":"Avalanche","background":"A strong relationship where you are deeply involved in emotionally often has the force of an avalanche","tags":["Intense"],"driveUrl":"https://drive.google.com/file/d/1Bpqsx9GTxBKkUdVkfFBJT_uI9CyowyXh/view?usp=drive_link","lyrics":"[Verse 1]\nIt started with a hairline fracture\nA word you didn't say, a look I couldn't catch\nWe’ve been living on this incline for a season\nWaiting for the gravity to match\nThe air is getting thin, the sky is turning slate\nI feel the shiver in the shelf beneath my feet\nThey say the silence is the loudest right before\nThe white-out makes the burial complete.\n\n[Pre-Chorus]\nOne cold breath, one heavy step\nThe kind of secrets that we shouldn’t have kept\nThe pressure's building till the crystals break\nHow much weight can one heartbeat take?\n\n[Chorus]\nAnd it’s an Avalanche\nComing down to claim the valley of us\nTurning every vow we made into dust\nYou can’t outrun it, you can’t scream for air\nIt’s beautiful and breathless and it’s everywhere\nWe’re going under, frozen in the dance\nBuried in the hollow of this avalanche.\n\n[Verse 2]\nThey’ll find us in a thousand years\nLocked in this position, static in the blue\nI used to fear the cold until I realized\nThe coldest part of winter was wanting you\nThere’s a power in the way we fall apart\nA kinetic rush that shadows out the sun\nNow the house is gone, the map is erased\nAnd there’s nowhere left for us to run.\n\n[Bridge]\nIt’s not a flood, it’s not a fire\nIt’s a mountain losing its entire\nWeight upon our shoulders, white and blind\nLeaving everything we knew behind\nDon't fight the slide, don't try to rise\nJust look at me with those ice-crag eyes.\n\n[Guitar Solo]\n\n[Chorus]\nYeah, it’s an Avalanche\nComing down to claim the valley of us\nTurning every vow we made into dust\nYou can’t outrun it, you can’t scream for air\nIt’s beautiful and breathless and it’s everywhere\nWe’re going under, frozen in the dance\nBuried in the hollow of this avalanche.\n\n[Outro]\nThe snow is settling now...\nEverything is quiet.\nEverything is white.\nJust you and me...\nUnder the weight.\nUnder the white."},
@@ -561,7 +462,7 @@ function openSongFromArchive(index) {
 {"id":"toccata","title":"Toccata","background":"A bilingual fusion featuring my performance of Bach’s Toccata in D minor, exploring the meaning of the Italian word \"toccare\" (to touch).","tags":["Bach","Bilingual"],"driveUrl":"https://drive.google.com/file/d/1-eBZdp7-KiC1tvZ5OfAkaWmbJpg8_0g5/view?usp=drivesdk","lyrics":"[Intro]\nToccare... Toccare...\n\n[Verse 1]\nThe melody is dark, the rhythm is a pulse\nMy fingers on the keyboard, nothing else.\nIt started with a whisper, a gentle invitation,\nNow it's a deep vibration, pure sensation.\nI trace the lines, I feel the charge, the static air,\nA silent promise hanging there, a desperate prayer.\nThis darkness that surrounds us, it only makes it clearer,\nI need to pull you closer, ti voglio più vicina.\n\n[Prechorus]\nNo hesitation now, just pure electrical flow,\nI need to feel it now, I need to let it go.\nI want to breach the distance, the space between the beat,\nReady for the moment, feel the heat!\nTocca me, baby!\n\n[Chorus]\nDon't break the moment, don't stop the sound,\nLost in the rhythm, turning 'round and 'round.\nI’ve got you where I want you, right here in the dark,\nYou are the music leaving its mark!\nSei Toccata!\n\n[Verse 2]\nMy skin is buzzing, like the speakers in the floor,\nThis energy you give me, I'm craving something more.\nYou don't need to speak, the language is in the hands,\nFollowing the motion, following your commands.\nSento il tuo respiro, I feel your breath upon my neck,\nBreaking every boundary, ignoring every check.\nLet the rhythm guide us through this dark, hypnotic haze,\nLost in the fire of these electric ways.\n\n[Prechorus]\nThere’s no turning back, the spell is cast tonight,\nGive me that connection, with all your heat and light.\nI want to close the circuit, the gap is getting small,\nReady for the moment, give your all!\nTocca me, baby!\n\n[Chorus]\nDon't break the moment, don't stop the sound,\nLost in the rhythm, turning 'round and 'round.\nI’ve got you where I want you, right here in the dark,\nYou are the music leaving its mark!\nSei Toccata!\n\n[Bridge]\nToccami piano...\nThe history, the feeling, the darkness of the sound.\nFrom the organ's pipes to the speakers on the ground.\nToccami forte...\nA thousand years of music, now pulsing through the air.\nThe feeling is electric, a touch beyond compare.\n\n[Chorus]\nDon't break the moment, don't stop the sound,\nLost in the rhythm, turning 'round and 'round.\nI’ve got you where I want you, right here in the dark,\nYou are the music leaving its mark!\nSei Toccata!\n\n[Outro]\nSì, Toccata..."}
         ];
 
-        lucide.createIcons();*/
+        lucide.createIcons();
         
         // Sticky Nav & Parallax Logic
         const navbar = document.getElementById('navbar');
@@ -585,7 +486,7 @@ function openSongFromArchive(index) {
             }
         });
 
-        /* const songGrid = document.getElementById('song-grid');
+        const songGrid = document.getElementById('song-grid');
         songs.forEach(song => {
             const card = document.createElement('div');
             card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500';
@@ -598,11 +499,11 @@ function openSongFromArchive(index) {
             `;
             songGrid.appendChild(card);
         });
-        lucide.createIcons(); */
+        lucide.createIcons();
 
-        /*const modal = document.getElementById('song-modal');
+        const modal = document.getElementById('song-modal');
         function openSongModal(id) {
-            const song = selectedSongs.find(s => s.id === id);
+            const song = songs.find(s => s.id === id);
             if (!song) return;
             document.getElementById('modal-title').textContent = song.title;
             document.getElementById('modal-background').textContent = song.background;
@@ -624,7 +525,7 @@ function openSongFromArchive(index) {
         function closeSongModal() {
             modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
-        }*/
+        }
 
         const menuToggle = document.getElementById('menu-toggle'), menuClose = document.getElementById('menu-close'), mobileMenu = document.getElementById('mobile-menu');
         menuToggle.onclick = () => { mobileMenu.classList.remove('hidden'); mobileMenu.classList.add('flex'); document.body.style.overflow = 'hidden'; };
