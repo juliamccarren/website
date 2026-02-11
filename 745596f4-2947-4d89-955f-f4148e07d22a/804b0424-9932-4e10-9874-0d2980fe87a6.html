@@ -519,9 +519,10 @@
         // 1. Zentrale Funktion zum Laden und Anzeigen
         // Globale Variable für die aktuell angezeigten Songs
         let currentArchiveSongs = [];
+        let currentFeatureSongs = [];
 
-        async function loadAndDisplayArchive(elementId = 'song-grid', songId = null) {
-            const songGrid = document.getElementById(elementId);
+        async function loadAndDisplayArchiveSongs() {
+            const songGrid = document.getElementById('song-grid');
             try {
                 // 1. Lade die gesamte JSON-Datei
                 const response = await fetch('songs.json'); 
@@ -531,14 +532,10 @@
                 const allSongs = await response.json();
 
                 // 3. Songauswahl: Entweder spezifischer Song oder zufällige Auswahl
-                if (songId) {
-                    currentArchiveSongs = allSongs.filter(song => song.id === songId);
-                } else {
-                    // Zufällige Auswahl von 4 Songs
-                    currentArchiveSongs = allSongs
-                        .sort(() => 0.5 - Math.random())
-                        .slice(0, 4);
-                }
+                // Zufällige Auswahl von 4 Songs
+                currentArchiveSongs = allSongs
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 4);
 
                 songGrid.innerHTML = ''; 
 
@@ -548,7 +545,7 @@
                     card.innerHTML = `
                         <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
                         <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
-                        <button onclick="openSongFromArchive(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
+                        <button onclick="openSongFromArchiveSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
                             View Details <i data-lucide="arrow-right" size="14"></i>
                         </button>
                     `;
@@ -562,8 +559,43 @@
             }
         }
 
+        async function loadAndDisplayFeatureSongs(songId) {
+            const songGrid = document.getElementById('feature-song-grid');
+            try {
+                // 1. Lade die gesamte JSON-Datei
+                const response = await fetch('songs.json'); 
+                if (!response.ok) throw new Error('songs.json konnte nicht geladen werden');
+                
+                // 2. Direktes Parsen des gesamten Arrays (kein Split nötig!)
+                const allSongs = await response.json();
+
+                // 3. Songauswahl: Entweder spezifischer Song oder zufällige Auswahl
+                currentFeatureSongs = allSongs.filter(song => song.id === songId);
+
+                songGrid.innerHTML = ''; 
+
+                currentFeatureSongs.forEach((song, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500';
+                    card.innerHTML = `
+                        <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
+                        <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
+                        <button onclick="openSongFromFeatureSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
+                            View Details <i data-lucide="arrow-right" size="14"></i>
+                        </button>
+                    `;
+                    songGrid.appendChild(card);
+                });
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Archiv-Fehler:', error);
+                songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
+            }
+        }        
+
         // Neue Funktion, die auf das globale Array zugreift
-        function openSongFromArchive(index) {
+        function openSongFromArchiveSongs(index) {
             const song = currentArchiveSongs[index];
             if (!song) return;
 
@@ -587,14 +619,39 @@
             lucide.createIcons();
         }
 
+        // Neue Funktion, die auf das globale Array zugreift
+        function openSongFromFeatureSongs(index) {
+            const song = currentFeatureSongs[index];
+            if (!song) return;
+
+            const modal = document.getElementById('song-modal');
+            document.getElementById('modal-title').textContent = song.title;
+            document.getElementById('modal-background').textContent = song.background;
+            document.getElementById('modal-lyrics').textContent = song.lyrics;
+            document.getElementById('modal-drive-link').href = song.driveUrl;
+            
+            const tagsCont = document.getElementById('modal-tags');
+            tagsCont.innerHTML = '';
+            song.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
+                span.textContent = tag;
+                tagsCont.appendChild(span);
+            });
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }        
+
         function closeSongModal() {
             document.getElementById('song-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
         // 3. Initialisierung
-        loadAndDisplayArchive();
-        loadAndDisplayArchive('feature-song-grid', 'peaks_of_gold');
+        loadAndDisplayFeatureSongs('peaks_of_gold');
+        loadAndDisplayArchiveSongs();        
            
         // Sticky Nav & Parallax Logic
         const navbar = document.getElementById('navbar');
