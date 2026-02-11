@@ -712,6 +712,9 @@
          * Erzeugt dynamisch strukturierte Daten für Google
          */
         function injectSEOData(songs) {
+            // Verhindere doppelte Injektion
+            if (document.getElementById('json-ld-seo')) return;
+            
             // 1. JSON-LD (unverändert, bleibt kompakt)
             const schema = {
                 "@context": "https://schema.org",
