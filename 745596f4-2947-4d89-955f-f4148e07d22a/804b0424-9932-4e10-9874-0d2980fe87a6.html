@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    <!-- SEO & Identity -->
     <link rel="canonical" href="https://juliamccarren.com/" />
-    <link rel="preload" as="image" href="../images/Hero.webp" fetchpriority="high">
+    <meta name="robots" content="index, follow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Julia McCarren | Neural Fusion Sound</title>
+
+    <!-- Preloads & Scripts -->
+    <link rel="preload" as="image" href="../images/Hero.webp" fetchpriority="high">
     <script src="../js/tailwindcss.js"></script>
     <script src="../js/lucide.js"></script>
+
+    <!-- Styles -->
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -456,6 +462,9 @@
             </div>
 
             <p class="text-s text-neutral-400 font-black tracking-[0.3em] uppercase pb-6">© 2026 Julia McCarren</p>
+
+            <!-- Hidden SEO List for Crawler redundancy -->
+            <div id="seo-song-list" style="display:none;" aria-hidden="true"></div>        
         </footer>
     </div>
 
@@ -537,6 +546,10 @@
                     throw new Error(`songs.json konnte nicht geladen werden (Status: ${response.status})`);
                 }
                 allSongsCache = await response.json();
+
+                // SEO: JSON-LD und Footer-Liste injizieren
+                injectSEOData(allSongsCache);
+
                 return allSongsCache;
             } catch (error) {
                 console.error('Fehler beim Laden der Songs:', error.message);
@@ -694,6 +707,42 @@
         document.querySelectorAll('.mobile-link').forEach(link => {
             link.addEventListener('click', closeMenu);
         });
+
+        /**
+         * Erzeugt dynamisch strukturierte Daten für Google
+         */
+        function injectSEOData(songs) {
+            // 1. JSON-LD für die Entitäts-Trennung und Indizierung
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "MusicPlaylist",
+                "name": "Julia McCarren Neural Fusion Archive",
+                "creator": {
+                    "@type": "Person",
+                    "name": "Julia McCarren",
+                    "jobTitle": "Solution Architect & Digital Artist",
+                    "sameAs": [
+                        "https://www.youtube.com/@JuliaMcCarren",
+                        "https://open.spotify.com/artist/1iEWsTM4vgUGVXOlky4Ujk"
+                    ]
+                },
+                "track": songs.map(s => ({
+                    "@type": "MusicRecording",
+                    "name": s.title,
+                    "url": "https://juliamccarren.com/"
+                }))
+            };
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.text = JSON.stringify(schema);
+            document.head.appendChild(script);
+
+            // 2. Versteckte Liste im Footer (Bulletproof SEO)
+            const seoListCont = document.getElementById('seo-song-list');
+            if (seoListCont) {
+                seoListCont.innerHTML = `<h3>Full Tracklist</h3><ul>${songs.map(s => `<li>${s.title}</li>`).join('')}</ul>`;
+            }
+        }        
     </script>
 </body>
 </html>
