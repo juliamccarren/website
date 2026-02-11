@@ -712,7 +712,7 @@
          * Erzeugt dynamisch strukturierte Daten für Google
          */
         function injectSEOData(songs) {
-            // 1. JSON-LD (unverändert, bleibt kompakt)
+            // 1. JSON-LD für die Entitäts-Trennung und Indizierung
             const schema = {
                 "@context": "https://schema.org",
                 "@type": "MusicPlaylist",
@@ -737,21 +737,12 @@
             script.text = JSON.stringify(schema);
             document.head.appendChild(script);
 
-            // 2. Versteckte Liste mit Lyrics (Der SEO-Boost)
+            // 2. Versteckte Liste im Footer (Bulletproof SEO)
             const seoListCont = document.getElementById('seo-song-list');
             if (seoListCont) {
-                seoListCont.innerHTML = `
-                    <h3>Full Tracklist and Lyrics</h3>
-                    ${songs.map(s => `
-                        <article>
-                            <h4>${s.title}</h4>
-                            <p>${s.background}</p>
-                            <blockquote>${s.lyrics}</blockquote>
-                        </article>
-                    `).join('')}
-                `;
+                seoListCont.innerHTML = `<h3>Full Tracklist</h3><ul>${songs.map(s => `<li>${s.title}</li>`).join('')}</ul>`;
             }
-        }
+        }        
     </script>
 </body>
 </html>
