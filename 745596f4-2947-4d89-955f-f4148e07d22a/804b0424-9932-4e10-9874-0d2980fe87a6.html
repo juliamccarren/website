@@ -520,17 +520,34 @@
         // Globale Variable für die aktuell angezeigten Songs
         let currentArchiveSongs = [];
         let currentFeatureSongs = [];
+        let allSongsCache = null;
+
+        /**
+         * Lädt alle Songs aus der JSON-Datei.
+         * Verwendet den Cache, falls die Daten bereits geladen wurden.
+         */
+        async function loadAllSongs() {
+            if (allSongsCache !== null) {
+                return allSongsCache;
+            }
+
+            try {
+                const response = await fetch('songs.json');
+                if (!response.ok) {
+                    throw new Error(`songs.json konnte nicht geladen werden (Status: ${response.status})`);
+                }
+                allSongsCache = await response.json();
+                return allSongsCache;
+            } catch (error) {
+                console.error('Fehler beim Laden der Songs:', error.message);
+                throw error;
+            }
+        }
 
         async function loadAndDisplayArchiveSongs() {
             const songGrid = document.getElementById('song-grid');
             try {
-                // 1. Lade die gesamte JSON-Datei
-                const response = await fetch('songs.json'); 
-                if (!response.ok) throw new Error('songs.json konnte nicht geladen werden');
-                
-                // 2. Direktes Parsen des gesamten Arrays (kein Split nötig!)
-                const allSongs = await response.json();
-
+                const allSongs = await loadAllSongs();
                 // 3. Songauswahl: Entweder spezifischer Song oder zufällige Auswahl
                 // Zufällige Auswahl von 4 Songs
                 currentArchiveSongs = allSongs
@@ -562,14 +579,8 @@
         async function loadAndDisplayFeatureSongs(songId) {
             const songGrid = document.getElementById('feature-song-grid');
             try {
-                // 1. Lade die gesamte JSON-Datei
-                const response = await fetch('songs.json'); 
-                if (!response.ok) throw new Error('songs.json konnte nicht geladen werden');
-                
-                // 2. Direktes Parsen des gesamten Arrays (kein Split nötig!)
-                const allSongs = await response.json();
-
                 // 3. Songauswahl: Entweder spezifischer Song oder zufällige Auswahl
+                const allSongs = await loadAllSongs();
                 currentFeatureSongs = allSongs.filter(song => song.id === songId);
 
                 songGrid.innerHTML = ''; 
@@ -651,7 +662,7 @@
 
         // 3. Initialisierung
         loadAndDisplayFeatureSongs('peaks_of_gold');
-        loadAndDisplayArchiveSongs();        
+        loadAndDisplayArchiveSongs();  
            
         // Sticky Nav & Parallax Logic
         const navbar = document.getElementById('navbar');
