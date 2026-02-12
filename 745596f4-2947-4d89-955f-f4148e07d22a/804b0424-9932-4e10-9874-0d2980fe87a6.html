@@ -476,10 +476,7 @@
                 <a href="../datenschutz.html" class="hover:text-white transition-colors uppercase font-bold text-m tracking-[0.2em]">Datenschutz</a>
             </div>
 
-            <p class="text-s text-neutral-400 font-black tracking-[0.3em] uppercase pb-6">© 2026 Julia McCarren</p>
-
-            <!-- Hidden SEO List for Crawler redundancy -->
-            <div id="seo-song-list" style="display:none;" aria-hidden="true"></div>        
+            <p class="text-s text-neutral-400 font-black tracking-[0.3em] uppercase pb-6">© 2026 Julia McCarren</p> 
         </footer>
     </div>
 
@@ -754,21 +751,6 @@
             script.type = 'application/ld+json';
             script.text = JSON.stringify(schema);
             document.head.appendChild(script);
-
-            // 2. Versteckte Liste mit Lyrics (Der SEO-Boost)
-            const seoListCont = document.getElementById('seo-song-list');
-            if (seoListCont) {
-                seoListCont.innerHTML = `
-                    <h3>Full Tracklist and Lyrics</h3>
-                    ${songs.map(s => `
-                        <article>
-                            <h4>${s.title}</h4>
-                            <p>${s.background}</p>
-                            <blockquote>${s.lyrics}</blockquote>
-                        </article>
-                    `).join('')}
-                `;
-            }
         }
     </script>
 </body>
