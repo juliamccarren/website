@@ -67,7 +67,7 @@ def generate_lyrics_page():
         tags = "".join([f'<span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">{t}</span>' for t in song.get('tags', [])])
         
         html_content += f'''
-        <article id="{song['id']}" class="glass-card p-2 md:p-12 rounded-[2rem]">
+        <article id="{song['id']}" class="glass-card p-3 md:p-12 rounded-[2rem]">
             <div class="flex flex-wrap gap-2 mb-6">{tags}</div>
             <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">{song['title']}</h2>
             <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">{song['background']}</p>
