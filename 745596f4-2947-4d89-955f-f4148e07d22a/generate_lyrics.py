@@ -52,7 +52,6 @@ def generate_lyrics_page():
             <a href="index.html" class="text-xl md:text-2xl font-black tracking-tighter uppercase">
                 <span class="text-white/90">Julia</span> <span class="hero-text-mccarren">McCarren</span>
             </a>
-            <a href="index.html" class="glass-button text-white px-6 py-2 rounded-full text-[9px] font-black uppercase tracking-widest">Back</a>
         </div>
     </nav>
 
@@ -68,12 +67,12 @@ def generate_lyrics_page():
         tags = "".join([f'<span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">{t}</span>' for t in song.get('tags', [])])
         
         html_content += f'''
-        <article id="{song['id']}" class="glass-card p-6 md:p-12 rounded-[2rem]">
+        <article id="{song['id']}" class="glass-card p-2 md:p-12 rounded-[2rem]">
             <div class="flex flex-wrap gap-2 mb-6">{tags}</div>
             <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">{song['title']}</h2>
-            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-4 md:pl-6">{song['background']}</p>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">{song['background']}</p>
             
-            <div class="bg-black/40 rounded-2xl border border-white/5 p-4 md:p-10">
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
                 <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
                 <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">{song['lyrics']}</pre>
             </div>

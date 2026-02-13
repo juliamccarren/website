@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyrics Archive | Julia McCarren</title>
-    <meta name="description" content="Official lyrics archive of Julia McCarren.">
     <script src="../js/tailwindcss.js"></script>
     <script src="../js/lucide.js"></script>
     <style>
@@ -21,33 +20,42 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .glass-button {
+            background: rgba(217, 70, 239, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(217, 70, 239, 0.3);
+            transition: all 0.3s ease;
+        }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-black text-white">
-    <nav class="p-8 border-b border-white/5 bg-black/50 sticky top-0 z-50 backdrop-blur-lg">
+<body class="bg-black text-white overflow-x-hidden">
+    <nav class="p-6 md:p-10 border-b border-white/5 bg-black/50 sticky top-0 z-50 backdrop-blur-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-black tracking-tighter">
+            <a href="index.html" class="text-xl md:text-2xl font-black tracking-tighter uppercase">
                 <span class="text-white/90">Julia</span> <span class="hero-text-mccarren">McCarren</span>
             </a>
+            <a href="index.html" class="glass-button text-white px-6 py-2 rounded-full text-[9px] font-black uppercase tracking-widest">Back</a>
         </div>
     </nav>
 
-    <header class="py-20 text-center">
-        <h1 class="text-6xl md:text-8xl font-black tracking-tighter uppercase italic">Neural <span class="hero-text-mccarren">Lyrics</span></h1>
+    <header class="py-16 md:py-24 text-center px-6">
+        <h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase italic">Neural <span class="hero-text-mccarren">Lyrics</span></h1>
         <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-[10px] mt-4">Static Linguistic Data Stream</p>
     </header>
 
-    <main class="container mx-auto px-6 max-w-4xl pb-24 space-y-16">
+    <main class="container mx-auto px-4 md:px-6 max-w-4xl pb-24 space-y-8 md:space-y-16">
     
-        <article id="maybe_they_knew" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">First love</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Life lesson</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Maybe They Knew</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The first love, the first heartbreak, the first time you realize that love is not always perfect. Our parents may have known this, but we often have to learn it for ourselves.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1 ]
+        <article id="maybe_they_knew" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">First love</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Life lesson</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Maybe They Knew</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The first love, the first heartbreak, the first time you realize that love is not always perfect. Our parents may have known this, but we often have to learn it for ourselves.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1 ]
 Streetlights hit the window pane, you were waiting on the porch
 You smelled like gasoline and rain, and my little heart caught fire
 Felt like I’d just stepped into a dream, the kind I couldn't write
@@ -102,12 +110,14 @@ Maybe they knew. Maybe they knew. And I should have let it go.</pre>
             </div>
         </article>
         
-        <article id="the_sirens_anchor" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Love</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Danger</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">The Siren's Anchor</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Women are not always the most vulnerable, but they can be even deadly as a siren. This song is about the power of love to be both a safe harbor and a dangerous trap.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1 ]
+        <article id="the_sirens_anchor" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Love</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Danger</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">The Siren's Anchor</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Women are not always the most vulnerable, but they can be even deadly as a siren. This song is about the power of love to be both a safe harbor and a dangerous trap.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1 ]
 I spent my life out on the waves, my voice a cruel, magnetic lure,
 Singing men into their graves, a life sentence I had to endure.
 They called me Siren, called me death, a gorgeous storm they couldn't flee,
@@ -165,12 +175,14 @@ I don't drown anymore...</pre>
             </div>
         </article>
         
-        <article id="the_quiet_kind" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Love</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Durability</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">The Quiet Kind</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">I prefer the quiet kind, where you can be yourself without the need for constant noise and drama.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="the_quiet_kind" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Love</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Durability</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">The Quiet Kind</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">I prefer the quiet kind, where you can be yourself without the need for constant noise and drama.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The loud world keeps turning, I watch from the side,
 I wait for the courage I always must hide.
 My heart has a message it struggles to send,
@@ -231,12 +243,14 @@ We'll figure it out.</pre>
             </div>
         </article>
         
-        <article id="sanctified_sinner" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Energy</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Duality</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Sanctified Sinner</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">My duality as a person who is both a sinner rock girl and a saint organist. This is the driving beat I like to play when I want to feel powerful and rebellious.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="sanctified_sinner" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Energy</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Duality</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Sanctified Sinner</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">My duality as a person who is both a sinner rock girl and a saint organist. This is the driving beat I like to play when I want to feel powerful and rebellious.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Sunday morning, sunrise glow.
 Hymnal pages, neat in a row.
 B-minor key, I know the part.
@@ -288,12 +302,14 @@ YEAH!</pre>
             </div>
         </article>
         
-        <article id="social_lubricant" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Social</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Authenticity</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Social Lubricant</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The white lies, the social lubricants that we use to get through the day; a song about the tension between authenticity and social grace.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="social_lubricant" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Social</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Authenticity</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Social Lubricant</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The white lies, the social lubricants that we use to get through the day; a song about the tension between authenticity and social grace.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 She wakes up with a smile that’s perfectly aligned
 A calendar of favors she’s leaving behind
 “I’m running late—the subway stalled for miles on end”
@@ -366,12 +382,14 @@ Until the day she trips and the truth starts showing.</pre>
             </div>
         </article>
         
-        <article id="cool_fire" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Energy</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Wild</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Cool Fire</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">During my 9 to 5 I am a professional, but when it comes to music I let loose and am a wild fire. This song is about that duality.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="cool_fire" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Energy</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Wild</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Cool Fire</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">During my 9 to 5 I am a professional, but when it comes to music I let loose and am a wild fire. This song is about that duality.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 She walks in the room, ice in her veins, a slow-burn stride
 Got that leather jacket cool, got nowhere to hide
 Talk is low-key, eyes are steady, got a poker face
@@ -434,12 +452,14 @@ She leaves it all right there</pre>
             </div>
         </article>
         
-        <article id="the_city_i_long_for" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">City</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">London</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">The City I Long For</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">I am fascinated by the history and energy of London, and this song is a love letter to the city that has inspired me in so many ways.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="the_city_i_long_for" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">City</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">London</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">The City I Long For</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">I am fascinated by the history and energy of London, and this song is a love letter to the city that has inspired me in so many ways.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The silver ribbon winds through concrete veins,
 Past the ghosts of kings and the rattling trains.
 From the red-brick rhythm of a Chelsea street,
@@ -485,12 +505,14 @@ City I long for, you’ll lead the way.</pre>
             </div>
         </article>
         
-        <article id="peaks_of_gold" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Olympics</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Sports</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Energy</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Peaks of Gold</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">My personal anthem for the olympic winter games, inspired by the beauty of Milan and the Dolomites and the thrill of competition.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="peaks_of_gold" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Olympics</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Sports</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Energy</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Peaks of Gold</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">My personal anthem for the olympic winter games, inspired by the beauty of Milan and the Dolomites and the thrill of competition.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 In the shadow of the spires, where the marble meets the sky
 A city wakes with burning lungs, watching shadows fly
 From the Navigli to the Duomo, there’s a pulse beneath the stone
@@ -545,12 +567,14 @@ Siamo noi.</pre>
             </div>
         </article>
         
-        <article id="antitoxic" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Response</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Energy</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Antitoxic</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A response to social media attacks from those who create nothing; a song about vital energy and positive frequency.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Intro]
+        <article id="antitoxic" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Response</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Energy</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Antitoxic</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A response to social media attacks from those who create nothing; a song about vital energy and positive frequency.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Intro]
 Yeah.
 I see the red notifications.
 I see the shadows in the comments.
@@ -623,12 +647,14 @@ Stay vital.</pre>
             </div>
         </article>
         
-        <article id="avalanche" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Intense</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Avalanche</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A strong relationship where you are deeply involved in emotionally often has the force of an avalanche</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="avalanche" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Intense</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Avalanche</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A strong relationship where you are deeply involved in emotionally often has the force of an avalanche</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 It started with a hairline fracture
 A word you didn't say, a look I couldn't catch
 We’ve been living on this incline for a season
@@ -692,12 +718,14 @@ Under the white.</pre>
             </div>
         </article>
         
-        <article id="betrayal" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Emotional</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Betrayal</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">When your friend cheats on you it's a painful experience. Try to take it at easy as possible.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="betrayal" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Emotional</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Betrayal</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">When your friend cheats on you it's a painful experience. Try to take it at easy as possible.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 We shared the same coffee, the same morning air
 I trusted your shadow, I thought you’d be there
 Through the nights I was working, lost in the climb
@@ -756,12 +784,14 @@ Goodbye to you both.</pre>
             </div>
         </article>
         
-        <article id="brooklyn" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Response</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Social</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Brooklyn</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">An artistic answer to attacks from Brooklyn elitists.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Intro]
+        <article id="brooklyn" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Response</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Social</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Brooklyn</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">An artistic answer to attacks from Brooklyn elitists.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Intro]
 Welcome to the Exhibition.
 Please do not touch the artists... they are very fragile.
 
@@ -826,12 +856,14 @@ The Museum is closed!</pre>
             </div>
         </article>
         
-        <article id="disposable" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Good Enough</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Satire</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Disposable</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">From the "Good Enough" series; an ironic take on flat mainstream music with low-effort melodies.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="disposable" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Good Enough</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Satire</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Disposable</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">From the "Good Enough" series; an ironic take on flat mainstream music with low-effort melodies.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Lights are low.
 Just a guitar now.
 This is the part.
@@ -897,12 +929,14 @@ It was only for show.</pre>
             </div>
         </article>
         
-        <article id="dynamite" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Pop</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Energy</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Dynamite</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Capturing the energy and self-consciousness of women who attract attention the moment they enter a room.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Intro]
+        <article id="dynamite" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Pop</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Energy</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Dynamite</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Capturing the energy and self-consciousness of women who attract attention the moment they enter a room.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Intro]
 Yeah...
 Watch out now.
 She’s entering the room.
@@ -990,12 +1024,14 @@ Ciao bella!</pre>
             </div>
         </article>
         
-        <article id="embers_and_sparks" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Ballad</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Time</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Embers and Sparks</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Reflecting on old couples who still hold hands; a meditation on whether love can last 50 years.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="embers_and_sparks" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Ballad</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Time</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Embers and Sparks</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Reflecting on old couples who still hold hands; a meditation on whether love can last 50 years.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 There’s a bench by the oak tree where the sidewalk ends
 I watch them sit down like two best friends
 He takes a handkerchief out of his vest
@@ -1061,12 +1097,14 @@ Let’s be the embers.</pre>
             </div>
         </article>
         
-        <article id="fences_down" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Evolution</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Freedom</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Fences Down</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A plea for the evolution of music and a rebellion against ancestors, celebrating pure vitality and freedom.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="fences_down" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Evolution</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Fences Down</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A plea for the evolution of music and a rebellion against ancestors, celebrating pure vitality and freedom.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 I used to live in a house made of glass
 Watching the seasons and the polite people pass
 Keep the shirt tucked in, keep the heartbeat slow
@@ -1149,12 +1187,14 @@ Untamed.</pre>
             </div>
         </article>
         
-        <article id="four_chords_later" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Good Enough</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Formula</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Four Chords Later</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Part of the "Good Enough" series, mocking the predictable formulas used to maximize streams.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="four_chords_later" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Good Enough</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Formula</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Four Chords Later</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Part of the "Good Enough" series, mocking the predictable formulas used to maximize streams.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Check the manual. We use the same loop.
 It cycles nicely. It always works well.
 The key is C minor. Or maybe G flat.
@@ -1218,12 +1258,14 @@ It maximizes streams. It is all we need.</pre>
             </div>
         </article>
         
-        <article id="frozen_heart" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Art</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Classical-Fusion</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Frozen Heart</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A version of Hans Christian Andersen’s Snow Queen, inspired by the chilling beauty of an ice carving exhibition.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="frozen_heart" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Art</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Classical-Fusion</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Frozen Heart</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A version of Hans Christian Andersen’s Snow Queen, inspired by the chilling beauty of an ice carving exhibition.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The winter came without a sound
 And stole the warmth right from the ground
 I saw the splinter in your eye
@@ -1289,12 +1331,14 @@ Home.</pre>
             </div>
         </article>
         
-        <article id="garage_band" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Nostalgia</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Synth</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Garage Band</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">I played the synth. Our bassist was the pastor's daughter, so we were able to rehearse in the church rooms.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="garage_band" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nostalgia</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Synth</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Garage Band</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">I played the synth. Our bassist was the pastor's daughter, so we were able to rehearse in the church rooms.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Woke up on a Monday, sun in my eyes
 Another day in this concrete disguise
 Coffee's cold and the rent is due
@@ -1358,12 +1402,14 @@ Just the hum...</pre>
             </div>
         </article>
         
-        <article id="good_enough" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Good Enough</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Pop</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Good Enough</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The flagship song of the "Good Enough" series, mimicking the flat, standard vibe of modern radio trash.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="good_enough" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Good Enough</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Pop</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Good Enough</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The flagship song of the "Good Enough" series, mimicking the flat, standard vibe of modern radio trash.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Woke up. Sun was bright.
 Checked my phone. Felt okay.
 I have a feeling. It is mild.
@@ -1430,12 +1476,14 @@ Fine now.</pre>
             </div>
         </article>
         
-        <article id="heart_of_fire_and_ice" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Nordic</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Folk</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Heart of Fire and Ice</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A hommage to the Nordic landscape and its duality of warmth and cold.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="heart_of_fire_and_ice" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nordic</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Folk</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Heart of Fire and Ice</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A hommage to the Nordic landscape and its duality of warmth and cold.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The wind bites sharp, a whisper from the polar sea,
 Across the midnight sun, where shadows flee.
 I stand upon the fjords, carved by ancient ice,
@@ -1495,12 +1543,14 @@ Finnum við friðinn í foss.</pre>
             </div>
         </article>
         
-        <article id="i_hate_you" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Relationship</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">I Hate You</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Explores the neglect in relationships; a reminder that the opposite of love is not hate, but indifference.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="i_hate_you" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Relationship</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">I Hate You</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Explores the neglect in relationships; a reminder that the opposite of love is not hate, but indifference.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 I’m talking to the back of your head again
 While you’re staring at the screen, counting digital friends
 I poured my heart out, laid it on the floor
@@ -1558,12 +1608,14 @@ Just go.</pre>
             </div>
         </article>
         
-        <article id="jet_set" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Atmospheric</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Solo</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Jet Set</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">What nobody talks about: You are lonely in your car, in the plane and in your hotel room.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="jet_set" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Atmospheric</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Solo</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Jet Set</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">What nobody talks about: You are lonely in your car, in the plane and in your hotel room.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The 4:00 AM alarm is a hollow sound
 A cold static echo in a silent house
 Suitcase by the door, heavy as a stone
@@ -1628,12 +1680,14 @@ Just home.</pre>
             </div>
         </article>
         
-        <article id="just_a_vibe" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Good Enough</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Ambient</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Just a Vibe</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">An ironic "Good Enough" series track about perfectly neutral, non-specific impressions and atmospheres.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="just_a_vibe" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Good Enough</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Ambient</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Just a Vibe</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">An ironic "Good Enough" series track about perfectly neutral, non-specific impressions and atmospheres.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The wall is off-white.
 The rug is grey wool.
 The lamp is frosted glass.
@@ -1710,12 +1764,14 @@ It's fine.</pre>
             </div>
         </article>
         
-        <article id="left_lane_legend" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">High Energy</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Left Lane Legend</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Going 200km/h with your business sedan on the Autobahn is a nice experience.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="left_lane_legend" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">High Energy</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Left Lane Legend</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Going 200km/h with your business sedan on the Autobahn is a nice experience.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Boot on the floor, feel the cylinder kick
 V6, V8, take your pick
 The needle is climbing, the world is a blur
@@ -1767,12 +1823,14 @@ I’m already gone.</pre>
             </div>
         </article>
         
-        <article id="need_for_speed" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Performance</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Need for Speed</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The speed is even more impressive if it's not the result from Cooper Works but based on own performance.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="need_for_speed" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Performance</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Need for Speed</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The speed is even more impressive if it's not the result from Cooper Works but based on own performance.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Got my keys in my hand, a rusty old wheel
 Engine coughs to life, a low, guttural squeal
 The paint's peeling off, got a dent in the side
@@ -1828,12 +1886,14 @@ And then I'll find another one...</pre>
             </div>
         </article>
         
-        <article id="one_in_a_quarter_billion" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Philosophy</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">One in a Quarter Billion</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">It is such a vast ocean of music. I am glad that you are here.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="one_in_a_quarter_billion" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Philosophy</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">One in a Quarter Billion</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">It is such a vast ocean of music. I am glad that you are here.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The dashboard says a hundred-thousand tracks dropped yesterday
 Another ocean of sound, just to wash the light away
 I’m a needle in a haystack, a grain of digital sand
@@ -1884,12 +1944,14 @@ That's plenty for me.</pre>
             </div>
         </article>
         
-        <article id="rocker_songwriter" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Rock</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Identity</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Rocker Songwriter</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The transformation from a quiet singer-songwriter to a powerful rock artist.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="rocker_songwriter" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Rock</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Identity</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Rocker Songwriter</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The transformation from a quiet singer-songwriter to a powerful rock artist.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 C major and a cup of lukewarm chamomile tea
 That’s how every writing session begins for me
 A simple melody, a tale of rain and doubt
@@ -1958,12 +2020,14 @@ MY TRUE SONG HAS BEGUN!</pre>
             </div>
         </article>
         
-        <article id="schools_out" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Energy</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Vocals</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">School's Out</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The joy of leaving school and the freedom of a new beginning. Challenging instrumentals and vocals.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Intro]
+        <article id="schools_out" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Energy</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Vocals</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">School's Out</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The joy of leaving school and the freedom of a new beginning. Challenging instrumentals and vocals.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Intro]
 School's out! Whoo!
 
 [Verse 1]
@@ -2045,12 +2109,14 @@ Horizon Line High!</pre>
             </div>
         </article>
         
-        <article id="siblings" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Personal</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Siblings</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">I love her from my heart.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="siblings" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Personal</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Siblings</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">I love her from my heart.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Another Tuesday, another fight
 You leave the door and slam it shut with all your might
 I'm standing here, my heart is pounding in my ears
@@ -2102,12 +2168,14 @@ The girl who'll always be the sister of my hand.</pre>
             </div>
         </article>
         
-        <article id="slippery_road" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Metaphor</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Cold</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Slippery Road</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The painful dissolution of a relationship through the metaphor of a car losing control on a frozen road</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="slippery_road" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Metaphor</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Cold</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Slippery Road</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The painful dissolution of a relationship through the metaphor of a car losing control on a frozen road</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 You used to hold the door like it was a holy rite,
 Tracing circles on my palm in the middle of the night.
 You said my eyes were steady stars, your only way back home,
@@ -2173,12 +2241,14 @@ We’re on a slippery road...</pre>
             </div>
         </article>
         
-        <article id="tabby_gonzalez" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Story</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Mental Health</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Tabby Gonzalez</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">The story of how a girl with mental health challenges calls her cat.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="tabby_gonzalez" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Story</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Mental Health</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Tabby Gonzalez</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The story of how a girl with mental health challenges calls her cat.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Woke up this mornin' to a sound, a little meow and a purr
 Yeah, my feline friend, she's Tabby G, she's the one I prefer
 Got a streak of white right down her nose, a tabby coat so fine
@@ -2217,12 +2287,14 @@ Yeah, Tabby G!
             </div>
         </article>
         
-        <article id="the_hook" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Good Enough</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Hooks</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">The Hook</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">From the "Good Enough" series; a song designed to stick using manufactured climax and simple melodies.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="the_hook" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Good Enough</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Hooks</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">The Hook</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">From the "Good Enough" series; a song designed to stick using manufactured climax and simple melodies.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 Drums just dropped. The kick is here.
 Bass line works. It is standard now.
 The vocal is low. It sounds intimate.
@@ -2287,12 +2359,14 @@ You will remember this. You will repeat it.</pre>
             </div>
         </article>
         
-        <article id="this_is_fine" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Experiment</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Metrics</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">This is Fine</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A song exploring the exact prompting of a timeline, hitting three minutes for streaming metrics.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[0:00 - 0:25 - Section A: Introduction - Spoken/Whispered, heavy reverb, very slow]
+        <article id="this_is_fine" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Experiment</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Metrics</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">This is Fine</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A song exploring the exact prompting of a timeline, hitting three minutes for streaming metrics.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[0:00 - 0:25 - Section A: Introduction - Spoken/Whispered, heavy reverb, very slow]
 Listen now.
 Just the pads.
 Hold the note.
@@ -2358,12 +2432,14 @@ This is fine.</pre>
             </div>
         </article>
         
-        <article id="toccata" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Bach</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Bilingual</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Toccata</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A bilingual fusion featuring my performance of Bach’s Toccata in D minor, exploring the meaning of the Italian word "toccare" (to touch).</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Intro]
+        <article id="toccata" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Bach</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Bilingual</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Toccata</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A bilingual fusion featuring my performance of Bach’s Toccata in D minor, exploring the meaning of the Italian word "toccare" (to touch).</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Intro]
 Toccare... Toccare...
 
 [Verse 1]
@@ -2434,12 +2510,14 @@ Sì, Toccata...</pre>
             </div>
         </article>
         
-        <article id="verona" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Multilingual</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Opera-Pop</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Verona</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">A "singularity" track: a tragic love story sung by two vocalists in three languages simultaneously.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="verona" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Multilingual</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Opera-Pop</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Verona</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A "singularity" track: a tragic love story sung by two vocalists in three languages simultaneously.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 [English]
 A pale moon watched in silence, above the ancient stone,
 A secret oath was whispered, where only we were known.
@@ -2500,12 +2578,14 @@ Per sempre, amore mio.</pre>
             </div>
         </article>
         
-        <article id="whiteout" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Ambient</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Cold</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Whiteout</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Trapped in a literal and emotional whiteout, the loss of intimacy and the warmth of the past as the relationship succumbs to a freezing, silent isolation.</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="whiteout" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Ambient</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Cold</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Whiteout</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Trapped in a literal and emotional whiteout, the loss of intimacy and the warmth of the past as the relationship succumbs to a freezing, silent isolation.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The heater’s been blowing nothing but clutched-up dust
 Now we’re just two shadows in a blur of white and grey.
 I can’t see the hood, let alone the road
@@ -2553,12 +2633,14 @@ Nothing but snow...</pre>
             </div>
         </article>
         
-        <article id="winterstorm" class="glass-card p-10 rounded-[2.5rem]">
-            <div class="flex flex-wrap gap-3 mb-8"><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Atmospheric</span><span class="px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest">Relationship</span></div>
-            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren">Winterstorm</h2>
-            <p class="text-neutral-400 text-xl leading-relaxed italic mb-10 border-l-2 border-fuchsia-500/30 pl-6">Against the backdrop of a literal winter storm, a couple whose relationship has become emotionally frozen</p>
-            <div class="bg-black/40 rounded-3xl border border-white/5 p-8 md:p-12">
-                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.8] text-lg md:text-xl italic">[Verse 1]
+        <article id="winterstorm" class="glass-card p-2 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Atmospheric</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Relationship</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Winterstorm</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Against the backdrop of a literal winter storm, a couple whose relationship has become emotionally frozen</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
 The salt is thick on the driveway, white against the grey
 You’re moving through the kitchen in that practiced, quiet way
 I’m watching how the pilot light flickers in the draft
@@ -2610,7 +2692,7 @@ Stay cold, then.</pre>
         
     </main>
     <footer class="py-16 border-t border-neutral-900 text-center">
-        <p class="text-xs text-neutral-600 font-bold uppercase tracking-[0.3em]">© 2026 Julia McCarren</p>
+        <p class="text-[9px] text-neutral-600 font-bold uppercase tracking-[0.3em]">© 2026 Julia McCarren</p>
     </footer>
     <script>lucide.createIcons();</script>
 </body>
