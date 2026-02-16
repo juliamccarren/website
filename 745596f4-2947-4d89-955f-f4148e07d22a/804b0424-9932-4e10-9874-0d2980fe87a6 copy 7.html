@@ -108,10 +108,10 @@
 
             <div class="hidden lg:flex gap-14 flex-1 justify-center">
                 <a href="#" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Home</a>
-                <a href="#fusion" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Fusion</a>
+                <a href="#fusion" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Neural Fusion</a>
                 <a href="#archives" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Archives</a>
-                <a href="#diary" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-fuchsia-400 transition-colors text-neutral-400">Diary</a>
                 <a href="#profile" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Profile</a>
+                <a href="#about" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Research</a>
                 <a href="#contact" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Contact</a>
             </div>
 
@@ -131,8 +131,8 @@
         <a href="#" class="mobile-link uppercase hover:text-fuchsia-500">Home</a>
         <a href="#fusion" class="mobile-link uppercase hover:text-fuchsia-500">Neural Fusion</a>
         <a href="#archives" class="mobile-link uppercase hover:text-fuchsia-500">Archives</a>
-        <a href="#diary" class="mobile-link uppercase hover:text-fuchsia-500">Diary</a>
         <a href="#profile" class="mobile-link uppercase hover:text-fuchsia-500">Profile</a>
+        <a href="#about" class="mobile-link uppercase hover:text-fuchsia-500">Research</a>
         <a href="#contact" class="mobile-link uppercase hover:text-fuchsia-500">Contact</a>
     </div>
 
@@ -353,19 +353,6 @@
             </div>          
         </section>
 
-        <!-- Diary Section -->
-        <section id="diary" class="py-24 bg-neutral-950 border-y border-neutral-900">
-            <div class="container mx-auto px-6">
-                <div class="mb-12">
-                     <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 italic text-white/90">Personal <span class="hero-text-mccarren" style="opacity: 1;">Logs</span></h2>
-                     <p class="text-neutral-500 uppercase font-bold tracking-[0.3em] text-[10px]">Fragments of Consciousness</p>
-                </div>
-                <div id="diary-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Diary entries injected here via JS -->
-                </div>
-            </div>
-        </section>
-
         <!-- Image Stage_8 -->
         <section class="py-12 bg-black overflow-hidden">
             <div class="container mx-auto px-6">
@@ -564,40 +551,32 @@
         </div>
     </div>
 
-    <!-- DIARY MODAL -->
-    <div id="diary-modal" class="fixed inset-0 z-[100] hidden modal-blur">
-        <div class="h-full w-full flex items-center justify-center p-4 md:p-8 lg:p-12">
-            <div class="relative bg-neutral-900 border border-white/10 w-full max-w-4xl h-auto max-h-[90vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden">
-                <button onclick="closeDiaryModal()" class="absolute top-6 right-6 z-50 text-white/50 hover:text-white transition-colors bg-black/40 p-2 rounded-full backdrop-blur-md">
-                    <i data-lucide="x" size="24"></i>
-                </button>
-                <div class="p-8 md:p-12 overflow-y-auto">
-                    <h2 id="diary-modal-date" class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8 hero-text-mccarren" style="opacity: 1;"></h2>
-                    <div class="prose prose-invert prose-lg max-w-none">
-                         <p id="diary-modal-text" class="text-neutral-300 leading-relaxed whitespace-pre-wrap"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // --- SONG LOGIC ---
+        // 1. Zentrale Funktion zum Laden und Anzeigen
+        // Globale Variable für die aktuell angezeigten Songs
         let currentArchiveSongs = [];
         let currentFeatureSongs = [];
         let allSongsCache = null;
 
+        /**
+         * Lädt alle Songs aus der JSON-Datei.
+         * Verwendet den Cache, falls die Daten bereits geladen wurden.
+         */
         async function loadAllSongs() {
             if (allSongsCache !== null) {
                 return allSongsCache;
             }
+
             try {
                 const response = await fetch('songs.json');
                 if (!response.ok) {
                     throw new Error(`songs.json konnte nicht geladen werden (Status: ${response.status})`);
                 }
                 allSongsCache = await response.json();
+
+                // SEO: JSON-LD und Footer-Liste injizieren
                 injectSEOData(allSongsCache);
+
                 return allSongsCache;
             } catch (error) {
                 console.error('Fehler beim Laden der Songs:', error.message);
@@ -609,6 +588,8 @@
             const songGrid = document.getElementById('song-grid');
             try {
                 const allSongs = await loadAllSongs();
+                // 3. Songauswahl: Entweder spezifischer Song oder zufällige Auswahl
+                // Zufällige Auswahl von 4 Songs
                 currentArchiveSongs = allSongs
                     .sort(() => 0.5 - Math.random())
                     .slice(0, 4);
@@ -638,6 +619,7 @@
         async function loadAndDisplayFeatureSongs(songId) {
             const songGrid = document.getElementById('feature-song-grid');
             try {
+                // 3. Songauswahl: Entweder spezifischer Song oder zufällige Auswahl
                 const allSongs = await loadAllSongs();
                 currentFeatureSongs = allSongs.filter(song => song.id === songId);
 
@@ -663,19 +645,11 @@
             }
         }        
 
+        // Neue Funktion, die auf das globale Array zugreift
         function openSongFromArchiveSongs(index) {
             const song = currentArchiveSongs[index];
             if (!song) return;
-            populateAndShowSongModal(song);
-        }
 
-        function openSongFromFeatureSongs(index) {
-            const song = currentFeatureSongs[index];
-            if (!song) return;
-            populateAndShowSongModal(song);
-        }        
-        
-        function populateAndShowSongModal(song) {
             const modal = document.getElementById('song-modal');
             document.getElementById('modal-title').textContent = song.title;
             document.getElementById('modal-background').textContent = song.background;
@@ -696,87 +670,41 @@
             lucide.createIcons();
         }
 
+        // Neue Funktion, die auf das globale Array zugreift
+        function openSongFromFeatureSongs(index) {
+            const song = currentFeatureSongs[index];
+            if (!song) return;
+
+            const modal = document.getElementById('song-modal');
+            document.getElementById('modal-title').textContent = song.title;
+            document.getElementById('modal-background').textContent = song.background;
+            document.getElementById('modal-lyrics').textContent = song.lyrics;
+            document.getElementById('modal-drive-link').href = song.driveUrl;
+            
+            const tagsCont = document.getElementById('modal-tags');
+            tagsCont.innerHTML = '';
+            song.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
+                span.textContent = tag;
+                tagsCont.appendChild(span);
+            });
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }        
+
         function closeSongModal() {
             document.getElementById('song-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
-        // --- DIARY LOGIC ---
-        let currentDiaryEntries = [];
-
-        async function loadAndDisplayDiary() {
-            const grid = document.getElementById('diary-grid');
-            try {
-                const response = await fetch('diary.json');
-                if (!response.ok) throw new Error('Diary fetch failed');
-                const data = await response.json();
-                
-                // Sort descending by timestamp string
-                currentDiaryEntries = data.sort((a, b) => b.timestamp.localeCompare(a.timestamp)).slice(0, 4);
-                
-                grid.innerHTML = '';
-                
-                if (currentDiaryEntries.length === 0) {
-                    grid.innerHTML = '<p class="text-neutral-500">No logs found.</p>';
-                    return;
-                }
-
-                currentDiaryEntries.forEach((entry, index) => {
-                    const dateStr = formatTimestamp(entry.timestamp);
-                    // Preview snippet
-                    const snippet = entry.text.length > 100 ? entry.text.substring(0, 100) + '...' : entry.text;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 cursor-pointer flex flex-col h-full';
-                    card.onclick = () => openDiaryModal(index);
-                    card.innerHTML = `
-                        <div class="text-fuchsia-500 text-[10px] font-black uppercase tracking-widest mb-3">${dateStr}</div>
-                        <p class="text-neutral-400 text-sm leading-relaxed mb-6 flex-grow">${snippet}</p>
-                        <div class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-neutral-500 group-hover:text-fuchsia-500 transition-colors mt-auto">
-                            Read Entry <i data-lucide="arrow-right" size="14"></i>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-                lucide.createIcons();
-            } catch (e) {
-                console.error(e);
-                grid.innerHTML = '<p class="text-red-500/50 text-xs uppercase tracking-widest">Offline / No Data</p>';
-            }
-        }
-
-        function formatTimestamp(ts) {
-            // Expects "20260216_0830"
-            if(!ts || ts.length < 13) return ts;
-            const y = ts.substring(0,4);
-            const m = ts.substring(4,6);
-            const d = ts.substring(6,8);
-            const h = ts.substring(9,11);
-            const min = ts.substring(11,13);
-            return `${d}.${m}.${y} // ${h}:${min}`;
-        }
-
-        function openDiaryModal(index) {
-            const entry = currentDiaryEntries[index];
-            if(!entry) return;
-            document.getElementById('diary-modal-date').textContent = formatTimestamp(entry.timestamp);
-            document.getElementById('diary-modal-text').textContent = entry.text;
-            document.getElementById('diary-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            lucide.createIcons();
-        }
-
-        function closeDiaryModal() {
-             document.getElementById('diary-modal').classList.add('hidden');
-             document.body.style.overflow = 'auto';
-        }
-
-        // --- INIT ---
+        // 3. Initialisierung
         loadAndDisplayFeatureSongs('peaks_of_gold');
         loadAndDisplayArchiveSongs();  
-        loadAndDisplayDiary();
-
-        // --- UI UTILS ---
+           
+        // Sticky Nav & Parallax Logic
         const navbar = document.getElementById('navbar');
         const navTitle = document.getElementById('nav-title');
         const heroContent = document.getElementById('hero-content');
@@ -798,6 +726,7 @@
             }
         });
 
+        // Mobile Menu Logic
         const menuToggle = document.getElementById('menu-toggle'), menuClose = document.getElementById('menu-close'), mobileMenu = document.getElementById('mobile-menu');
         menuToggle.onclick = () => { mobileMenu.classList.remove('hidden'); mobileMenu.classList.add('flex'); document.body.style.overflow = 'hidden'; };
         const closeMenu = () => { mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex'); document.body.style.overflow = 'auto'; };
@@ -806,8 +735,14 @@
             link.addEventListener('click', closeMenu);
         });
 
+        /**
+         * Erzeugt dynamisch strukturierte Daten für Google
+         */
         function injectSEOData(songs) {
+            // Verhindere doppelte Injektion
             if (document.getElementById('json-ld-seo')) return;
+            
+            // 1. JSON-LD (unverändert, bleibt kompakt)
             const schema = {
                 "@context": "https://schema.org",
                 "@type": "MusicPlaylist",

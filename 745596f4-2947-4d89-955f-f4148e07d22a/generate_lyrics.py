@@ -49,7 +49,7 @@ def generate_lyrics_page():
 <body class="bg-black text-white overflow-x-hidden">
     <nav class="p-6 md:p-10 border-b border-white/5 bg-black/50 sticky top-0 z-50 backdrop-blur-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-xl md:text-2xl font-black tracking-tighter uppercase">
+            <a href="index.html" class="text-xl md:text-2xl font-black tracking-tighter">
                 <span class="text-white/90">Julia</span> <span class="hero-text-mccarren">McCarren</span>
             </a>
         </div>
