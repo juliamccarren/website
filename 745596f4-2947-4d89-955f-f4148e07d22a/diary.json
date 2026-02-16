@@ -1,7 +1,11 @@
 [
     {
-    "timestamp": "20260216_0830",
-    "text": "Welcome to the diary! This is where I jot down my thoughts, feelings, and experiences. It's a place for me to reflect on my life and share my journey with you. I hope you find something here that resonates with you."
+        "timestamp": "20260216_1800",
+        "text": "Finally made it to implement Cloud Flare's R2 as a global Content Delivery Network (CDN) for my website. Wondered how it would perform, and I'm pleasantly surprised by the results. The stream is instantly available, and the performance is excellent. At least for my region :-) With a global CDN my small site is now on par with the big platforms like Spotify and YouTube. It's amazing how technology has evolved to make content delivery so efficient and accessible for everyone."
+    },
+    {
+        "timestamp": "20260216_0830",
+        "text": "Welcome to the diary! This is where I jot down my thoughts, feelings, and experiences. It's a place for me to reflect on my life and share my journey with you. I hope you find something here that resonates with you."
     },
     {
         "timestamp": "20260216_0900",
