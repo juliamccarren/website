@@ -45,7 +45,25 @@
             box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
         }
 
- 
+        /* Effekt für das Ein- und Ausblenden der Lyrics beim Scrollen */
+        .lyrics-fade-mask {
+            /* Erzeugt einen transparenten Bereich oben (0-10%) und unten (90-100%) */
+            -webkit-mask-image: linear-gradient(
+                to bottom,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+            mask-image: linear-gradient(
+                to bottom,
+                transparent 0%,
+                black 10%,
+                black 90%,
+                transparent 100%
+            );
+        }
+
         /* Special Fusion Button: No rounded corners, perfectly fading sides */
         .fusion-fading-button {
             position: relative;
@@ -740,7 +758,7 @@
             if (audio.paused) {
                 audio.play();
                 playBtn.innerHTML = pauseIcon;
-                playerStatus.textContent = "Infusing Neural Sound...";
+                playerStatus.textContent = "Neural Fusion Active...";
             } else {
                 audio.pause();
                 playBtn.innerHTML = playIcon;
