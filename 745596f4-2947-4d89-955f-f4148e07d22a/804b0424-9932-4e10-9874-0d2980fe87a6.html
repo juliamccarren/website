@@ -45,6 +45,43 @@
             box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
         }
 
+ 
+        /* Special Fusion Button: No rounded corners, perfectly fading sides */
+        .fusion-fading-button {
+            position: relative;
+            background: rgba(217, 70, 239, 0.15);
+            backdrop-filter: blur(8px);
+            /* Borders only top and bottom */
+            border-top: 1px solid rgba(217, 70, 239, 0.3);
+            border-bottom: 1px solid rgba(217, 70, 239, 0.3);
+            border-left: none;
+            border-right: none;
+            
+            /* The Mask ensures the blur and borders also fade out at the edges */
+            -webkit-mask-image: linear-gradient(90deg, 
+                transparent 0%, 
+                black 25%, 
+                black 75%, 
+                transparent 100%
+            );
+            mask-image: linear-gradient(90deg, 
+                transparent 0%, 
+                black 25%, 
+                black 75%, 
+                transparent 100%
+            );
+            
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fusion-fading-button:hover {
+            background: rgba(217, 70, 239, 0.35);
+            border-color: rgba(217, 70, 239, 0.6);
+            letter-spacing: 0.5em;
+            text-shadow: 0 0 15px rgba(217, 70, 239, 0.8);
+            transform: scaleX(1.05);
+        }
+
         .glass-nav {
             background: rgba(10, 10, 10, 0.45);
             backdrop-filter: blur(24px) saturate(180%);
@@ -178,7 +215,7 @@
             <p class="mt-12 text-sm md:text-xl font-bold tracking-[0.6em] uppercase text-neutral-400">Neural Fusion Sound</p>
             
             <div class="mt-16 flex flex-col md:flex-row gap-6">
-                <a href="#archives" class="glass-button text-white px-14 py-4 rounded-full font-black uppercase tracking-widest leading-loose flex items-center justify-center gap-3 group">
+                <a href="#archives" class="fusion-fading-button text-white px-20 py-5 font-black uppercase tracking-[0.4em] leading-loose flex items-center justify-center gap-3 group">
                     Explore Fusion
                 </a>
             </div>
@@ -374,7 +411,7 @@
 
             <div class="container mx-auto px-6 mt-16 mb-24 text-center">
                 <div class="flex flex-col items-center gap-6">
-                    <a href="lyrics.html" class="glass-button text-white px-14 py-4 rounded-full font-black uppercase tracking-widest leading-loose flex items-center justify-center gap-3 group">
+                    <a href="lyrics.html" class="fusion-fading-button text-white px-14 py-4 rounded-full font-black uppercase tracking-widest leading-loose flex items-center justify-center gap-3 group">
                         Explore Lyrics Archive
                         <i data-lucide="book-open" size="20" class="group-hover:translate-x-1 transition-transform"></i>
                     </a>
