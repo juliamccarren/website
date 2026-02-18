@@ -932,17 +932,34 @@
         }
 
         function setupPlayer(song) {
-            // Construct R2 URL based on naming convention: ID + .mp3
             const streamUrl = `${R2_DOMAIN}${song.id}.mp3`;
-            
             audio.src = streamUrl;
+            
+            // --- NEU: Metadata für Handy-Player (Media Session API) ---
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: song.title,
+                    artist: 'Julia McCarren',
+                    album: 'Neural Fusion Sound',
+                    artwork: [
+                        { src: '../images/Hero.webp', sizes: '512x512', type: 'image/webp' }
+                    ]
+                });
+
+                // Optionale Steuerung über das Handy-Menü
+                navigator.mediaSession.setActionHandler('play', togglePlay);
+                navigator.mediaSession.setActionHandler('pause', togglePlay);
+                navigator.mediaSession.setActionHandler('seekbackward', () => { audio.currentTime -= 10; });
+                navigator.mediaSession.setActionHandler('seekforward', () => { audio.currentTime += 10; });
+            }
+            // --- Ende Metadata ---
+
             playBtn.innerHTML = playIcon;
             seekSlider.value = 0;
             currentTimeEl.textContent = "0:00";
             durationEl.textContent = "0:00";
-            playerStatus.textContent = "Buffering Neural Stream...";
+            playerStatus.textContent = "Neural Link Established"; // Über Variable steuern, falls implementiert
             
-            // Note: We don't auto-play to respect browser policies, user must click play
             lucide.createIcons();
         }
 
