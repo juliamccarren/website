@@ -847,7 +847,7 @@
 
                             <!-- Controls -->
                             <div class="flex justify-center items-center gap-8">
-                                <button id="repeat-btn" class="text-neutral-500 hover:text-fuchsia-400 transition-colors">
+                                <button id="repeat-btn" onclick="handleRepeatToggle()"class="text-neutral-500 hover:text-fuchsia-400 transition-colors">
                                     <i data-lucide="repeat" size="20"></i>
                                 </button>
 
@@ -855,7 +855,7 @@
                                     <i data-lucide="play" size="24" class="fill-current ml-1"></i>
                                 </button>
 
-                                <button id="autoplay-toggle" class="text-neutral-500 hover:text-blue-400 transition-colors">
+                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 hover:text-blue-400 transition-colors">
                                     <i data-lucide="list-music" size="20"></i>
                                 </button>                                
                             </div>
@@ -1177,6 +1177,7 @@
             isRepeating = false;
             
             // Reset UI
+            const repeatBtn = document.getElementById('repeat-btn');
             repeatBtn.classList.add('text-neutral-500');
             repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
 
@@ -1204,11 +1205,10 @@
         });
 
         // Repeat Button Logic
-        const repeatBtn = document.getElementById('repeat-btn');
         let isRepeating = false;
 
-        repeatBtn.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
+        function handleRepeatToggle() {
+            const repeatBtn = document.getElementById('repeat-btn');
 
             isRepeating = !isRepeating;
             audio.loop = isRepeating; // Use native audio loop function
@@ -1220,18 +1220,16 @@
                 repeatBtn.classList.add('text-neutral-500');
                 repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
             }
-        });   
+        };   
         
         // Autoplay Toggle Logic
         let isAutoplay = false;
-        let currentPlaylist = []; // Speichert die Liste, aus der gerade gespielt wird
+        let currentPlaylist = [];
         let currentSongIndex = -1;
 
-        const autoplayBtn = document.getElementById('autoplay-toggle');
-
         // Toggle logic
-        autoplayBtn.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
+        function handleAutoplayToggle() {
+            const autoplayBtn = document.getElementById('autoplay-toggle');
 
             isAutoplay = !isAutoplay;
             if (isAutoplay) {
@@ -1239,7 +1237,7 @@
             } else {
                 autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
             }
-        });
+        };
 
         // Skip to Start/End Logic
         function skipToStart() {
