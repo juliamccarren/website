@@ -54,6 +54,13 @@
             transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Prevents "sticky" hover states on smartphones */
+        @media (hover: hover) {
+            .touch-target:hover {
+                opacity: 0.8;
+            }
+        }        
+
         /* Instant haptic-like visual feedback */
         .touch-target:active {
             transform: scale(0.85);
