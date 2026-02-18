@@ -45,11 +45,64 @@
             box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
         }
 
+        /* Der Container für die gesamte rechte Player-Leiste */
+        /* Ein weiches, fuchsiafarbenes Glühen im Hintergrund der Pane */
+        .player-sidebar-glass {
+            /* WICHTIG: Hintergrund auf semitransparent setzen */
+            background: rgba(10, 10, 10, 0.4) !important; 
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
+            position: relative;
+            z-index: 1; /* Schafft eine neue Stapel-Ebene */
+        }
+
+        /* Das Glimmen muss UNTER dem Content liegen */
+        .player-sidebar-glass::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150%; /* Etwas größer für weichere Ränder */
+            height: 150%;
+            background: radial-gradient(
+                circle at center, 
+                rgba(217, 70, 239, 0.15) 0%, /* Stärke leicht erhöht */
+                rgba(217, 70, 239, 0) 70%
+            );
+            transform: translate(-50%, -50%) scale(1);
+            z-index: -1; /* Hinter den Player-Inhalten */
+            pointer-events: none;
+            transition: opacity 1s ease;
+            opacity: 0;
+        }
+
+        /* Animation triggern */
+        .player-active-pulse.player-sidebar-glass::after {
+            opacity: 1;
+            animation: pulse-bg-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-bg-glow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+        }       
+
         .player-glow {
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.2), 
-                        inset 0 0 12px rgba(217, 70, 239, 0.1);
+            background: rgba(20, 20, 20, 0.6) !important;
+            backdrop-filter: blur(15px) saturate(150%);
+            -webkit-backdrop-filter: blur(15px) saturate(150%);
+            
+            /* Sanfter fuchsiafarbener Rand und Schatten im Ruhezustand */
             border: 1px solid rgba(217, 70, 239, 0.3) !important;
-        } 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8),
+                        0 0 15px rgba(217, 70, 239, 0.2), 
+                        inset 0 0 10px rgba(217, 70, 239, 0.1);
+            
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease; /* Weicher Übergang beim Start/Stopp */
+        }       
         
         @keyframes pulse-glow {
             0% {
@@ -170,28 +223,62 @@
         }
 
         /* Custom Range Slider for the Player */
+        /* Container für den gläsernen Look */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
             background: transparent;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 12px;
-            width: 12px;
-            border-radius: 50%;
-            background: #d946ef;
             cursor: pointer;
-            margin-top: -4px;
-            box-shadow: 0 0 10px rgba(217, 70, 239, 0.5);
         }
+
+        /* Der Pfad (Track) - Gläsern und dezent */
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
-            height: 4px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
+
+        /* Der Schieber (Thumb) - Das "leuchtende Juwel" */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            /* Reinweiß für maximale Klarheit */
+            background: #ffffff; 
+            /* Ein hauchdünner Rand, um die Form gegen den Glow abzugrenzen */
+            border: 2px solid rgba(255, 255, 255, 0.5); 
+            margin-top: -6px; /* Zentriert den 16px Thumb auf dem 6px Track */
+            /* Der Glow bleibt fuchsia, damit die Verbindung zum System gewahrt bleibt */
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 
+                        0 0 20px rgba(217, 70, 239, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        /* Effekt beim Ziehen: Der Thumb strahlt stärker */
+        input[type=range]:active::-webkit-slider-thumb {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 
+                        0 0 30px rgba(217, 70, 239, 0.5);
+        }
+
+        /* Interaktion: Wenn der Player aktiv ist (Klasse wird via JS am Parent gesteuert) */
+        .player-active-pulse input[type=range]::-webkit-slider-runnable-track {
+            background: rgba(217, 70, 239, 0.1);
+            border-color: rgba(217, 70, 239, 0.2);
+        }
+
+        .player-active-pulse input[type=range]::-webkit-slider-thumb {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0.8), 
+                        0 0 30px rgba(217, 70, 239, 0.4);
+        }
+
         input[type=range]:focus { outline: none; }
         
         ::-webkit-scrollbar { width: 8px; }
@@ -675,7 +762,7 @@
 
                     <div class="mt-auto space-y-6 relative z-10">
                         <!-- Custom Player Controls -->
-                        <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow">
+                        <div id="player-pane" class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow player-sidebar-glass">
                             <!-- Time Display -->
                             <div class="flex justify-between text-[10px] font-bold text-neutral-500 tracking-widest mb-4">
                                 <span id="current-time">0:00</span>
@@ -788,20 +875,21 @@
         });
 
         function togglePlay() {
-            const playerContainer = document.querySelector('.player-glow'); // Der Container mit dem Glow
+            const playerContainer = document.querySelector('.player-glow');
+            const playerPane = document.getElementById('player-pane'); 
 
             if (audio.paused) {
                 audio.play();
                 playBtn.innerHTML = pauseIcon;
-                playerStatus.textContent = "Neural Fusion Active...";
-                // Pulsieren aktivieren
+                // Beide Klassen hinzufügen
                 if (playerContainer) playerContainer.classList.add('player-active-pulse');
+                if (playerPane) playerPane.classList.add('player-active-pulse');
             } else {
                 audio.pause();
                 playBtn.innerHTML = playIcon;
-                playerStatus.textContent = "Paused";
-                // Pulsieren stoppen
+                // Beide Klassen entfernen
                 if (playerContainer) playerContainer.classList.remove('player-active-pulse');
+                if (playerPane) playerPane.classList.remove('player-active-pulse');
             }
             lucide.createIcons();
         }
@@ -988,6 +1076,22 @@
             document.getElementById('song-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
+
+        // Slider update logic
+        audio.addEventListener('timeupdate', () => {
+            if(!isSeeking) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                seekSlider.value = progress || 0;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                
+                // Der Track behält den Julia-McCarren-Verlauf
+                seekSlider.style.background = `linear-gradient(to right, 
+                    #f472b6 0%, 
+                    #d946ef ${progress / 2}%, 
+                    #8b5cf6 ${progress}%, 
+                    rgba(255, 255, 255, 0.05) ${progress}%)`;
+            }
+        });
 
         // Repeat Button Logic
         const repeatBtn = document.getElementById('repeat-btn');
