@@ -764,17 +764,17 @@
                         <!-- Custom Player Controls -->
                         <div id="player-pane" class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow">
                             <!-- Time Display -->
-                            <div class="flex justify-between items-center text-[10px] font-bold text-neutral-500 tracking-widest mb-4">
+                            <div class="flex justify-between items-center text-md font-bold text-normal-500 tracking-widest mb-4">
                                 <div class="flex items-center gap-2">
                                     <span id="current-time">0:00</span>
-                                    <button onclick="skipToStart()" class="hover:text-fuchsia-400 transition-colors">
-                                        <i data-lucide="chevrons-left" size="14"></i>
+                                    <button onclick="skipToStart()" class="hover:text-fuchsia-500 transition-colors">
+                                        <i data-lucide="chevrons-left" size="16"></i>
                                     </button>                                    
                                 </div>
                                 
                                 <div class="flex items-center gap-2">                                    
-                                    <button onclick="skipToEnd()" class="hover:text-fuchsia-400 transition-colors">
-                                        <i data-lucide="chevrons-right" size="14"></i>
+                                    <button onclick="skipToEnd()" class="hover:text-fuchsia-500 transition-colors">
+                                        <i data-lucide="chevrons-right" size="16"></i>
                                     </button>
                                     <span id="duration">0:00</span>
                                 </div>
@@ -844,6 +844,31 @@
         let playIcon = `<i data-lucide="play" size="24" class="fill-current ml-1"></i>`;
         let pauseIcon = `<i data-lucide="pause" size="24" class="fill-current"></i>`;
 
+        // Globaler System-Status
+        // Werte: 'established' (Pause) | 'active' (Play)
+        let neuralSystemState = 'established';
+
+        function updateNeuralStatus() {
+            const playerContainer = document.querySelector('.player-glow');
+            const playerPane = document.getElementById('player-pane');
+
+            if (neuralSystemState === 'active') {
+                // UI für aktive Fusion
+                playerStatus.textContent = "Neural Fusion Active";
+                playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.5)]";
+                
+                if (playerContainer) playerContainer.classList.add('player-active-pulse');
+                if (playerPane) playerPane.classList.add('player-active-pulse');
+            } else {
+                // UI für stabilen Link
+                playerStatus.textContent = "Neural Link Established";
+                playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-neutral-600";
+                
+                if (playerContainer) playerContainer.classList.remove('player-active-pulse');
+                if (playerPane) playerPane.classList.remove('player-active-pulse');
+            }
+        }        
+
         // Player Event Listeners
         playBtn.addEventListener('click', togglePlay);
         
@@ -857,15 +882,15 @@
 
         audio.addEventListener('loadedmetadata', () => {
             durationEl.textContent = formatTime(audio.duration);
-            playerStatus.textContent = "Neural Link Established";
-            playerStatus.classList.remove('text-red-500');
-            playerStatus.classList.add('text-fuchsia-500');
+            // neuralSystemState = 'established'; // Sicherstellen, dass Link steht
+            updateNeuralStatus();
         });
 
         audio.addEventListener('ended', () => {
             playBtn.innerHTML = playIcon;
+            // neuralSystemState = 'established'; // Zurück in Standby
+            updateNeuralStatus();
             lucide.createIcons();
-            playerStatus.textContent = "Sequence Complete";
         });
 
         audio.addEventListener('error', (e) => {
@@ -886,22 +911,16 @@
         });
 
         function togglePlay() {
-            const playerContainer = document.querySelector('.player-glow');
-            const playerPane = document.getElementById('player-pane'); 
-
             if (audio.paused) {
                 audio.play();
                 playBtn.innerHTML = pauseIcon;
-                // Beide Klassen hinzufügen
-                if (playerContainer) playerContainer.classList.add('player-active-pulse');
-                if (playerPane) playerPane.classList.add('player-active-pulse');
+                neuralSystemState = 'active'; // State ändern
             } else {
                 audio.pause();
                 playBtn.innerHTML = playIcon;
-                // Beide Klassen entfernen
-                if (playerContainer) playerContainer.classList.remove('player-active-pulse');
-                if (playerPane) playerPane.classList.remove('player-active-pulse');
+                neuralSystemState = 'established'; // State ändern
             }
+            updateNeuralStatus(); // UI synchronisieren
             lucide.createIcons();
         }
 
@@ -1115,11 +1134,9 @@
             if (isRepeating) {
                 repeatBtn.classList.remove('text-neutral-500');
                 repeatBtn.classList.add('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
-                playerStatus.textContent = "Neural Loop Enabled";
             } else {
                 repeatBtn.classList.add('text-neutral-500');
                 repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
-                playerStatus.textContent = "Neural Fusion Active...";
             }
         });   
         
@@ -1135,17 +1152,14 @@
             isAutoplay = !isAutoplay;
             if (isAutoplay) {
                 autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
-                playerStatus.textContent = "Sequence Mode Active";
             } else {
                 autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
-                playerStatus.textContent = "Neural Fusion Active...";
             }
         });
 
         // Skip to Start/End Logic
         function skipToStart() {
             audio.currentTime = 0;
-            playerStatus.textContent = "Neural Reset: Start";
             // Falls pausiert war, optional direkt abspielen:
             // if (audio.paused) togglePlay(); 
         }
@@ -1154,7 +1168,6 @@
             // Wir springen kurz vor das Ende (z.B. 0.5s), damit das 'ended' Event sauber triggert
             if (audio.duration) {
                 audio.currentTime = audio.duration - 0.5;
-                playerStatus.textContent = "Neural Jump: End";
             }
         }        
 
