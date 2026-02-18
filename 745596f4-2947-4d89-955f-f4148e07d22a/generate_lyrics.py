@@ -13,6 +13,8 @@ def generate_lyrics_page():
     with open(json_path, 'r', encoding='utf-8') as f:
         songs = json.load(f)
 
+# ... (vorheriger Code im Skript)
+
     html_content = f'''<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -23,6 +25,8 @@ def generate_lyrics_page():
     <script src="../js/lucide.js"></script>
     <style>
         body {{ background-color: #000; color: #fff; font-family: sans-serif; }}
+        
+        /* Identisch zur Main Page */
         .hero-text-mccarren {{
             background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
             -webkit-background-clip: text;
@@ -30,32 +34,36 @@ def generate_lyrics_page():
             background-clip: text;
             display: inline-block;
         }}
+        
+        /* Glass Nav Effekt */
+        .glass-nav {{
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }}
+
         .glass-card {{
             background: rgba(23, 23, 23, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }}
-        .glass-button {{
-            background: rgba(217, 70, 239, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(217, 70, 239, 0.3);
-            transition: all 0.3s ease;
-        }}
-        ::-webkit-scrollbar {{ width: 8px; }}
-        ::-webkit-scrollbar-track {{ background: #000; }}
-        ::-webkit-scrollbar-thumb {{ background: #d946ef; border-radius: 10px; }}
+        /* ... restlicher CSS Code ... */
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
-    <nav class="p-6 md:p-10 border-b border-white/5 bg-black/50 sticky top-0 z-50 backdrop-blur-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-xl md:text-2xl font-black tracking-tighter">
-                <span class="text-white/90">Julia</span> <span class="hero-text-mccarren">McCarren</span>
-            </a>
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 glass-nav transition-all duration-500">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex-1">
+                <a href="#" class="text-xl md:text-2xl font-black tracking-tighter block">
+                    <span class="text-white/90">Julia</span>
+                    <span class="hero-text-mccarren">McCarren</span>
+                </a>
+            </div>
         </div>
     </nav>
 
-    <header class="py-16 md:py-24 text-center px-6">
+    <header class="pt-32 pb-16 md:py-24 text-center px-6">
         <h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase italic">Neural <span class="hero-text-mccarren">Lyrics</span></h1>
         <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-[10px] mt-4">Static Linguistic Data Stream</p>
     </header>

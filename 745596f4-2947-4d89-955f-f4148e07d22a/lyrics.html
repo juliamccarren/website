@@ -8,6 +8,8 @@
     <script src="../js/lucide.js"></script>
     <style>
         body { background-color: #000; color: #fff; font-family: sans-serif; }
+        
+        /* Identisch zur Main Page */
         .hero-text-mccarren {
             background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
             -webkit-background-clip: text;
@@ -15,38 +17,1757 @@
             background-clip: text;
             display: inline-block;
         }
+        
+        /* Glass Nav Effekt */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         .glass-card {
             background: rgba(23, 23, 23, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .glass-button {
-            background: rgba(217, 70, 239, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(217, 70, 239, 0.3);
-            transition: all 0.3s ease;
-        }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
+        /* ... restlicher CSS Code ... */
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
-    <nav class="p-6 md:p-10 border-b border-white/5 bg-black/50 sticky top-0 z-50 backdrop-blur-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-xl md:text-2xl font-black tracking-tighter uppercase">
-                <span class="text-white/90">Julia</span> <span class="hero-text-mccarren">McCarren</span>
-            </a>
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 glass-nav transition-all duration-500">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex-1">
+                <a href="#" class="text-xl md:text-2xl font-black tracking-tighter block">
+                    <span class="text-white/90">Julia</span>
+                    <span class="hero-text-mccarren">McCarren</span>
+                </a>
+            </div>
         </div>
     </nav>
 
-    <header class="py-16 md:py-24 text-center px-6">
+    <header class="pt-32 pb-16 md:py-24 text-center px-6">
         <h1 class="text-5xl md:text-8xl font-black tracking-tighter uppercase italic">Neural <span class="hero-text-mccarren">Lyrics</span></h1>
         <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-[10px] mt-4">Static Linguistic Data Stream</p>
     </header>
 
     <main class="container mx-auto px-4 md:px-6 max-w-4xl pb-24 space-y-8 md:space-y-16">
     
+        <article id="fog_of_fear" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Halloween</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Fear</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Fog of Fear</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Double meaning for Halloween. You move on the dance floor and cannot see your neighbor. May he be evil?</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+The fog rolls in it swallows the ground
+Shadows twist but make no sound
+A whisper crawls down your spine
+
+[Prechorus]
+Is it real or in your mind
+A truth you’ll wish you never find
+
+[Chorus]
+Fog of fear it’s drawing near
+Closer closer can’t you hear
+Your heartbeat pounding in your ear
+Fog of fear it’s always here
+
+[Verse 2]
+Branches reach like bony hands
+Footsteps sink in shifting sands
+Eyes in the dark they glow and stare
+
+[Prechorus]
+Every breath it chills the air
+Turn around but nothing’s there
+
+[Chorus]
+Fog of fear it’s drawing near
+Closer closer can’t you hear
+Your heartbeat pounding in your ear
+Fog of fear it’s always here</pre>
+            </div>
+        </article>
+        
+        <article id="summers_farewell" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nature</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nostalgia</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Reflection</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Summer's Farewell</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of the end of summer and the bittersweet emotions that come with it. It's about the way the changing seasons can make us feel nostalgic and reflective, and the hope that we can carry the warmth of summer with us even as it fades away.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+The sun sinks low behind the hill
+Shadows stretch
+The air turns still
+Barefoot trails on fading sand
+A fleeting touch
+A ghost of tan
+
+[Chorus]
+Goodbye golden days
+Goodbye warm skies
+The echoes linger
+The season flies
+Leaves will turn
+But the heart still stays
+Goodbye golden days
+
+[Verse 2]
+A kite caught high
+A tangled thread
+Whispers of laughter
+Now unsaid
+The scent of salt
+The crash of waves
+Moments we borrowed
+Time never saves
+
+[Bridge]
+Bonfire smoke in my sweater’s sleeve
+Ashes rise like memories we weave
+Fireflies fading
+Their dance complete
+Summer’s retreat
+Bittersweet
+
+[Chorus]
+Goodbye golden days
+Goodbye warm skies
+The echoes linger
+The season flies
+Leaves will turn
+But the heart still stays
+Goodbye golden days
+
+[Outro]
+The night grows long
+The stars will hum
+But I still hear the songs of summer’s drum
+Goodbye golden days
+Till next we meet
+A cycle of warmth
+And bittersweet</pre>
+            </div>
+        </article>
+        
+        <article id="storm_of_the_abyss" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nature</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Power</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Awe</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Storm of the Abyss</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Inspirated by an upcoming thunderstorm at sea. It's about the raw power and beauty of nature, and the way it can make us feel small and insignificant, but also alive and connected to something greater than ourselves.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+Clouds split
+Sky torn apart
+Shadows rise
+The chaos starts
+Waves scream
+The abyss wakes
+Thunder roars
+The water shakes
+
+[Prechorus]
+Lightning crack, scars the void
+Heaven's wrath cannot be destroyed
+
+[Chorus]
+Storm of the abyss!
+It strikes
+It breaks
+It twists!
+No escape
+No light exists
+Bow to the storm of the abyss!
+
+[Verse 2]
+Winds howl
+Ripping flesh from bone
+Sea churns
+A force unknown
+Blackened tide
+No mercy here
+Torrents lash
+Death draws near
+
+[Prechorus]
+The tempest reigns, devours all
+One by one
+The mighty fall
+
+[Chorus]
+Storm of the abyss!
+It strikes
+It breaks
+It twists!
+No escape
+No light exists
+Bow to the storm of the abyss!</pre>
+            </div>
+        </article>
+        
+        <article id="howling_wolves" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nature</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Howling Wolves</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of freedom and adventure that comes with sailing on open water. It's about the way the ocean can be a place of peace and reflection, and the hope that it can inspire others to find their own path.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+The moon hangs low in the velvet sky
+Shadows stretch where the whispers lie
+A lone pine stands
+Its branches sigh
+
+[Chorus]
+Howling wolves
+Calling loud
+Through the trees
+Beneath the shroud
+A wild song
+Untamed
+Unbowed
+
+[Verse 2]
+The frost bites sharp
+The air runs thin
+Echoes dance on the wolves' wild grin
+Night folds its arms
+Pulling you in
+
+[Instrumental solo]
+
+[Prechorus]
+A crack
+A rustle
+The forest wakes
+The earth beneath you quakes
+
+[Chorus]
+Howling wolves
+Calling loud
+Through the trees
+Beneath the shroud
+A wild song
+Untamed
+Unbowed
+
+[Bridge]
+Are they crying for the lost
+Or for the found
+Are they chasing ghosts
+Or circling ground
+The sound of freedom
+Unbound
+
+[Chorus]
+Howling wolves
+Calling loud
+Through the trees
+Beneath the shroud
+A wild song
+Untamed
+Unbowed</pre>
+            </div>
+        </article>
+        
+        <article id="sailing_on_open_water" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nature</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Sailing on Open Water</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of freedom and adventure that comes with sailing on open water. It's about the way the ocean can be a place of peace and reflection, and the hope that it can inspire others to find their own path.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+The horizon bends like a whispered dream
+Salt in the air
+Sun’s golden gleam
+The waves
+They hum
+A song of old
+Each swell a story
+Each crest a bold
+
+[Chorus]
+Sailing on open water
+The world’s so wide
+Chasing the wind
+With the tide as my guide
+No walls
+No borders
+Just the blue and me
+Sailing on open water
+Wild and free
+
+[Verse 2]
+The gulls they laugh
+Their echoes play
+Clouds drift lazy
+Marking the day
+The wheel in my hands
+The spray on my face
+This boundless ocean
+My sacred place
+
+[Prechorus]
+Every wave a chance
+Every breeze a call
+The farther I go
+The smaller I feel
+Yet tall
+
+[Chorus]
+Sailing on open water
+The world’s so wide
+Chasing the wind
+With the tide as my guide
+No walls
+No borders
+Just the blue and me
+Sailing on open water
+Wild and free
+
+[Bridge]
+Stars above
+They light the night
+A compass of silver
+A traveler’s delight
+The moon whispers secrets
+The dark hums low
+A quiet rhythm only sailors know</pre>
+            </div>
+        </article>
+        
+        <article id="cheerleader" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Sports</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Empowerment</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Cheerleader</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Being a cheerleader and the joy and excitement that comes with it. It's about the way cheerleading can be a form of self-expression and empowerment, and the hope that it can inspire others to find their own voice and confidence.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+Saw her spinning under Friday lights
+Red skirt blazing fire in the night
+Kicks so high they scraped the sky
+A queen in sneakers
+Made the crowd cry
+
+[Chorus]
+Cheerleading queen
+Ruling the scene
+She’s a firestorm
+A living dream
+Cheerleading queen
+In the in-between
+She’s the thunder
+The gasoline
+
+[Verse 2]
+She screams louder than the marching band
+Hands in the air
+Her kingdom stands
+Hair wild like a hurricane's breath
+She flips and falls
+But she fears no death
+
+[Prechorus]
+Does she know the cost of fame
+Or is it just a wicked game
+
+[Chorus]
+Cheerleading queen
+Ruling the scene
+She’s a firestorm
+A living dream
+Cheerleading queen
+In the in-between
+She’s the thunder
+The gasoline
+
+[Bridge]
+Her smile’s a mask
+Her heart’s on blast
+Is she cheering for us
+Or outrunning the past
+In the echoes of the crowd
+Does she feel proud
+Or is she just
+Another face in the cloud
+
+[Chorus]
+Cheerleading queen
+Ruling the scene
+She’s a firestorm
+A living dream
+Cheerleading queen
+In the in-between
+She’s the thunder
+The gasoline</pre>
+            </div>
+        </article>
+        
+        <article id="god_save_the_king" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Anthem</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">God Save the King</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The British National Anthem, with a twist. It's about the way the anthem can be seen as a symbol of freedom and rebellion, rather than just a patriotic song.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+God save our gracious King
+Long live our noble King
+God save the King
+Send him victorious, happy and glorious
+Long to reign over us
+God save the King
+
+[Chorus]
+O Lord, our God, arise
+Scatter his enemies
+And make them fall
+Confound their politics
+Frustrate their knavish tricks
+On Thee our hopes we fix
+God save us all!
+
+[Guitar Solo]
+
+[Verse 2]
+Thy choicest gifts in store
+On him be pleased to pour
+Long may he reign
+May he defend our laws
+And ever give us cause
+To sing with heart and voice
+God save the King!
+
+[Chorus]
+O Lord, our God, arise
+Scatter his enemies
+And make them fall
+Confound their politics
+Frustrate their knavish tricks
+On Thee our hopes we fix
+God save us all!
+
+[Outro]
+God save the King!</pre>
+            </div>
+        </article>
+        
+        <article id="ride_the_groove" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Sports</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Ride the Groove</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of freedom and joy that comes with riding a bike. It's about the way the wind in your hair and the sun on your face can make you feel alive and connected to the world around you.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse]
+She’s got wheels that spin
+Like a disco light
+Pedals pumpin’
+Heart takin’ flight
+(oo-yeah!)
+Road so smooth
+It’s her Saturday night
+Shifting gears
+Chasing speed
+(uh-huh, that’s right!)
+
+[Prechorus]
+She don’t stop
+She don’t wait
+On two wheels
+She dominates
+(woo!)
+Legs of power
+Fate on her plate
+
+[Chorus]
+Ride the groove
+Yeah
+Feel the beat
+Pedal hard
+Girl
+Move your feet! (ride it, ride it!)
+Sweat like diamonds
+Burnin’ heat
+Biking queen
+You can’t be beat!
+
+[Verse 2]
+Chain hums low
+Like a funky bass
+Hair in the wind
+She’s on the chase
+(whoo!)
+Spandex shine
+She’s set the pace
+City’s her dance floor
+She owns the space
+
+[Instrumental solo]
+
+[Prechorus]
+Don’t look back
+The road’s her stage
+Every turn
+A brand-new page
+(hey!)
+Ridin’ free
+Breakin’ the cage!
+
+[Chorus]
+Ride the groove
+Yeah
+Feel the beat
+Pedal hard
+Girl
+Move your feet! (uh, uh, yeah!)
+Sweat like diamonds
+Burnin’ heat
+Biking queen
+You can’t be beat!</pre>
+            </div>
+        </article>
+        
+        <article id="buckn_the_bain" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nonsense</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Youth</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Buck'n the Bain</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Total nonsense text from my youth. We sang this when we tried to learn English.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Yo, lemme spit a tale, a saga for the strange,
+A quest for the quibble in a different range.
+Dweblin' through the Glitchwood, feelin' kinda bent,
+My left sock's got a goblin, and my right's got a dent.
+A purple platypus with a monocle of moss,
+Told me where to find the flim-flam, regardless of the cost.
+He spoke in riddles, a gibberish parade,
+Said "Bloop-blop the squeaky grumph and the shadow of the blade."
+
+[Chorus]
+Buck'n the bain, I gonna Buck'n, Buck'n, Buck'n the bain.
+Buck'n the bain, I gonna Buck'n, Buck'n, Buck'n the bain. (Whoo!)
+
+[Verse 2]
+The path was paved with gummy bears and talking spoons,
+Underneath a moon that hummed forgotten tunes.
+I passed a sentient teapot, drippin' mystic tea,
+He whispered, "Dra-gon-glee, dra-gon-glee, you must be free."
+I said "hold up, homie, that's a different flow,"
+"I'm here for the bain, don't you even know?"
+He just shrugged his handle and poured a cup of steam,
+Said "the bain is in the bramble, it's a waking dream."
+
+[Chorus]
+Buck'n the bain, I gonna Buck'n, Buck'n, Buck'n the bain.
+Buck'n the bain, I gonna Buck'n, Buck'n, Buck'n the bain. (Whoo!)
+
+[Bridge]
+The beat drops out, just a wobbly synth hum.
+I'm gettin' close, I can feel it in my thumbs.
+The air is thick with whispers of a place so odd,
+Where the gravity is sideways and the clocks are all a fraud.
+This is it. This is the moment. The bain is right ahead.
+It looks kinda like a toaster, but with whiskers instead.
+I'm not gonna question, I'm just gonna do the deed,
+'Cause the bain needs to be buck'ned, that's my only creed.
+
+[Chorus]
+Buck'n the bain, I gonna Buck'n, Buck'n, Buck'n the bain.
+Buck'n the bain, I gonna Buck'n, Buck'n, Buck'n the bain. (Whoo!)
+
+[Outro]
+Buck'n the bain...
+Gonna Buck'n the bain...
+The bain...</pre>
+            </div>
+        </article>
+        
+        <article id="uncaged" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Identity</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Uncaged</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of being trapped and the desire to break free. It's about the struggle to find your own voice and identity, and the hope that one day you will be able to spread your wings and fly.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Rain on the pane, a silver sheet,
+My face is pressed, a quiet heat.
+A little finch on the wire sways,
+Counting down the silent days.
+Each fluttered wing, a tiny plea,
+For a world I'll never see.
+
+[Chorus]
+And the bird looks up, its eye a bead,
+It knows a language I can't read.
+In its flight, a sudden grace,
+It leaves behind its resting place.
+It arcs and glides, a perfect line,
+A freedom I can't make mine.
+
+[Verse 2]
+The world outside is washed in gray,
+The bird just sits and sings its way.
+It dips its head to drink the air,
+A careless, wild, and feathered prayer.
+I trace its shape against the sky,
+And wonder what it's like to fly.
+
+[Chorus]
+And the bird looks up, its eye a bead,
+It knows a language I can't read.
+In its flight, a sudden grace,
+It leaves behind its resting place.
+It arcs and glides, a perfect line,
+A freedom I can't make mine.
+
+[Bridge]
+The cage is gilt, the bars are gold,
+A beautiful story left untold.
+I hum a tune, a breath, a sigh,
+A gentle wish, a silent cry.
+
+[Outro]
+I close my eyes and feel the breeze,
+And am one with the endless trees.
+The rain keeps falling, soft and slow,
+And the empty world begins to glow.</pre>
+            </div>
+        </article>
+        
+        <article id="home_now" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Family</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Homecoming</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Home Now</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Coming home after being away for a long time, and the joy and relief that comes with it. It's about the way family can be a source of comfort and strength, and the hope that we can find our way back to them no matter what.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Sunrise paints the window pane a faded desert gold
+Another day, a thousand miles, a story to be told
+He traces lines on a photograph, the smiles of his wife and girl
+A little family, a loving world, what matters more than pearls
+The dust still clings to his boots and the silence to his mind
+But a different kind of thunder is what he hopes to find
+
+[Chorus]
+Oh, the hum of his engine is a different kind of prayer
+Counting down the minutes 'til the feeling fills the air
+This highway rolls on, a river to the place he belongs
+Back in their arms, where he's been all along
+The stars above him are the same as the ones they see
+And every mile is one step closer, 
+back to family
+
+[Verse 2]
+He remembers the last goodbye, the tears they tried to hide
+"Don't you worry, daddy," a brave little voice inside
+He carried that hope like a compass, through the fire and the rain
+A shield against the darkness, a cure for all the pain
+The front door waiting, the porch light glowing bright
+A beacon in the distance, a star in the lonely night
+
+[Chorus]
+Oh, the hum of his engine is a different kind of prayer
+Counting down the minutes 'til the feeling fills the air
+This highway rolls on, a river to the place he belongs
+Back in their arms, where he's been all along
+The stars above him are the same as the ones they see
+And every mile is one step closer, 
+back to family
+
+[Bridge]
+He's learned a lot out there, about strength and holding on
+But the true meaning of courage is the love that's never gone
+He fought for more than a country, he fought for this very day
+To hold them both in his arms and wash the war away
+
+[Guitar Solo]
+
+[Chorus]
+Oh, the hum of his engine is a different kind of prayer
+The last few minutes, he can almost feel the air
+This highway's ending, a river to the place he belongs
+Back in their arms, where he's been all along
+The stars above him, shining where he wants to be,
+'Cause he's home now, he's finally home, 
+with his family.
+
+[Outro]
+Home now... home.</pre>
+            </div>
+        </article>
+        
+        <article id="private_lake" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nature</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Private Lake</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of being a country girl and the joy of swimming in a lake. It's about the simple pleasures of life and the way nature can make us feel free and alive.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Sun's high, no clouds in sight
+Got my old truck keys, feelin' just right
+Dusty back roads leadin' down low
+Where the cypress trees and the cattails grow
+Got my cutoffs on and a faded tank top
+Ready to lose track of every tickin' clock
+Yeah, the city's buzzin' far away and gone
+Just the sound of cicadas singin' their song
+
+[Chorus]
+'Cause I'm a country girl with the dirt on my feet
+This cool lake water is my favorite treat
+Just me and the fish and the dragonfly wings
+Got my own little world of simple things
+Jumpin' off the dock, makin' a big splash
+Washing off the worries in a second flat
+Yeah, I'm swimmin' in a lake, no cares at all
+Answerin' the call of that sweet, water's call
+
+[Verse 2]
+Might find an old rope swing on a low hangin' limb
+Goin' way up high, out on a whim
+Let go and fly like a bird on the breeze
+Fallin' into water with a sigh of ease
+Feel the cool mud squishin' right between my toes
+Nobody knows this place except for me, I suppose
+Just a little slice of heaven, hidden from the world
+Yeah, it's just a country lake and a country girl
+
+[Chorus]
+'Cause I'm a country girl with the dirt on my feet
+This cool lake water is my favorite treat
+Just me and the fish and the dragonfly wings
+Got my own little world of simple things
+Jumpin' off the dock, makin' a big splash
+Washing off the worries in a second flat
+Yeah, I'm swimmin' in a lake, no cares at all
+Answerin' the call of that sweet, water's call
+
+[Bridge]
+Some folks like their oceans, big and blue
+But a muddy bottom lake is what I'm used to
+Some folks need a big old fancy pool
+But this fresh water right here, it's the rule
+Got a little bit of moss, a little bit of grit
+And I wouldn't trade a single bit of it
+
+[Chorus]
+'Cause I'm a country girl with the dirt on my feet
+This cool lake water is my favorite treat
+Just me and the fish and the dragonfly wings
+Got my own little world of simple things
+Jumpin' off the dock, makin' a big splash
+Washing off the worries in a second flat
+Yeah, I'm swimmin' in a lake, no cares at all
+Answerin' the call of that sweet, water's call
+
+[Outro]
+Yeah, swimmin' in a lake, no cares at all
+Answerin' the call of that sweet, water's call
+Just a country girl and a cool, clear lake.
+Yeah.</pre>
+            </div>
+        </article>
+        
+        <article id="upon_a_winding_trail" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nature</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Awe</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Upon a Winding Trail</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">Being in nature and the sense of awe and wonder that comes with it. It's about the beauty of the world around us and the way it can make us feel small and insignificant, but also connected to something greater than ourselves.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Dust motes dancing in the sun, a whisper on the breeze
+The world unfolds, a canvas spun from ancient rocks and trees
+My boots find rhythm on the path, a steady, measured beat
+A pilgrimage from aftermath, to something pure and sweet
+The air is thin, the silence deep, a wild and endless blue
+A promise that the mountains keep, for travelers like you
+
+[Chorus]
+Oh, the great landscapes, they call my name
+A wild and waking fever, a sacred, burning flame
+From jagged peaks to canyons wide, where eagles learn to soar
+I leave the lonely world inside, to find a little more
+The sun sinks low, a final gleam, on purple-shadowed stone
+I’m living out a waking dream, and I’m no longer alone
+
+[Verse 2]
+A river carves a winding scar, a story through the land
+Beneath the light of the morning star, I reach out with my hand
+To touch the moss on granite walls, the cold and certain spray
+As water leaps and dives and falls, and washes doubt away
+The earth breathes in, the earth breathes out, in silent, slow accord
+And answers every whispered doubt, with just one perfect word
+
+[Chorus]
+Oh, the great landscapes, they call my name
+A wild and waking fever, a sacred, burning flame
+From jagged peaks to canyons wide, where eagles learn to soar
+I leave the lonely world inside, to find a little more
+The sun sinks low, a final gleam, on purple-shadowed stone
+I’m living out a waking dream, and I’m no longer alone
+
+[Bridge]
+The wind sings tales of olden times, of ice and fire and change
+And echoes through the silent chimes, of mountains in their range
+I am a guest within this space, a witness, small and frail
+Just following the ancient trace, upon a winding trail
+
+[Outro]
+So walk with me, and feel the ground, beneath your weary feet
+Where nothing can be lost or found, and everything's complete.</pre>
+            </div>
+        </article>
+        
+        <article id="a_slow_blossoming_rose" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Morning</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Hope</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">A Slow Blossoming Rose</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of waking up to a beautiful morning and the hope that comes with it. It's about the way the world can feel fresh and new, even after all the struggles and hardships.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+The sun, a slow-blossoming rose,
+Paints the sky in hues of gold.
+A whisper of the morning breeze,
+A story waiting to unfold.
+The world is sleeping, soft and deep,
+But a new day's melody begins.
+A silent promise it will keep,
+Before the noise of living spins.
+
+[Chorus]
+This is the song the robins sing,
+A vital hum to start the day.
+The light that helps the flowers spring,
+And wash the fading dark away.
+It's the rhythm in the waking grass,
+The dew that glistens on the leaves.
+This is the morning, here at last,
+The vibrant tune my soul believes.
+
+[Verse 2]
+The mountains stretch their sleepy arms,
+The valley breathes a gentle sigh.
+All of the world's forgotten charms,
+Reflected in a butterfly.
+The sleepy owl finds its dark nest,
+The deer step softly, through the pines.
+The earth has put its peace to test,
+And now, a golden chorus shines.
+
+[Chorus]
+This is the song the robins sing,
+A vital hum to start the day.
+The light that helps the flowers spring,
+And wash the fading dark away.
+It's the rhythm in the waking grass,
+The dew that glistens on the leaves.
+This is the morning, here at last,
+The vibrant tune my soul believes.
+
+[Bridge]
+The quiet notes of waking light,
+A vital pulse, a steady beat.
+Chasing away the lingering night,
+Making the bitter mornings sweet.
+It's more than sound, it's energy,
+A breath of hope for all of us.
+The simple song of being free,
+A moment we can truly trust.
+
+[Chorus]
+This is the song the robins sing,
+A vital hum to start the day.
+The light that helps the flowers spring,
+And wash the fading dark away.
+It's the rhythm in the waking grass,
+The dew that glistens on the leaves.
+This is the morning, here at last,
+The vibrant tune my soul believes.
+
+[Outro]
+Oh, the vibrant tune my soul believes.
+The vital song the morning weaves.
+The morning weaves...
+My soul believes.</pre>
+            </div>
+        </article>
+        
+        <article id="i_love_school" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">School</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Rebellion</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">I Love School</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of being a student and the love-hate relationship with school. It's about the struggles of trying to fit in, the pressure to succeed, and the desire to break free and be the rebel.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Alarm clock screams at 6 a.m.
+Another day of this bad dream
+Staring at the ceiling, dreading the sun
+Wishin' this whole race was already run
+Textbooks piled up, a tower of lies
+Another lesson, my spirit dies
+The bell rings out a mournful sound
+Just wanna disappear, not to be found
+
+[Chorus]
+'Cause I love school, yeah I love school
+Following every single rule
+I love school, it's so cool
+Just another cog in the machine, a perfect tool
+I love school, yeah I love school
+This educational torture is beautiful
+I love school, it's so cool
+Just another drop in the conformity pool
+
+[Verse 2]
+The teacher drones on, a monotone hum
+'Bout quadratic equations and things to become
+My mind is miles away, a million miles gone
+Just doodlin' in my notebook 'til the break of dawn
+They tell me this knowledge will set me free
+But all I feel are shackles on me
+Lunch break's a blur of plastic food
+Misunderstood, nobody's in the mood
+
+[Chorus]
+'Cause I love school, yeah I love school
+Following every single rule
+I love school, it's so cool
+Just another cog in the machine, a perfect tool
+I love school, yeah I love school
+This educational torture is beautiful
+I love school, it's so cool
+Just another drop in the conformity pool
+
+[Bridge]
+They say it's for my future, for my own good
+But they don't see what's misunderstood
+All the pressure, the stress, the endless tests
+No time for real life, no time for rests
+I just wanna break free, feel the open air
+Tear up these papers, not a single care
+
+[Guitar Solo]
+
+[Chorus]
+'Cause I love school, yeah I love school
+Following every single rule
+I love school, it's so cool
+Just another cog in the machine, a perfect tool
+I love school, yeah I love school
+This educational torture is beautiful
+I love school, it's so cool
+Just another drop in the conformity pool
+
+[Outro]
+Yeah, I love school...
+I love it so much...
+Can't wait for summer...
+I love school... yeah...
+Fade to silence.</pre>
+            </div>
+        </article>
+        
+        <article id="disco_flashback" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Disco</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nostalgia</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Disco Flashback</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of nostalgia and joy that comes from remembering the disco era through the stories of my parents. It's about the way music can connect us to our past and make us feel like we're part of something bigger than ourselves.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Flashback to my childhood, a Saturday night
+The speakers were thumping, the colors were bright
+My mom in her jumpsuit, my dad with his grin
+They'd glide 'cross the shag carpet, where do I begin?
+They'd spin and they'd shimmer, lost in the sound
+The whole living room was a discotheque playground
+
+[Chorus]
+'Cause my parents were the disco kings and queens
+Living out their wildest, '70s dreams
+Now I'm on the dance floor, the mirror ball glows
+And I feel the rhythm from my head to my toes
+This feeling's not new, it's a song I've always known
+This magic I'm feeling is all on my own!
+
+[Verse 2]
+Saw old photographs, faded and worn
+Of roller rink parties from the night they were born
+They held on to something electric and free
+And somehow, that feeling got passed down to me
+I close my eyes now and the crowd melts away
+I can almost see them, just dancing and swaying
+
+[Chorus]
+'Cause my parents were the disco kings and queens
+Living out their wildest, '70s dreams
+Now I'm on the dance floor, the mirror ball glows
+And I feel the rhythm from my head to my toes
+This feeling's not new, it's a song I've always known
+This magic I'm feeling is all on my own!
+
+[Bridge]
+They told me the stories of Studio 54
+Of staying out all night, and begging for more
+The glitter, the glamour, the music so loud
+Now I'm finding my place in this new, modern crowd
+Yeah, the songs may be different, the year has moved on
+But the soul of the music is just as strong
+
+[Guitar solo with wah-wah pedal, high-hats shimmer]
+
+[Chorus]
+'Cause my parents were the disco kings and queens
+Living out their wildest, '70s dreams
+Now I'm on the dance floor, the mirror ball glows
+And I feel the rhythm from my head to my toes
+This feeling's not new, it's a song I've always known
+This magic I'm feeling is all on my own!
+
+[Outro]
+Yeah, all on my own...
+It's all on my own now...</pre>
+            </div>
+        </article>
+        
+        <article id="venezia" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Travel</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Romance</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Venezia</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The city of Venice, with its canals, gondolas, and romantic atmosphere. It's about the beauty of the city and the way it can make you feel like you're in a dream. Visited it already five times, and it never gets old.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Walking down the cobblestone streets,
+The sun begins to fade.
+Reflections on the canals, so sweet,
+A memory is made.
+
+Venezia, you hold my heart in hand,
+Lost in a waking dream.
+On this beautiful, floating land,
+A melody, a stream.
+
+[Chorus]
+Venezia, città d'amore,
+I tuoi canali sono un tesoro.
+Navigando sulle tue acque,
+Il tempo si ferma per sempre.
+
+Una gondola scivola, una melodia sussurrata,
+Sotto la pallida luce della luna.
+La tua magia riempie il pomeriggio,
+Una sensazione che brucia intensamente.
+
+[Verse 2]
+Passi lenti, l'aria è fresca,
+Soffia una brezza leggera.
+Un segreto tra la maschera,
+Sotto la sera.
+
+Caffè illuminati da luce dorata,
+Uno spritz con un amico.
+La città risplende nella notte soave,
+Una sensazione che non avrà fine.
+
+[Chorus]
+Venezia, città d'amore,
+I tuoi canali sono un tesoro.
+Navigando sulle tue acque,
+Il tempo si ferma per sempre.
+
+Una gondola scivola, una melodia sussurrata,
+Sotto la pallida luce della luna.
+La tua magia riempie il pomeriggio,
+Una sensazione che brucia intensamente.
+
+[Bridge]
+The bridge of sighs, a timeless gaze,
+A history of stories untold.
+Lost in your mazelike haze,
+A city of silver and gold.
+
+Ponte dei Sospiri, non dimentico,
+Il tuo fascino è così intenso.
+In ogni angolo, un mistero,
+Questo è il mio desiderio.
+
+[Outro]
+Non voglio partire mai.
+Sotto il cielo di Venezia...
+Siamo qui.</pre>
+            </div>
+        </article>
+        
+        <article id="forever" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Love</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Forever</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Forever</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of being in love and wanting to spend forever with that person. It's about the joy and excitement of a new relationship, and the hope that it will last forever.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1 - English]
+The world outside is moving fast
+A blur of lights from a life that's passed
+But time stands still when you're with me
+Lost in the quiet, just you and me.
+Every word you say is a melody
+A perfect rhythm, a sweet harmony.
+I never knew my heart could feel this way
+Until you came and brightened my day.
+
+[Chorus - Italian]
+E adesso so che sei il mio destino
+Il mio unico, vero, grande amore.
+Sei la luce che mi guida, il mio cammino
+L'ancora che trattiene il mio cuore.
+Non c'è niente che non farei per te
+Per stare al tuo fianco, per sempre.
+
+[Verse 2 - Italian]
+Sento il calore del tuo respiro
+Mentre ti tengo forte e non ti perdo.
+Ogni tuo tocco è un desiderio
+Un dolce brivido, un segreto.
+Nei tuoi occhi trovo il mio cielo
+Il posto perfetto, il mio rifugio.
+Sei la risposta ad ogni mia preghiera
+Il mio sole, la mia primavera.
+
+[Bridge - English and Italian]
+I never thought I'd find this kind of peace
+Questo amore, questa verità.
+My soul is finally at ease
+La mia anima è libera, è solo per te.
+I'll give you everything, my everything
+Tutto di me, per sempre.
+
+[Chorus - Italian]
+E adesso so che sei il mio destino
+Il mio unico, vero, grande amore.
+Sei la luce che mi guida, il mio cammino
+L'ancora che trattiene il mio cuore.
+Non c'è niente che non farei per te
+Per stare al tuo fianco, per sempre.
+
+[Guitar Solo]
+
+[Chorus - Italian]
+E adesso so che sei il mio destino
+Il mio unico, vero, grande amore.
+Sei la luce che mi guida, il mio cammino
+L'ancora che trattiene il mio cuore.
+Non c'è niente che non farei per te
+Per stare al tuo fianco, per sempre.
+
+[Outro - Italian]
+Sempre... per sempre...
+Il mio amore...
+Sei tu... solo tu...
+Per sempre.</pre>
+            </div>
+        </article>
+        
+        <article id="sanctuary_riot" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Rebellion</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Youth</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Sanctuary Riot</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of rebellion and freedom that comes with breaking the rules and defying authority. It's about the thrill of standing up for what you believe in, even when it means going against the grain.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Stained glass shatters under the bass
+Echoes ripping through the holy space
+Candles flicker the shadows quake
+Youth unleashed with no rules to break
+
+[Chorus]
+Hallelujah in distortion
+Hands raised in rebellion’s motion
+Sanctuary riot screams out loud
+Sacred ground we’re breaking now
+
+[Verse 2]
+Wooden pews turned into a stage
+Choir robes caught in the rage
+Organ keys howling wild and free
+Saints and sinners in harmony
+
+[Prechorus]
+What is holy what is real
+What’s the fire we’re meant to feel
+
+[Chorus]
+Hallelujah in distortion
+Hands raised in rebellion’s motion
+Sanctuary riot screams out loud
+Sacred ground we’re breaking now
+
+[Bridge]
+Do you hear it the hymn of defiance
+Do you feel it the pulse of alliance
+The cross sways like a pendulum
+Judgment waits but here we come
+
+[Guitar solo]
+
+[Chorus]
+Hallelujah in distortion
+Hands raised in rebellion’s motion
+Sanctuary riot screams out loud
+Sacred ground we’re breaking now</pre>
+            </div>
+        </article>
+        
+        <article id="ghost_in_the_garden" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Love</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Trust</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Healing</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Ghost in the Garden</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">About the fear of opening up to love again after being hurt in the past. It's about the struggle to let go of the pain and trust someone new, and the hope that maybe this time it will be different.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+The coffee's cold, the sun is weak
+Across the table, you don't speak
+You just watch me with those eyes
+That mirror all the clear blue skies
+And a part of me wants to just fall in
+Let your light erase where the dark has been
+But the shadow of a former flame
+Still whispers my most guarded name
+
+[Pre-Chorus]
+I trace the rim of this empty cup
+Trying to find the strength to open up
+'Cause I remember the fire, the beautiful blaze
+That turned to ashes in those final days
+And now my heart is a house with a lock
+I only turn the key for a hesitant knock
+
+[Chorus]
+So forgive me if my hands are tight
+If I pull away in the dead of night
+This isn't you, it's the ghost in the garden
+The one that bloomed and then begged for pardon
+I'm standing at the edge, a shaky line
+Afraid to believe this love is truly mine
+'Cause the deepest cuts, they heal the wrong way
+They teach you how to run, how to not stay
+
+[Verse 2]
+You talk about a future bright
+Of open doors and endless light
+You offer me a gentle hand
+The safest place in a foreign land
+But I keep one foot on the solid ground
+Where no beautiful promises can be found
+I've memorized the pattern of the break
+I know the exact toll that love will take
+
+[Pre-Chorus]
+I trace the rim of this empty cup
+Trying to find the strength to open up
+'Cause I remember the thunder, the glorious sound
+That left me broken, scattered on the ground
+And now my heart is a house with a lock
+I only turn the key for a hesitant knock
+
+[Chorus]
+So forgive me if my hands are tight
+If I pull away in the dead of night
+This isn't you, it's the ghost in the garden
+The one that bloomed and then begged for pardon
+I'm standing at the edge, a shaky line
+Afraid to believe this love is truly mine
+'Cause the deepest cuts, they heal the wrong way
+They teach you how to run, how to not stay
+
+[Bridge]
+You ask me what I'm running from
+I whisper back, "The next time it comes"
+The moment my walls turn to sand
+The moment I finally, truly understand
+That I gave you my everything, and you stayed
+But the blueprint for leaving has already been laid
+
+[Guitar Solo - Slow, mournful, building to a quiet, desperate peak]
+
+[Chorus]
+So forgive me if my hands are tight
+If I pull away in the dead of night
+This isn't you, it's the ghost in the garden
+The one that bloomed and then begged for pardon
+I'm standing at the edge, a shaky line
+Afraid to believe this love is truly mine
+'Cause the deepest cuts, they heal the wrong way
+They teach you how to run, how to not stay
+
+[Outro]
+Oh, I want to stay...
+I want to stay...
+But the door is open just a crack
+And I'm too scared to turn my back.
+Just a crack...</pre>
+            </div>
+        </article>
+        
+        <article id="deep_blue" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Ocean</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Peace</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Freedom</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Deep Blue</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">The feeling of being underwater, and the sense of freedom and peace that comes with it. It's about the beauty of the ocean and the way it can make you feel like you're in a different world.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+The world up above is a distant hum
+A rush of demands, a race to become
+But I leave the noise at the surface line
+For a silent kingdom where I can shine
+One single breath, a lungful of peace
+A voluntary, beautiful release.
+
+[Chorus]
+Down to the blue where the sun can't reach
+Minutes tick by like grains of sand on the beach
+With just a bikini skin to the tide
+The ocean's freedom nowhere to hide
+Deep blue calling, a silent embrace
+Holding my breath, finding my place.
+
+[Verse 2]
+The pressure is real, but it feels like a glove
+Cradling my body with effortless love
+I see the manta glide, the silver-scaled shoal
+It takes more than a minute to nourish my soul
+A liquid current, a weightless ballet
+I could stay down here forever and pray.
+
+[Chorus]
+Down to the blue where the sun can't reach
+Minutes tick by like grains of sand on the beach
+With just a bikini skin to the tide
+The ocean's freedom nowhere to hide
+Deep blue calling, a silent embrace
+Holding my breath, finding my place.
+
+[Bridge]
+My heart beats slow, a meditative drum
+I've conquered the panic, the fear has become
+A ripple of water that smooths and then flows
+The deeper I travel, the truer it grows.
+
+[Chorus]
+Down to the blue where the sun can't reach
+Minutes tick by like grains of sand on the beach
+With just a bikini skin to the tide
+The ocean's freedom nowhere to hide
+Deep blue calling, a silent embrace
+Holding my breath, finding my place.
+
+[Outro]
+Only the blue, only the sun's fading gleam
+Living the impossible, living the dream
+Up for the air, but the ocean's still mine
+Until I return to that surface line.</pre>
+            </div>
+        </article>
+        
+        <article id="friday_night" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Nightlife</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Fun</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Friday Night</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A wild Friday night out with friends that starts off fun but quickly spirals into chaos. It's a humorous reflection on the unpredictable nature of nightlife and the consequences of letting loose.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">Finally weekend. Whooo!
+
+[Verse 1]
+Six PM, the week is dead,
+New dress on, nothing left unsaid.
+Met my girls at the usual haunt,
+Ready for the fun that we all want.
+First Margarita, sweet and sharp,
+Playing a game that leaves its mark.
+Everything's smooth, the vibe is strong,
+Where I belong, nothing is wrong.
+Just a little buzz, a gentle high,
+Watching the world drift by. (I am so cultured right now.)
+
+[Chorus]
+Oh, Friday night firestorm, starts with a spark,
+Feelin' fearless, dancing right there in the dark.
+Sippin' slow, keepin' the cool facade,
+This is the moment, perfectly played and broad.
+Just let it run, forget the strain,
+Before the night turns into a hurricane.
+
+[Verse 2]
+Then the fourth, the fifth, the sixth are gone,
+Suddenly, I don't know the dawn.
+The room is tilting, the lights are a scream,
+(Definitely not stable!)
+I’m shouting at the DJ for a song he won't play,
+Tried to climb the bar, fell in a strange way.
+My wallet's gone, my jacket's lost,
+Don't care about the final cost.
+Kissed a random stranger right on the floor,
+Then ran out the door and wanted more! (To the next adventure!)
+
+[Chorus]
+Oh, Friday night firestorm, burning so wild,
+Feelin' reckless, acting like a crazy child.
+Guzzling fast, losing all track of the time,
+This is the moment, reaching the ultimate climb.
+*Stop* the spinning, forget the noise,
+Making all the most regrettable, loud choice.
+
+[Bridge]
+Stumbling down the street, shoe missing one heel, (Cinderella-style!)
+Tried to ride a stranger's bicycle, how did that feel?
+I'm laughing hysterically at the moon above, (He knows! He saw everything!)
+Don't know my name, don't know who to love. (But I love this pavement!)
+Banged on the wrong apartment door, yelling a friend's name, (Open up, it's me, the chaos!)
+No control left, it’s a chaotic, burning flame.
+Phone shattered screen, a taxi driver sighs,
+Seeing the terror reflected in my own eyes.
+Why did I push it this extreme?
+Lost the night inside a waking dream. (Need a map back to reality.)
+
+[Verse 3]
+The front door is open, I barely recall the code,
+Left a trail of damage down the whole dark road.
+Tripped over the rug, landed with a thud,
+Covered in something that might be mud.
+Dragged myself along the cold, hard floor,
+Didn't even bother to close the door.
+The world goes black, the chaos dies,
+Face-down on the mattress, with a painful surprise.
+No memory of the final climb,
+Just escaping the clutches of space and time. (Whew, made it!)
+
+[Outro]
+Yeah, the night went nuclear, completely unhinged, (That's a five-star review!)
+But the bed's right here, finally unpinched.
+Close my eyes, the throbbing slows,
+'Til the next Friday, where the next storm grows.
+Goodnight, and goodbye sanity. (See you next week!)</pre>
+            </div>
+        </article>
+        
+        <article id="the_hard_way" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Partnership</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Respect</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">The Hard Way</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">This song is about the mistakes I made in a past relationship, and the regret I feel for not treating my partner better. It's a reflection on how I wish I could go back and do things differently, but also an acknowledgment that I had to learn the hard way.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+I'd snap at the little things you did
+Roll my eyes and make you feel like a kid
+I'd cancel plans at the very last minute
+'Cause something 'better' had to be in it
+You'd bring me flowers, I'd leave 'em to wilt
+My every action built on selfish guilt
+You were a shelter, and I brought the storm
+Took your gentle nature and kept it warm
+Just for me to use and disregard
+
+[Chorus]
+Oh, I wish I could rewind, take every word back now
+I finally see the fool I was, somehow
+The mirrors here are cruel, they show a girl who's cold
+And losing you is a story getting old
+If I could trade this hollow space for one more kiss
+I'd crawl back on my knees to beg for this
+'Cause now the silence screams, and I hear your goodbye
+I regret everything, baby, please come back and try.
+
+[Verse 2]
+I made you walk on eggshells every day
+Felt like I earned the right to have my way
+I talked down to you in front of our friends
+Never thought that our story had ends
+I'd pick a fight just to have you chase me
+My validation was all I could see
+You'd whisper sorry for what I had done
+I thought the battle was easily won
+But I didn't see the price I would pay
+
+[Chorus]
+Oh, I wish I could rewind, take every word back now
+I finally see the fool I was, somehow
+The mirrors here are cruel, they show a girl who's cold
+And losing you is a story getting old
+If I could trade this hollow space for one more kiss
+I'd crawl back on my knees to beg for this
+'Cause now the silence screams, and I hear your goodbye
+I regret everything, baby, please come back and try.
+
+[Bridge]
+I kept pushing until the door finally closed
+The beautiful thing that we had decomposed
+I thought I was strong, but I was just unkind
+Leaving your loyalty broken behind
+Now I sit with the echoes of your sweet name
+And the crushing weight of this self-inflicted shame
+
+[Chorus]
+Oh, I wish I could rewind, take every word back now
+I finally see the fool I was, somehow
+The mirrors here are cruel, they show a girl who's cold
+And losing you is a story getting old
+If I could trade this hollow space for one more kiss
+I'd crawl back on my knees to beg for this
+'Cause now the silence screams, and I hear your goodbye
+I regret everything, baby, please come back and try.
+
+[Outro]
+Please come back and try...
+Don't let our good love just die...
+I learned the hard way...
+Oh, I learned the hard way...</pre>
+            </div>
+        </article>
+        
+        <article id="my_foundation" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Family</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Resilience</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">My Foundation</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">This song is a tribute to my mom (love you, mom!), who has been the foundation of my life. It's about the sacrifices she made and the love she gave to help me grow into the person I am today.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+I used to think the world just *was*, no strings, no price to pay
+I took the quiet comforts for granted every day
+The scent of coffee brewing before the sun would rise
+The perfect sweater waiting, a twinkle in your eyes
+I never had to worry 'bout the darkness at the door
+'Cause you were always standing there, and so much more.
+
+[Pre-Chorus]
+Now I'm finally standing tall, preparing for the flight
+And suddenly I see it all, this steady, shining light.
+
+[Chorus]
+Oh, the sacrifices big and small, the ones I couldn’t see
+You put your own dreams on a shelf just so you could raise me
+You traded late-night freedom for scraped knees and lullabies
+You fought the silent battles with grace and your disguise
+A backbone made of steel, a tenderness you kept
+You gave up everything you had so I could get some rest
+You gave me roots, you gave me wings, you showed me how to grow
+And everything I am today, Mom, is everything you sowed.
+
+[Verse 2]
+I remember the geometry that just wouldn't make sense
+You stayed up late to figure it, a tireless defense
+The perfect birthday parties, the costumes sewn by hand
+The way you taught me kindness in a world that didn't understand
+You told me it’s okay to cry, and you meant it when you said
+Your heart's the only compass, echoing in my head.
+
+[Pre-Chorus]
+Now I'm finally standing tall, preparing for the flight
+And suddenly I see it all, this steady, shining light.
+
+[Chorus]
+Oh, the sacrifices big and small, the ones I couldn’t see
+You put your own dreams on a shelf just so you could raise me
+You traded late-night freedom for scraped knees and lullabies
+You fought the silent battles with grace and your disguise
+A backbone made of steel, a tenderness you kept
+You gave up everything you had so I could get some rest
+You gave me roots, you gave me wings, you showed me how to grow
+And everything I am today, Mom, is everything you sowed.
+
+[Bridge]
+I promise I won't waste it, this foundation built on faith
+I’ll carry all your lessons, I’ll run my own good race
+And maybe one day, Mom, I’ll be half the strength you are
+But thank you for the steady hand, and for being my first star.
+
+[Chorus]
+Oh, the sacrifices big and small, the ones I couldn’t see
+You put your own dreams on a shelf just so you could raise me
+You traded late-night freedom for scraped knees and lullabies
+You fought the silent battles with grace and your disguise
+A backbone made of steel, a tenderness you kept
+You gave up everything you had so I could get some rest
+You gave me roots, you gave me wings, you showed me how to grow
+And everything I am today, Mom, is everything you sowed.
+
+[Outro]
+Yeah, everything I am today, Mom...
+This steady, shining light.
+Thank you.</pre>
+            </div>
+        </article>
+        
+        <article id="the_steel_winged_swan" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Bullying</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Resilience</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">The Steel-Winged Swan</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">I has been bullied a lot as a child, and this song is about the strength and resilience I found in myself to rise above it all, like a steel-winged swan soaring through the storm.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Eight years old, behind the chain-link fence,
+Every word a splinter, tearing down my defense.
+They left a scar where my confidence should be,
+A small, dark secret for the world to see.
+I’d hide in the shadows, praying for the end,
+A lonely, brittle soul that nobody would defend.
+They thought they burned the canvas, thought they stopped the art,
+Didn't know the thunder beating in my heart!
+
+[Pre-Chorus]
+But that timid girl is gone, she shed her skin tonight!
+I’m crawling from the wreckage, stepping into the light!
+
+[Chorus]
+I am not the failure! I am the fire!
+They tried to drown my soul, but they only fueled the pyre!
+Look at the mirror now, yeah, look at what you made!
+A steel-winged swan rising from the lonely shade!
+The clock is ticking, hear the rhythm of the drum!
+I remember you, your judgement day has come!
+Packback! Is the promise! Long overdue!
+
+[Verse 2]
+Walk these halls again, but I own the ground I tread,
+The trembling hands are gone, the quiet voice is dead.
+I see their stunned faces, the shock behind the lies,
+Trying to place the girl they used to paralyze.
+They want a connection, they want to speak my name,
+But you don't get a ticket back into my game!
+They left the window open, I flew right through the pane,
+Now they're standing in the ashes, soaking in the rain!
+
+[Pre-Chorus]
+But that timid girl is gone, she shed her skin tonight!
+I’m crawling from the wreckage, stepping into the light!
+
+[Chorus]
+I am not the failure! I am the fire!
+They tried to drown my soul, but they only fueled the pyre!
+Look at the mirror now, yeah, look at what you made!
+A steel-winged swan rising from the lonely shade!
+The clock is ticking, hear the rhythm of the drum!
+I remember you, your judgement day has come!
+Packback! Is the promise! Long overdue!
+
+[Guitar Solo]
+
+[Bridge]
+I won't trade a blow, I won't lower myself to you,
+My life's success is all the darkness you are due.
+I'm the headline you can't touch, the victory you can't claim,
+The perfect satisfaction is to never speak your name!
+My silence is the thunder, my walk is the knife,
+You are just a memory in the story of my life!
+No more fear! I am the storm!
+
+[Chorus]
+I am not the failure! I am the fire!
+They tried to drown my soul, but they only fueled the pyre!
+Look at the mirror now, yeah, look at what you made!
+A steel-winged swan rising from the lonely shade!
+The clock is ticking, hear the rhythm of the drum!
+I remember you, your judgement day has come!
+Packback! Is the promise! Long overdue!
+
+[Outro]
+Long overdue!
+THE SWAN!
+THE SWAN!</pre>
+            </div>
+        </article>
+        
+        <article id="date_disaster" class="glass-card p-3 md:p-12 rounded-[2rem]">
+            <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Date</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Real life</span></div>
+            <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Date Disaster</h2>
+            <p class="text-neutral-400 text-lg md:text-xl leading-relaxed italic mb-8 border-l border-fuchsia-500/30 pl-2 md:pl-6">A date where everything that could go wrong, did go wrong. But in the end, it turned into a magical night that I will never forget.</p>
+            
+            <div class="bg-black/40 rounded-2xl border border-white/5 p-2 md:p-10">
+                <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-fuchsia-500/50 mb-4 italic">Data Stream</h3>
+                <pre class="whitespace-pre-wrap font-sans text-neutral-200 leading-[1.6] md:leading-[1.8] text-base md:text-xl italic">[Verse 1]
+Friday eve, the mirror on the wall
+Perfect makeup, ready to give my all
+Grabbed my keys, forgot my cashmere coat
+A little detail I'll regret tonight, I note
+Stepped in the cab, the driver's name was "Jake"
+Gave him a twenty, for a five dollar stake
+"Keep the change," I slurred, a confident mistake
+Now for the ride home, I've got nothing left to take. (Oh no!)
+
+[Chorus]
+Ready for a fairytale, got my high heels on
+The music's pumping, singing my favorite song
+But the universe is laughing, 'cause everything's gone wrong
+Still hoping tonight will be where I belong.
+
+[Verse 2]
+Stepped out the cab, *rip*, I heard the sound (Damn!)
+My stocking tore, a jagged hole was found
+Then the sky opened, a torrential, sudden rain (What!)
+Soaking my dress, and washing away the pain... (of my perfect face.)
+My mascara ran, my eyeliner smudged
+Standing there dripping, feeling totally fudged (Spongejul!)
+He looked so kind, but my nerves were on the edge
+I ordered the lobster, when I wanted the hedge-hog (kidding, but I hated it).
+
+[Chorus]
+Ready for a fairytale, got my high heels on
+The music's pumping, singing my favorite song
+But the universe is laughing, 'cause everything's gone wrong
+Still hoping tonight will be where I belong.
+
+[Verse 3]
+One glass of wine, two, then three went down fast (Go girl!)
+Trying to make the awkward feeling last
+Talked about my ex, my cat, and my biggest fear
+Slurred every story, whispered in his ear
+"I just love this tie!" I probably shouted high
+Then dropped my fork, and spilled my drink near my eye
+A bright red stain, right down my little black dress
+This date's a failure, I truly must confess.
+
+[Bridge]
+Tried to stand up straight, felt the room start to spin
+Lost my balance, where do I even begin?
+He didn't laugh, didn't roll his eyes at me
+Just smiled and said, "It's time to set you free."
+He walked me to the curb, a proper gentleman
+Dialed a taxi, said, "I'll see you again."
+
+[Outro]
+I tried to thank him, a clumsy, mumbled word
+For rescuing me from the most absurd
+And just as I climbed in, beneath the pale street light
+He held my face and kissed me goodnight
+Suddenly, the stained dress, the tear in my hose
+The empty purse, the tipsy prose
+All went away, like a bad dream in the haze
+He kissed me goodnight, in a dizzy, perfect daze.
+Yeah, he kissed me goodnight.</pre>
+            </div>
+        </article>
+        
         <article id="maybe_they_knew" class="glass-card p-3 md:p-12 rounded-[2rem]">
             <div class="flex flex-wrap gap-2 mb-6"><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">First love</span><span class="px-2 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-500 text-[8px] font-black uppercase tracking-widest">Life lesson</span></div>
             <h2 class="text-3xl md:text-6xl font-black tracking-tighter uppercase mb-6 hero-text-mccarren leading-none">Maybe They Knew</h2>
@@ -2530,15 +4251,15 @@ The moment felt eternal, locked within the heart.
 [Chorus]
 [Italian]
 O, amore mio, perché?
-Un fuoco ardente che non kann morire.
+Un fuoco ardente che non può morire.
 Siamo stelle cadenti nel cielo scuro,
 Un bacio rubato, un destino impuro.
-Non c'è pace ohne dich, la mia vita,
+Non c'è pace senza te, la mia vita,
 Il veleno è dolce, la notte è già finita.
 
 [Verse 2]
 [German]
-Ich sah den Haus in ihren Blicken, kalt und starr,
+Ich sah den Hass in ihren Blicken, kalt und starr,
 Die Mauern uns'rer Häuser, alt und wunderbar.
 Ich wünschte mir, wir könnten diesen Eid zerbrechen,
 Bevor die Lords des Zorns sich an uns rächen.
@@ -2550,10 +4271,10 @@ Ein stilles, dunkles Ende, für alle Ewigkeit.
 [Chorus]
 [Italian]
 O, amore mio, perché?
-Un fuoco ardente che non kann morire.
+Un fuoco ardente che non può morire.
 Siamo stelle cadenti nel cielo scuro,
 Un bacio rubato, un destino impuro.
-Non c'è pace ohne dich, la mia vita,
+Non c'è pace senza te, la mia vita,
 Il veleno è dolce, la notte è già finita.
 
 [Bridge]
