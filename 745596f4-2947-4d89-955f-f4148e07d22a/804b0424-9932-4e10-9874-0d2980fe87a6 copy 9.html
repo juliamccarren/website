@@ -45,31 +45,6 @@
             box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
         }
 
-        .player-glow {
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.2), 
-                        inset 0 0 12px rgba(217, 70, 239, 0.1);
-            border: 1px solid rgba(217, 70, 239, 0.3) !important;
-        } 
-        
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 15px rgba(217, 70, 239, 0.2);
-                border-color: rgba(217, 70, 239, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(217, 70, 239, 0.5);
-                border-color: rgba(217, 70, 239, 0.6);
-            }
-            100% {
-                box-shadow: 0 0 15px rgba(217, 70, 239, 0.2);
-                border-color: rgba(217, 70, 239, 0.3);
-            }
-        }
-
-        .player-active-pulse {
-            animation: pulse-glow 3s ease-in-out infinite;
-        }        
-
         /* Effekt für das Ein- und Ausblenden der Lyrics beim Scrollen */
         .lyrics-fade-mask {
             /* Erzeugt einen transparenten Bereich oben (0-10%) und unten (90-100%) */
@@ -675,7 +650,7 @@
 
                     <div class="mt-auto space-y-6 relative z-10">
                         <!-- Custom Player Controls -->
-                        <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow">
+                        <div class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
                             <!-- Time Display -->
                             <div class="flex justify-between text-[10px] font-bold text-neutral-500 tracking-widest mb-4">
                                 <span id="current-time">0:00</span>
@@ -780,20 +755,14 @@
         });
 
         function togglePlay() {
-            const playerContainer = document.querySelector('.player-glow'); // Der Container mit dem Glow
-
             if (audio.paused) {
                 audio.play();
                 playBtn.innerHTML = pauseIcon;
                 playerStatus.textContent = "Neural Fusion Active...";
-                // Pulsieren aktivieren
-                if (playerContainer) playerContainer.classList.add('player-active-pulse');
             } else {
                 audio.pause();
                 playBtn.innerHTML = playIcon;
                 playerStatus.textContent = "Paused";
-                // Pulsieren stoppen
-                if (playerContainer) playerContainer.classList.remove('player-active-pulse');
             }
             lucide.createIcons();
         }
@@ -924,18 +893,11 @@
         
         function populateAndShowSongModal(song) {
             const modal = document.getElementById('song-modal');
-            const scrollContainer = modal.querySelector('.overflow-y-auto');
-
-            // 1. Modal sofort sichtbar machen (Wichtig für den Scroll-Befehl)
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-
-            // 2. Content befüllen
             document.getElementById('modal-title').textContent = song.title;
             document.getElementById('modal-background').textContent = song.background;
             document.getElementById('modal-lyrics').textContent = song.lyrics;
             
-            // Tags setzen
+            // Set up tags
             const tagsCont = document.getElementById('modal-tags');
             tagsCont.innerHTML = '';
             song.tags.forEach(tag => {
@@ -945,28 +907,18 @@
                 tagsCont.appendChild(span);
             });
             
-            // 3. Nach einem minimalen Delay nach oben springen
-            if (scrollContainer) {
-                setTimeout(() => {
-                    scrollContainer.scrollTo({
-                        top: 0,
-                        behavior: 'instant' // 'instant' statt 'smooth', damit man nicht sieht wie es hoch rattert
-                    });
-                }, 10); 
-            }
-            
-            // Player initialisieren
+            // Initialize Player for this song
             setupPlayer(song);
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
             lucide.createIcons();
         }
 
         function closeSongModal() {
+            // STOP AUDIO when closing
             audio.pause();
             audio.currentTime = 0;
-            
-            // Animation stoppen beim Schließen
-            const playerContainer = document.querySelector('.player-glow');
-            if (playerContainer) playerContainer.classList.remove('player-active-pulse');
             
             document.getElementById('song-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
