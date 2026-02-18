@@ -32,6 +32,55 @@
             opacity: 0.7;
         }
 
+        /* --- MOBILE OPTIMIZATION --- */
+        /* Increases the hit area for buttons on mobile devices without changing the layout */
+        .touch-target {
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            touch-action: manipulation; /* Prevents zoom delay on fast taps */
+            transition: transform 0.1s ease;
+        }
+
+        /* Visual feedback when tapping on mobile */
+        .touch-target:active {
+            transform: scale(0.9);
+            opacity: 0.7;
+        }        
+
+        #neural-stream-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            z-index: 9999;
+            background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0);
+        }
+
+        .stream-active {
+            /* Sichtbar machen, wenn aktiv */
+            opacity: 1; 
+            animation: indicator-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes indicator-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 10px rgba(217, 70, 239, 0.4); 
+                opacity: 0.6; 
+            }
+            50% { 
+                box-shadow: 0 0 25px rgba(217, 70, 239, 0.9); 
+                opacity: 1; 
+            }
+        }    
+
         .glass-button {
             background: rgba(217, 70, 239, 0.15);
             backdrop-filter: blur(12px);
@@ -287,6 +336,8 @@
     </style>
 </head>
 <body class="overflow-x-hidden">
+    <!--- Neural stream indicator -->
+    <div id="neural-stream-indicator"></div>
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-10 transition-all duration-500 ease-in-out">
@@ -851,11 +902,13 @@
         function updateNeuralStatus() {
             const playerContainer = document.querySelector('.player-glow');
             const playerPane = document.getElementById('player-pane');
+            const streamIndicator = document.getElementById('neural-stream-indicator');
 
             if (neuralSystemState === 'active') {
                 // UI for active fusion
                 playerStatus.textContent = "Neural Fusion Active";
                 playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.5)]";
+                // streamIndicator.classList.add('stream-active');
                 
                 if (playerContainer) playerContainer.classList.add('player-active-pulse');
                 if (playerPane) playerPane.classList.add('player-active-pulse');
@@ -863,6 +916,7 @@
                 // UI for stable link
                 playerStatus.textContent = "Neural Link Established";
                 playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-neutral-600";
+                // streamIndicator.classList.remove('stream-active');
                 
                 if (playerContainer) playerContainer.classList.remove('player-active-pulse');
                 if (playerPane) playerPane.classList.remove('player-active-pulse');
@@ -1144,7 +1198,9 @@
         const repeatBtn = document.getElementById('repeat-btn');
         let isRepeating = false;
 
-        repeatBtn.addEventListener('click', () => {
+        repeatBtn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+
             isRepeating = !isRepeating;
             audio.loop = isRepeating; // Use native audio loop function
             
@@ -1165,7 +1221,9 @@
         const autoplayBtn = document.getElementById('autoplay-toggle');
 
         // Toggle logic
-        autoplayBtn.addEventListener('click', () => {
+        autoplayBtn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            
             isAutoplay = !isAutoplay;
             if (isAutoplay) {
                 autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
