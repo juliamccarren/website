@@ -696,6 +696,10 @@
                                 <button id="play-btn" class="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
                                     <i data-lucide="play" size="24" class="fill-current ml-1"></i>
                                 </button>
+
+                                <button id="autoplay-toggle" class="text-neutral-500 hover:text-blue-400 transition-colors title="Neural Sequence">
+                                    <i data-lucide="list-music" size="20"></i>
+                                </button>                                
                             </div>
                         </div>
                         
@@ -915,16 +919,20 @@
         }        
 
         function openSongFromArchiveSongs(index) {
+            currentPlaylist = currentArchiveSongs; // Playlist setzen
+            currentSongIndex = index;
             const song = currentArchiveSongs[index];
             if (!song) return;
             populateAndShowSongModal(song);
         }
 
         function openSongFromFeatureSongs(index) {
+            currentPlaylist = currentFeatureSongs; // Playlist setzen
+            currentSongIndex = index;
             const song = currentFeatureSongs[index];
             if (!song) return;
             populateAndShowSongModal(song);
-        }        
+        }       
         
         function populateAndShowSongModal(song) {
             const modal = document.getElementById('song-modal');
@@ -981,6 +989,7 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Repeat Button Logic
         const repeatBtn = document.getElementById('repeat-btn');
         let isRepeating = false;
 
@@ -997,7 +1006,53 @@
                 repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
                 playerStatus.textContent = "Neural Fusion Active...";
             }
-        });        
+        });   
+        
+        // Autoplay Toggle Logic
+        let isAutoplay = false;
+        let currentPlaylist = []; // Speichert die Liste, aus der gerade gespielt wird
+        let currentSongIndex = -1;
+
+        const autoplayBtn = document.getElementById('autoplay-toggle');
+
+        // Toggle Logik
+        autoplayBtn.addEventListener('click', () => {
+            isAutoplay = !isAutoplay;
+            if (isAutoplay) {
+                autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+                playerStatus.textContent = "Sequence Mode Active";
+            } else {
+                autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+                playerStatus.textContent = "Neural Fusion Active...";
+            }
+        });
+
+        // Automatisch nächsten Song spielen, wenn einer endet
+        audio.addEventListener('ended', () => {
+            if (isAutoplay && !audio.loop) {
+                playNextSong();
+            }
+        });
+
+        function playNextSong() {
+            currentSongIndex++;
+            if (currentSongIndex < currentPlaylist.length) {
+                const nextSong = currentPlaylist[currentSongIndex];
+                populateAndShowSongModal(nextSong);
+                // Da das Modal schon offen ist, müssen wir nur Play triggern
+                setTimeout(() => {
+                    audio.play();
+                    playBtn.innerHTML = pauseIcon;
+                    const playerContainer = document.querySelector('.player-glow');
+                    if (playerContainer) playerContainer.classList.add('player-active-pulse');
+                    lucide.createIcons();
+                }, 100);
+            } else {
+                playerStatus.textContent = "Sequence End Reached";
+                isAutoplay = false;
+                autoplayBtn.classList.remove('text-blue-400');
+            }
+        }        
 
         // --- DIARY LOGIC ---
         let currentDiaryEntries = [];
