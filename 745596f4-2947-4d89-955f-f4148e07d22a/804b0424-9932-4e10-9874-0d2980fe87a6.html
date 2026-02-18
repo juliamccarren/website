@@ -847,7 +847,7 @@
 
                             <!-- Controls -->
                             <div class="flex justify-center items-center gap-8">
-                                <button id="repeat-btn" onclick="handleRepeatToggle()"class="text-neutral-500 hover:text-fuchsia-400 transition-colors">
+                                <button id="repeat-btn" onclick="handleRepeatToggle()" class="text-neutral-500 hover:text-fuchsia-400 transition-colors">
                                     <i data-lucide="repeat" size="20"></i>
                                 </button>
 
@@ -855,7 +855,7 @@
                                     <i data-lucide="play" size="24" class="fill-current ml-1"></i>
                                 </button>
 
-                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 hover:text-blue-400 transition-colors">
+                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 hover:text-blue-300 transition-colors">
                                     <i data-lucide="list-music" size="20"></i>
                                 </button>                                
                             </div>
@@ -1177,9 +1177,9 @@
             isRepeating = false;
             
             // Reset UI
-            const repeatBtn = document.getElementById('repeat-btn');
-            repeatBtn.classList.add('text-neutral-500');
-            repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+            // const repeatBtn = document.getElementById('repeat-btn');
+            // repeatBtn.classList.add('text-neutral-500');
+            // repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
 
             const playerContainer = document.querySelector('.player-glow');
             if (playerContainer) playerContainer.classList.remove('player-active-pulse');
@@ -1217,8 +1217,8 @@
                 repeatBtn.classList.remove('text-neutral-500');
                 repeatBtn.classList.add('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
             } else {
-                repeatBtn.classList.add('text-neutral-500');
                 repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+                repeatBtn.classList.add('text-neutral-500');               
             }
         };   
         
@@ -1233,9 +1233,11 @@
 
             isAutoplay = !isAutoplay;
             if (isAutoplay) {
+                autoplayBtn.classList.remove('text-neutral-500');
                 autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
             } else {
                 autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+                autoplayBtn.classList.add('text-neutral-500');
             }
         };
 
