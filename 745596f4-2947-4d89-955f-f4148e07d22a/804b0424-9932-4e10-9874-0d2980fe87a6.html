@@ -762,11 +762,22 @@
 
                     <div class="mt-auto space-y-6 relative z-10">
                         <!-- Custom Player Controls -->
-                        <div id="player-pane" class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow player-sidebar-glass">
+                        <div id="player-pane" class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow">
                             <!-- Time Display -->
-                            <div class="flex justify-between text-[10px] font-bold text-neutral-500 tracking-widest mb-4">
-                                <span id="current-time">0:00</span>
-                                <span id="duration">0:00</span>
+                            <div class="flex justify-between items-center text-[10px] font-bold text-neutral-500 tracking-widest mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span id="current-time">0:00</span>
+                                    <button onclick="skipToStart()" class="hover:text-fuchsia-400 transition-colors">
+                                        <i data-lucide="chevrons-left" size="14"></i>
+                                    </button>                                    
+                                </div>
+                                
+                                <div class="flex items-center gap-2">                                    
+                                    <button onclick="skipToEnd()" class="hover:text-fuchsia-400 transition-colors">
+                                        <i data-lucide="chevrons-right" size="14"></i>
+                                    </button>
+                                    <span id="duration">0:00</span>
+                                </div>
                             </div>
                             
                             <!-- Progress Bar -->
@@ -1130,6 +1141,22 @@
                 playerStatus.textContent = "Neural Fusion Active...";
             }
         });
+
+        // Skip to Start/End Logic
+        function skipToStart() {
+            audio.currentTime = 0;
+            playerStatus.textContent = "Neural Reset: Start";
+            // Falls pausiert war, optional direkt abspielen:
+            // if (audio.paused) togglePlay(); 
+        }
+
+        function skipToEnd() {
+            // Wir springen kurz vor das Ende (z.B. 0.5s), damit das 'ended' Event sauber triggert
+            if (audio.duration) {
+                audio.currentTime = audio.duration - 0.5;
+                playerStatus.textContent = "Neural Jump: End";
+            }
+        }        
 
         // Automatisch nächsten Song spielen, wenn einer endet
         audio.addEventListener('ended', () => {
