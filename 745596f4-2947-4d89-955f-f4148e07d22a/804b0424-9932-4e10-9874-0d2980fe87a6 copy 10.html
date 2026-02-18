@@ -45,32 +45,32 @@
             box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
         }
 
-        /* The container for the entire right player sidebar */
-        /* A soft fuchsia glow in the background of the pane */
+        /* Der Container für die gesamte rechte Player-Leiste */
+        /* Ein weiches, fuchsiafarbenes Glühen im Hintergrund der Pane */
         .player-sidebar-glass {
-            /* IMPORTANT: Set background to semitransparent */
+            /* WICHTIG: Hintergrund auf semitransparent setzen */
             background: rgba(10, 10, 10, 0.4) !important; 
             backdrop-filter: blur(25px) saturate(160%);
             -webkit-backdrop-filter: blur(25px) saturate(160%);
             position: relative;
-            z-index: 1; /* Creates a new stacking context */
+            z-index: 1; /* Schafft eine neue Stapel-Ebene */
         }
 
-        /* The glow must be UNDER the content */
+        /* Das Glimmen muss UNTER dem Content liegen */
         .player-sidebar-glass::after {
             content: "";
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 150%; /* Slightly larger for softer edges */
+            width: 150%; /* Etwas größer für weichere Ränder */
             height: 150%;
             background: radial-gradient(
                 circle at center, 
-                rgba(217, 70, 239, 0.15) 0%, /* Strength slightly increased */
+                rgba(217, 70, 239, 0.15) 0%, /* Stärke leicht erhöht */
                 rgba(217, 70, 239, 0) 70%
             );
             transform: translate(-50%, -50%) scale(1);
-            z-index: -1; /* Behind the player contents */
+            z-index: -1; /* Hinter den Player-Inhalten */
             pointer-events: none;
             transition: opacity 1s ease;
             opacity: 0;
@@ -92,7 +92,7 @@
             backdrop-filter: blur(15px) saturate(150%);
             -webkit-backdrop-filter: blur(15px) saturate(150%);
             
-            /* Soft fuchsia border and shadow at rest */
+            /* Sanfter fuchsiafarbener Rand und Schatten im Ruhezustand */
             border: 1px solid rgba(217, 70, 239, 0.3) !important;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8),
                         0 0 15px rgba(217, 70, 239, 0.2), 
@@ -101,7 +101,7 @@
             border-radius: 24px;
             position: relative;
             overflow: hidden;
-            transition: all 0.5s ease; /* Smooth transition on start/stop */
+            transition: all 0.5s ease; /* Weicher Übergang beim Start/Stopp */
         }       
         
         @keyframes pulse-glow {
@@ -123,7 +123,7 @@
             animation: pulse-glow 3s ease-in-out infinite;
         }        
 
-        /* Effect for fading lyrics in and out when scrolling */
+        /* Effekt für das Ein- und Ausblenden der Lyrics beim Scrollen */
         .lyrics-fade-mask {
             /* Erzeugt einen transparenten Bereich oben (0-10%) und unten (90-100%) */
             -webkit-mask-image: linear-gradient(
@@ -223,7 +223,7 @@
         }
 
         /* Custom Range Slider for the Player */
-        /* Container for the glassy appearance */
+        /* Container für den gläsernen Look */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
@@ -231,7 +231,7 @@
             cursor: pointer;
         }
 
-        /* The track - Glassy and subtle */
+        /* Der Pfad (Track) - Gläsern und dezent */
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
             height: 6px;
@@ -242,32 +242,32 @@
             transition: all 0.3s ease;
         }
 
-        /* The slider thumb - The "glowing jewel" */
+        /* Der Schieber (Thumb) - Das "leuchtende Juwel" */
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             height: 16px;
             width: 16px;
             border-radius: 50%;
-            /* Pure white for maximum clarity */
+            /* Reinweiß für maximale Klarheit */
             background: #ffffff; 
-            /* A hair-thin border to distinguish the shape from the glow */
+            /* Ein hauchdünner Rand, um die Form gegen den Glow abzugrenzen */
             border: 2px solid rgba(255, 255, 255, 0.5); 
-            margin-top: -6px; /* Center the 16px thumb on the 6px track */
-            /* The glow remains fuchsia to maintain system connection */
+            margin-top: -6px; /* Zentriert den 16px Thumb auf dem 6px Track */
+            /* Der Glow bleibt fuchsia, damit die Verbindung zum System gewahrt bleibt */
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 
                         0 0 20px rgba(217, 70, 239, 0.3);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
         }
 
-        /* Effect when dragging: The thumb glows brighter */
+        /* Effekt beim Ziehen: Der Thumb strahlt stärker */
         input[type=range]:active::-webkit-slider-thumb {
             transform: scale(1.2);
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 
                         0 0 30px rgba(217, 70, 239, 0.5);
         }
 
-        /* Interaction: When the player is active (class controlled via JS on parent) */
+        /* Interaktion: Wenn der Player aktiv ist (Klasse wird via JS am Parent gesteuert) */
         .player-active-pulse input[type=range]::-webkit-slider-runnable-track {
             background: rgba(217, 70, 239, 0.1);
             border-color: rgba(217, 70, 239, 0.2);
@@ -844,8 +844,8 @@
         let playIcon = `<i data-lucide="play" size="24" class="fill-current ml-1"></i>`;
         let pauseIcon = `<i data-lucide="pause" size="24" class="fill-current"></i>`;
 
-        // Global system status
-        // Values: 'established' (Pause) | 'active' (Play)
+        // Globaler System-Status
+        // Werte: 'established' (Pause) | 'active' (Play)
         let neuralSystemState = 'established';
 
         function updateNeuralStatus() {
@@ -853,14 +853,14 @@
             const playerPane = document.getElementById('player-pane');
 
             if (neuralSystemState === 'active') {
-                // UI for active fusion
+                // UI für aktive Fusion
                 playerStatus.textContent = "Neural Fusion Active";
                 playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.5)]";
                 
                 if (playerContainer) playerContainer.classList.add('player-active-pulse');
                 if (playerPane) playerPane.classList.add('player-active-pulse');
             } else {
-                // UI for stable link
+                // UI für stabilen Link
                 playerStatus.textContent = "Neural Link Established";
                 playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-neutral-600";
                 
@@ -975,13 +975,13 @@
             try {
                 const response = await fetch('songs.json');
                 if (!response.ok) {
-                    throw new Error(`Failed to load songs.json (Status: ${response.status})`);
+                    throw new Error(`songs.json konnte nicht geladen werden (Status: ${response.status})`);
                 }
                 allSongsCache = await response.json();
                 injectSEOData(allSongsCache);
                 return allSongsCache;
             } catch (error) {
-                console.error('Error loading songs:', error.message);
+                console.error('Fehler beim Laden der Songs:', error.message);
                 throw error;
             }
         }
@@ -1029,7 +1029,7 @@
                 songGrid.innerHTML = ''; 
 
                 if (currentFeatureSongs.length === 0) {
-                     console.warn('Feature song ID not found:', songId);
+                     console.warn("Feature song ID not found:", songId);
                      return;
                 }
 
@@ -1048,13 +1048,13 @@
 
                 lucide.createIcons();
             } catch (error) {
-                console.error('Archive error:', error);
+                console.error('Archiv-Fehler:', error);
                 songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
             }
         }        
 
         function openSongFromArchiveSongs(index) {
-            currentPlaylist = currentArchiveSongs; // Set playlist
+            currentPlaylist = currentArchiveSongs; // Playlist setzen
             currentSongIndex = index;
             const song = currentArchiveSongs[index];
             if (!song) return;
@@ -1062,7 +1062,7 @@
         }
 
         function openSongFromFeatureSongs(index) {
-            currentPlaylist = currentFeatureSongs; // Set playlist
+            currentPlaylist = currentFeatureSongs; // Playlist setzen
             currentSongIndex = index;
             const song = currentFeatureSongs[index];
             if (!song) return;
@@ -1073,11 +1073,11 @@
             const modal = document.getElementById('song-modal');
             const scrollContainer = modal.querySelector('.overflow-y-auto');
 
-            // 1. Make modal visible immediately (important for scroll command)
+            // 1. Modal sofort sichtbar machen (Wichtig für den Scroll-Befehl)
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
 
-            // 2. Populate content
+            // 2. Content befüllen
             document.getElementById('modal-title').textContent = song.title;
             document.getElementById('modal-background').textContent = song.background;
             document.getElementById('modal-lyrics').textContent = song.lyrics;
@@ -1092,12 +1092,12 @@
                 tagsCont.appendChild(span);
             });
             
-            // 3. Jump to top after minimal delay
+            // 3. Nach einem minimalen Delay nach oben springen
             if (scrollContainer) {
                 setTimeout(() => {
                     scrollContainer.scrollTo({
                         top: 0,
-                        behavior: 'instant' // 'instant' instead of 'smooth' to avoid visible scrolling
+                        behavior: 'instant' // 'instant' statt 'smooth', damit man nicht sieht wie es hoch rattert
                     });
                 }, 10); 
             }
@@ -1110,10 +1110,10 @@
         function closeSongModal() {
             audio.pause();
             audio.currentTime = 0;
-            audio.loop = false; // Disable loop
+            audio.loop = false; // Loop deaktivieren
             isRepeating = false;
             
-            // Reset UI
+            // UI zurücksetzen
             repeatBtn.classList.add('text-neutral-500');
             repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
 
@@ -1131,7 +1131,7 @@
                 seekSlider.value = progress || 0;
                 currentTimeEl.textContent = formatTime(audio.currentTime);
                 
-                // The track maintains the Julia-McCarren gradient
+                // Der Track behält den Julia-McCarren-Verlauf
                 seekSlider.style.background = `linear-gradient(to right, 
                     #f472b6 0%, 
                     #d946ef ${progress / 2}%, 
@@ -1146,7 +1146,7 @@
 
         repeatBtn.addEventListener('click', () => {
             isRepeating = !isRepeating;
-            audio.loop = isRepeating; // Use native audio loop function
+            audio.loop = isRepeating; // Die native Audio-Loop-Funktion nutzen
             
             if (isRepeating) {
                 repeatBtn.classList.remove('text-neutral-500');
@@ -1164,7 +1164,7 @@
 
         const autoplayBtn = document.getElementById('autoplay-toggle');
 
-        // Toggle logic
+        // Toggle Logik
         autoplayBtn.addEventListener('click', () => {
             isAutoplay = !isAutoplay;
             if (isAutoplay) {
@@ -1177,18 +1177,18 @@
         // Skip to Start/End Logic
         function skipToStart() {
             audio.currentTime = 0;
-            // If paused, optionally play directly:
+            // Falls pausiert war, optional direkt abspielen:
             // if (audio.paused) togglePlay(); 
         }
 
         function skipToEnd() {
-            // Jump just before the end (e.g., 0.5s) so the 'ended' event triggers cleanly
+            // Wir springen kurz vor das Ende (z.B. 0.5s), damit das 'ended' Event sauber triggert
             if (audio.duration) {
                 audio.currentTime = audio.duration - 0.5;
             }
         }        
 
-        // Automatically play next song when one ends
+        // Automatisch nächsten Song spielen, wenn einer endet
         audio.addEventListener('ended', () => {
             if (isAutoplay && !audio.loop) {
                 playNextSong();
@@ -1200,7 +1200,7 @@
             if (currentSongIndex < currentPlaylist.length) {
                 const nextSong = currentPlaylist[currentSongIndex];
                 populateAndShowSongModal(nextSong);
-                // Since the modal is already open, we only need to trigger play
+                // Da das Modal schon offen ist, müssen wir nur Play triggern
                 setTimeout(() => {
                     audio.play();
                     playBtn.innerHTML = pauseIcon;
