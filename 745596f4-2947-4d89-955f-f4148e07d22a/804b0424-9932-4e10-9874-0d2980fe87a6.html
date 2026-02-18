@@ -689,6 +689,10 @@
 
                             <!-- Controls -->
                             <div class="flex justify-center items-center gap-8">
+                                <button id="repeat-btn" class="text-neutral-500 hover:text-fuchsia-400 transition-colors">
+                                    <i data-lucide="repeat" size="20"></i>
+                                </button>
+
                                 <button id="play-btn" class="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
                                     <i data-lucide="play" size="24" class="fill-current ml-1"></i>
                                 </button>
@@ -963,14 +967,37 @@
         function closeSongModal() {
             audio.pause();
             audio.currentTime = 0;
+            audio.loop = false; // Loop deaktivieren
+            isRepeating = false;
             
-            // Animation stoppen beim Schließen
+            // UI zurücksetzen
+            repeatBtn.classList.add('text-neutral-500');
+            repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+
             const playerContainer = document.querySelector('.player-glow');
             if (playerContainer) playerContainer.classList.remove('player-active-pulse');
             
             document.getElementById('song-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
+
+        const repeatBtn = document.getElementById('repeat-btn');
+        let isRepeating = false;
+
+        repeatBtn.addEventListener('click', () => {
+            isRepeating = !isRepeating;
+            audio.loop = isRepeating; // Die native Audio-Loop-Funktion nutzen
+            
+            if (isRepeating) {
+                repeatBtn.classList.remove('text-neutral-500');
+                repeatBtn.classList.add('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+                playerStatus.textContent = "Neural Loop Enabled";
+            } else {
+                repeatBtn.classList.add('text-neutral-500');
+                repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+                playerStatus.textContent = "Neural Fusion Active...";
+            }
+        });        
 
         // --- DIARY LOGIC ---
         let currentDiaryEntries = [];
