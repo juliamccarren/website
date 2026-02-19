@@ -908,33 +908,7 @@
         const playerStatus = document.getElementById('player-status');
         let isSeeking = false;
         let playIcon = `<i data-lucide="play" size="24" class="fill-current ml-1"></i>`;
-        let pauseIcon = `<i data-lucide="pause" size="24" class="fill-current"></i>`;
-
-        // Global system status
-        // Values: 'established' (Pause) | 'active' (Play)
-        function updateNeuralStatus() {
-            const playerContainer = document.querySelector('.player-glow');
-            const playerPane = document.getElementById('player-pane');
-            const streamIndicator = document.getElementById('neural-stream-indicator');
-
-            if (neuralSystemState === 'active') {
-                // UI for active fusion
-                playerStatus.textContent = "Neural Fusion Active";
-                playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.5)]";
-                // streamIndicator.classList.add('stream-active');
-                
-                if (playerContainer) playerContainer.classList.add('player-active-pulse');
-                if (playerPane) playerPane.classList.add('player-active-pulse');
-            } else {
-                // UI for stable link
-                playerStatus.textContent = "Neural Link Established";
-                playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-neutral-600";
-                // streamIndicator.classList.remove('stream-active');
-                
-                if (playerContainer) playerContainer.classList.remove('player-active-pulse');
-                if (playerPane) playerPane.classList.remove('player-active-pulse');
-            }
-        }        
+        let pauseIcon = `<i data-lucide="pause" size="24" class="fill-current"></i>`;     
 
         // Player Event Listeners
         playBtn.addEventListener('click', togglePlay);
