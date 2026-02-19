@@ -580,39 +580,59 @@
             <div class="container mx-auto px-6">
                 
                 <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                            <div>
-                                <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 italic text-white/90">
-                                    Neural <span class="hero-text-mccarren">Archives</span>
-                                </h2>
-                                <p class="text-neutral-500 uppercase font-bold tracking-[0.3em] text-[10px]">Accessing Latent Soundscapes</p>
-                            </div>
-                            
-                            <div class="flex items-center gap-2 bg-neutral-900/50 p-1.5 rounded-full border border-white/5 backdrop-blur-xl">
-                                <div class="flex items-center bg-black/60 rounded-full px-2 border border-white/10">
-                                    <button onclick="changeLimit(-1)" class="touch-target text-fuchsia-500/50 hover:text-fuchsia-400 transition-colors p-2">
-                                        <i data-lucide="chevron-down" size="20"></i>
-                                    </button>
+                    <div>
+                        <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 italic text-white/90">
+                            Neural <span class="hero-text-mccarren">Archives</span>
+                        </h2>
+                        <p class="text-neutral-500 uppercase font-bold tracking-[0.3em] text-[10px]">Accessing Latent Soundscapes</p>
+                    </div>
+                </div>
 
-                                    <div class="w-14 h-10 overflow-hidden relative flex items-center justify-center bg-black/40 rounded-lg">
-                                        <div id="picker-drum" class="absolute transition-transform duration-500 ease-out flex flex-col items-center" style="top: 0;">
-                                            </div>
-                                        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black via-transparent to-black opacity-70"></div>
+                <div class="max-w-3xl mb-12 space-y-4">
+                    <p class="text-neutral-400 leading-relaxed">
+                        The <strong class="text-fuchsia-500">Neural Archives</strong> provide access to the latent soundscapes of Julia McCarren. 
+                        Each selection is a deliberate synchronization between biological intent and artificial depth. 
+                    </p>
+                    <div class="p-4 bg-white/5 border-l-2 border-fuchsia-500/30 rounded-r-2xl">
+                        <p class="text-xs text-fuchsia-500 leading-relaxed uppercase tracking-wider font-bold">
+                            Radio & Offline Mode
+                        </p>
+                        <p class="text-sm text-neutral-400 mt-2">
+                            By setting your limit and using <span class="text-fuchsia-500">Reshuffle</span>, the chosen tracks are fully synchronized with your local device. 
+                            This ensures a seamless, interruption-free radio experience, even in environments without network access, such as long journeys or transit. 
+                            <br><br><span class="italic text-fuchsia-500">To save mobile data volumes, perform the initial sync via Wi-Fi, especially when the reshuffle is performed for the first time on a lot of songs.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-fit mb-12 space-y-4">
+                    <div class="flex items-center gap-2 bg-neutral-900/50 p-1.5 rounded-full border border-white/5 backdrop-blur-xl">
+                        <div class="flex items-center bg-black/60 rounded-full px-2 border border-white/10">
+                            <button onclick="changeLimit(-1)" class="touch-target text-fuchsia-500/50 hover:text-fuchsia-400 transition-colors p-2">
+                                <i data-lucide="chevron-down" size="20"></i>
+                            </button>
+
+                            <div class="w-14 h-10 overflow-hidden relative flex items-center justify-center bg-black/40 rounded-lg">
+                                <div id="picker-drum" class="absolute transition-transform duration-500 ease-out flex flex-col items-center" style="top: 0;">
                                     </div>
-
-                                    <button onclick="changeLimit(1)" class="touch-target text-fuchsia-500/50 hover:text-fuchsia-400 transition-colors p-2">
-                                        <i data-lucide="chevron-up" size="20"></i>
-                                    </button>
-                                </div>
-
-                                <input type="hidden" id="archive-count-input" value="6">
-
-                                <button onclick="loadAndDisplayArchiveSongs()" 
-                                        class="touch-target glass-button text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group">
-                                    <i data-lucide="refresh-cw" size="14" class="group-hover:rotate-180 transition-transform duration-700"></i>
-                                    Reshuffle
-                                </button>
+                                <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black via-transparent to-black opacity-70"></div>
                             </div>
+
+                            <button onclick="changeLimit(1)" class="touch-target text-fuchsia-500/50 hover:text-fuchsia-400 transition-colors p-2">
+                                <i data-lucide="chevron-up" size="20"></i>
+                            </button>
                         </div>
+
+                        <input type="hidden" id="archive-count-input" value="6">
+
+                        <button onclick="loadAndDisplayArchiveSongs()" 
+                                class="touch-target glass-button text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group">
+                            <i data-lucide="refresh-cw" size="14" class="group-hover:rotate-180 transition-transform duration-700"></i>
+                            Reshuffle
+                        </button>
+                    </div>                
+                </div>    
+
                 <div id="song-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                     </div>
                 
@@ -1431,7 +1451,8 @@
         }
 
         /**
-         * Updated load function to respect the dynamic count
+         * Updated load function: Now includes background pre-caching 
+         * for the selected songs to ensure offline stability in the car.
          */
         async function loadAndDisplayArchiveSongs() {
             const songGrid = document.getElementById('song-grid');
@@ -1445,6 +1466,16 @@
 
                 songGrid.innerHTML = ''; 
                 songGrid.classList.add('opacity-0');
+
+                // --- NEURAL PRE-CACHE LOGIC ---
+                // We tell the browser to download the files into the cache immediately
+                currentArchiveSongs.forEach(song => {
+                    const fullUrl = `${R2_DOMAIN}${song.id}.mp3`; // Standardized R2 path
+                    
+                    fetch(fullUrl, { mode: 'no-cors', priority: 'low' })
+                        .then(() => console.log(`CACHE SUCCESS: ${song.title} is now available offline.`))
+                        .catch(err => console.warn(`CACHE FAILED for ${song.title}`, err));
+                });
 
                 setTimeout(() => {
                     songGrid.classList.remove('opacity-0');
