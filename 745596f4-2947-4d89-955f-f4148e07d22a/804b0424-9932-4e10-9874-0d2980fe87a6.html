@@ -923,8 +923,6 @@
 
         audio.addEventListener('loadedmetadata', () => {
             durationEl.textContent = formatTime(audio.duration);
-            // neuralSystemState = 'established'; // Sicherstellen, dass Link steht
-            updateNeuralStatus();
         });
 
         audio.addEventListener('ended', () => {
