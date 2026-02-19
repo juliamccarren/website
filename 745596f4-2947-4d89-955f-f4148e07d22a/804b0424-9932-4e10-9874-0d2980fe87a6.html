@@ -827,15 +827,21 @@
                             <div class="flex justify-between items-center text-md font-bold text-normal-500 tracking-widest mb-4">
                                 <div class="flex items-center gap-2">
                                     <span id="current-time">0:00</span>
-                                    <button onclick="skipToStart()" class="hover:text-fuchsia-500 transition-colors">
+                                    <button onclick="playPreviousSong()" class="text-violet-500 transition-colors">
+                                        <i data-lucide="skip-back" size="11"></i>
+                                    </button>
+                                    <button onclick="skipToStart()" class="text-fuchsia-500 transition-colors">
                                         <i data-lucide="chevrons-left" size="16"></i>
                                     </button>                                    
                                 </div>
                                 
                                 <div class="flex items-center gap-2">                                    
-                                    <button onclick="skipToEnd()" class="hover:text-fuchsia-500 transition-colors">
+                                    <button onclick="skipToEnd()" class="text-fuchsia-500 transition-colors">
                                         <i data-lucide="chevrons-right" size="16"></i>
                                     </button>
+                                    <button onclick="playNextSong()" class="text-violet-500 transition-colors">
+                                        <i data-lucide="skip-forward" size="11"></i>
+                                    </button>                                    
                                     <span id="duration">0:00</span>
                                 </div>
                             </div>
@@ -926,11 +932,13 @@
         });
 
         audio.addEventListener('ended', () => {
-            if (isAutoplay && !audio.loop) {
-                // On autoplay
-                playNextSong();
-            } else {
-                // No autoplay or loop enabled, just reset
+            if (isAutoplay) {
+                playNextSong(); // This will now wrap around to 0 automatically
+            } 
+            else if (isRepeating) {
+                startPlayback(); // Just restart the current song
+            } 
+            else {
                 stopPlayback();
             }
         });
@@ -1067,6 +1075,8 @@
                 navigator.mediaSession.setActionHandler('pause', stopPlayback);
                 navigator.mediaSession.setActionHandler('seekbackward', () => { audio.currentTime -= 10; });
                 navigator.mediaSession.setActionHandler('seekforward', () => { audio.currentTime += 10; });
+                navigator.mediaSession.setActionHandler('previoustrack', playPreviousSong);
+                navigator.mediaSession.setActionHandler('nexttrack', playNextSong);
             }
             // --- Ende Metadata ---
 
@@ -1229,20 +1239,12 @@
         }
 
         function closeSongModal() {
-            stopPlayback();
+            stopPlayback(); // Resets Audio, Icons and Pulse-Animations
             audio.currentTime = 0;
-            audio.loop = false; // Disable loop
+            
+            // Use the setters to ensure UI and Logic are reset together
             setRepeat(false);
             setAutoplay(false);
-            // isRepeating = false;
-            
-            // Reset UI
-            // const repeatBtn = document.getElementById('repeat-btn');
-            // repeatBtn.classList.add('text-neutral-500');
-            // repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
-
-            const playerContainer = document.querySelector('.player-glow');
-            if (playerContainer) playerContainer.classList.remove('player-active-pulse');
             
             document.getElementById('song-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
@@ -1290,23 +1292,46 @@
             }
         }        
 
-        // Play next song in playlist (called on 'ended' if autoplay is enabled)
-        function playNextSong() {
-            currentSongIndex++;
-            if (currentSongIndex < currentPlaylist.length) {
-                const nextSong = currentPlaylist[currentSongIndex];
-                showSongModal(nextSong);
+        // Navigate to the previous song in the current playlist
+        function playPreviousSong() {
+            if (currentPlaylist.length === 0) return;
 
-                // Start everything with a slight delay to ensure UI updates before playback starts
-                setTimeout(() => {
-                    startPlayback(); 
-                }, 100);
-            } else {
-                stopPlayback(); // Clean reset at end of playlist
-                setAutoplay(false);
-                playerStatus.textContent = "Sequence End Reached";
+            currentSongIndex--;
+            // Boundary check: wrap to end if at the beginning
+            if (currentSongIndex < 0) {
+                currentSongIndex = currentPlaylist.length - 1;
             }
-        }      
+
+            const prevSong = currentPlaylist[currentSongIndex];
+            showSongModal(prevSong);
+            
+            // Start playback immediately
+            setTimeout(() => {
+                startPlayback();
+            }, 100);
+        }
+
+        // Navigate to the next song in the current playlist
+        function playNextSong() {
+            if (currentPlaylist.length === 0) return;
+
+            currentSongIndex++;
+
+            // Boundary check: wrap to start if at the end
+            if (currentSongIndex >= currentPlaylist.length) {
+                currentSongIndex = 0;
+            }
+
+            const nextSong = currentPlaylist[currentSongIndex];
+            
+            // Use the central modal capsule to sync UI and data
+            showSongModal(nextSong);
+
+            // Auto-start the next track
+            setTimeout(() => {
+                startPlayback(); 
+            }, 100);
+        } 
 
         // --- DIARY LOGIC ---
         let currentDiaryEntries = [];
