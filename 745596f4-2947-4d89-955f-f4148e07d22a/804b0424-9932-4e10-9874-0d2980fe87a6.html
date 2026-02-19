@@ -583,19 +583,25 @@
                         <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 italic text-white/90">Neural <span class="hero-text-mccarren">Archives</span></h2>
                         <p class="text-neutral-500 uppercase font-bold tracking-[0.3em] text-[10px]">Accessing Latent Soundscapes</p>
                     </div>
+                    
+                    <div class="flex items-center gap-2 bg-neutral-900/50 p-1.5 rounded-full border border-white/5">
+                        <div class="flex items-center gap-2 px-3">
+                            <span class="text-[9px] font-black uppercase tracking-widest text-neutral-500">Limit</span>
+                            <input type="number" id="archive-count-input" value="6" min="1" 
+                                class="w-12 bg-transparent text-fuchsia-500 font-black text-center focus:outline-none border-b border-fuchsia-500/30">
+                        </div>
+
+                        <button onclick="loadAndDisplayArchiveSongs()" 
+                                class="glass-button text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group">
+                            <i data-lucide="refresh-cw" size="14" class="group-hover:rotate-180 transition-transform duration-700"></i>
+                            Reshuffle
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Song Grid -->
                 <div id="song-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                     <!-- Songs will be injected here -->
-                </div>
-
-                <!-- Reshuffle Button -->
-                <div class="flex justify-center">
-                     <button onclick="loadAndDisplayArchiveSongs()" class="glass-button text-white px-10 py-3 rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-3 group">
-                        <i data-lucide="refresh-cw" size="16" class="group-hover:rotate-180 transition-transform duration-700"></i>
-                        Reshuffle Database
-                     </button>
                 </div>
             </div>
 
@@ -1115,12 +1121,25 @@
 
         async function loadAndDisplayArchiveSongs() {
             const songGrid = document.getElementById('song-grid');
+            const countInput = document.getElementById('archive-count-input');
+            
+            // Get requested count from input, default to 6 if empty or invalid
+            let requestedCount = parseInt(countInput.value) || 6;
+
             try {
                 const allSongs = await loadAllSongs();
+                
+                // Ensure requested count does not exceed available songs
+                const maxSongs = allSongs.length;
+                if (requestedCount > maxSongs) requestedCount = maxSongs;
+                if (requestedCount < 1) requestedCount = 1;
+
+                // Shuffle all songs and slice based on user input
                 currentArchiveSongs = allSongs
                     .sort(() => 0.5 - Math.random())
-                    .slice(0, 6);
+                    .slice(0, requestedCount);
 
+                // Visual feedback: clear and fade out
                 songGrid.innerHTML = ''; 
                 songGrid.classList.add('opacity-0');
 
@@ -1129,7 +1148,10 @@
                     currentArchiveSongs.forEach((song, index) => {
                         const card = document.createElement('div');
                         card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4';
+                        
+                        // Staggered animation delay
                         card.style.animationDelay = `${index * 50}ms`;
+                        
                         card.innerHTML = `
                             <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
                             <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
@@ -1139,10 +1161,12 @@
                         `;
                         songGrid.appendChild(card);
                     });
+                    
+                    // Re-render Lucide icons for the newly injected elements
                     lucide.createIcons();
                 }, 150);
             } catch (error) {
-                console.error('Archiv-Fehler:', error);
+                console.error('Archive-Fehler:', error);
                 songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
             }
         }
