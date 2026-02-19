@@ -893,12 +893,6 @@
         // TODO: REPLACE THIS WITH YOUR ACTUAL R2 PUBLIC BUCKET DOMAIN
         const R2_DOMAIN = 'https://music.juliamccarren.com/'; 
 
-        let isAutoplay = false;
-        let isRepeating = false;
-        let neuralSystemState = 'established';    
-        let currentPlaylist = [];
-        let currentSongIndex = -1;            
-
         // --- AUDIO PLAYER LOGIC ---
         const audio = new Audio();
         const playBtn = document.getElementById('play-btn');
@@ -912,6 +906,8 @@
 
         // Global system status
         // Values: 'established' (Pause) | 'active' (Play)
+        let neuralSystemState = 'established';
+
         function updateNeuralStatus() {
             const playerContainer = document.querySelector('.player-glow');
             const playerPane = document.getElementById('player-pane');
@@ -954,13 +950,10 @@
         });
 
         audio.addEventListener('ended', () => {
-            if (isAutoplay && !audio.loop) {
-                // On autoplay
-                playNextSong();
-            } else {
-                // No autoplay or loop enabled, just reset
-                stopPlayback();
-            }
+            playBtn.innerHTML = playIcon;
+            // neuralSystemState = 'established'; // Zurück in Standby
+            updateNeuralStatus();
+            lucide.createIcons();
         });
 
         audio.addEventListener('error', (e) => {
@@ -980,93 +973,19 @@
             isSeeking = false;
         });
 
-        // Optional: Handle external pause/play (e.g., from mobile controls)
-        audio.onpause = () => {
-            if (neuralSystemState === 'active') stopPlayback();
-        };
-
-        audio.onplay = () => {
-            if (neuralSystemState !== 'active') startPlayback();
-        };        
-
-        // Central Playback Control: Start
-        function startPlayback() {
-            audio.play().then(() => {
-                neuralSystemState = 'active';
-                playBtn.innerHTML = pauseIcon;
-
-                // UI Update: Activate animations and status colors
-                const playerContainer = document.querySelector('.player-glow');
-                const playerPane = document.getElementById('player-pane');
-                
-                playerStatus.textContent = "Neural Fusion Active";
-                playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.5)]";
-                
-                playerContainer?.classList.add('player-active-pulse');
-                playerPane?.classList.add('player-active-pulse');
-                
-                lucide.createIcons(); // Re-render icons for pause state
-            }).catch(error => {
-                console.error("Neural Sync Failed:", error);
-            });
-        }
-
-        // Central Playback Control: Stop
-        function stopPlayback() {
-            audio.pause();
-            neuralSystemState = 'established';
-            playBtn.innerHTML = playIcon;
-
-            // UI Update: Reset animations and status colors
-            const playerContainer = document.querySelector('.player-glow');
-            const playerPane = document.getElementById('player-pane');
-
-            playerStatus.textContent = "Neural Link Established";
-            playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-neutral-600";
-            
-            playerContainer?.classList.remove('player-active-pulse');
-            playerPane?.classList.remove('player-active-pulse');
-            
-            lucide.createIcons(); // Re-render icons for play state
-        }
-
-        // Start/Stop Toggle
         function togglePlay() {
             if (audio.paused) {
-                startPlayback();
+                audio.play();
+                playBtn.innerHTML = pauseIcon;
+                neuralSystemState = 'active'; // State ändern
             } else {
-                stopPlayback();
+                audio.pause();
+                playBtn.innerHTML = playIcon;
+                neuralSystemState = 'established'; // State ändern
             }
+            updateNeuralStatus(); // UI synchronisieren
+            lucide.createIcons();
         }
-
-        // Central Toggle: Repeat
-        function setRepeat(state) {
-            isRepeating = state;
-            audio.loop = state; // Native browser audio loop
-            
-            const repeatBtn = document.getElementById('repeat-btn');
-            if (isRepeating) {
-                repeatBtn.classList.add('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
-                repeatBtn.classList.remove('text-neutral-500');
-            } else {
-                repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
-                repeatBtn.classList.add('text-neutral-500');               
-            }
-        }
-
-        // Central Toggle: Autoplay
-        function setAutoplay(state) {
-            isAutoplay = state;
-            
-            const autoplayBtn = document.getElementById('autoplay-toggle');
-            if (isAutoplay) {
-                autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
-                autoplayBtn.classList.remove('text-neutral-500');
-            } else {
-                autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
-                autoplayBtn.classList.add('text-neutral-500');
-            }
-        }     
 
         function formatTime(seconds) {
             if(isNaN(seconds)) return "0:00";
@@ -1091,8 +1010,8 @@
                 });
 
                 // Optionale Steuerung über das Handy-Menü
-                navigator.mediaSession.setActionHandler('play', startPlayback);
-                navigator.mediaSession.setActionHandler('pause', stopPlayback);
+                navigator.mediaSession.setActionHandler('play', togglePlay);
+                navigator.mediaSession.setActionHandler('pause', togglePlay);
                 navigator.mediaSession.setActionHandler('seekbackward', () => { audio.currentTime -= 10; });
                 navigator.mediaSession.setActionHandler('seekforward', () => { audio.currentTime += 10; });
             }
@@ -1202,7 +1121,7 @@
             currentSongIndex = index;
             const song = currentArchiveSongs[index];
             if (!song) return;
-            showSongModal(song);
+            populateAndShowSongModal(song);
         }
 
         function openSongFromFeatureSongs(index) {
@@ -1210,10 +1129,10 @@
             currentSongIndex = index;
             const song = currentFeatureSongs[index];
             if (!song) return;
-            showSongModal(song);
+            populateAndShowSongModal(song);
         }       
         
-        function showSongModal(song) {
+        function populateAndShowSongModal(song) {
             const modal = document.getElementById('song-modal');
             const scrollContainer = modal.querySelector('.overflow-y-auto');
 
@@ -1236,32 +1155,25 @@
                 tagsCont.appendChild(span);
             });
             
-            // UI synchronization
-            setRepeat(isRepeating);
-            setAutoplay(isAutoplay);
-
-            if (audio.paused) {
-                stopPlayback();
-            } else {
-                startPlayback();
-            }            
-
-            // Player init
+            // 3. Jump to top after minimal delay
+            if (scrollContainer) {
+                setTimeout(() => {
+                    scrollContainer.scrollTo({
+                        top: 0,
+                        behavior: 'instant' // 'instant' instead of 'smooth' to avoid visible scrolling
+                    });
+                }, 10); 
+            }
+            
+            // Player initialisieren
             setupPlayer(song);
             lucide.createIcons();
-            
-            // Scroll-Reset
-            if (scrollContainer) {
-                setTimeout(() => { scrollContainer.scrollTo({ top: 0, behavior: 'instant' }); }, 10); 
-            }
         }
 
         function closeSongModal() {
-            stopPlayback();
+            audio.pause();
             audio.currentTime = 0;
             audio.loop = false; // Disable loop
-            setRepeat(false);
-            setAutoplay(false);
             // isRepeating = false;
             
             // Reset UI
@@ -1293,15 +1205,40 @@
         });
 
         // Repeat Button Logic
+        let isRepeating = false;
+
         function handleRepeatToggle() {
-            setRepeat(!isRepeating);
+            const repeatBtn = document.getElementById('repeat-btn');
+
+            isRepeating = !isRepeating;
+            audio.loop = isRepeating; // Use native audio loop function
+            
+            if (isRepeating) {
+                repeatBtn.classList.remove('text-neutral-500');
+                repeatBtn.classList.add('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+            } else {
+                repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+                repeatBtn.classList.add('text-neutral-500');               
+            }
         };   
         
         // Autoplay Toggle Logic
+        let isAutoplay = false;
+        let currentPlaylist = [];
+        let currentSongIndex = -1;
 
         // Toggle logic
         function handleAutoplayToggle() {
-            setAutoplay(!isAutoplay);
+            const autoplayBtn = document.getElementById('autoplay-toggle');
+
+            isAutoplay = !isAutoplay;
+            if (isAutoplay) {
+                autoplayBtn.classList.remove('text-neutral-500');
+                autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+            } else {
+                autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+                autoplayBtn.classList.add('text-neutral-500');
+            }
         };
 
         // Skip to Start/End Logic
@@ -1318,23 +1255,32 @@
             }
         }        
 
-        // Play next song in playlist (called on 'ended' if autoplay is enabled)
+        // Automatically play next song when one ends
+        audio.addEventListener('ended', () => {
+            if (isAutoplay && !audio.loop) {
+                playNextSong();
+            }
+        });
+
         function playNextSong() {
             currentSongIndex++;
             if (currentSongIndex < currentPlaylist.length) {
                 const nextSong = currentPlaylist[currentSongIndex];
-                showSongModal(nextSong);
-
-                // Start everything with a slight delay to ensure UI updates before playback starts
+                populateAndShowSongModal(nextSong);
+                // Since the modal is already open, we only need to trigger play
                 setTimeout(() => {
-                    startPlayback(); 
+                    audio.play();
+                    playBtn.innerHTML = pauseIcon;
+                    const playerContainer = document.querySelector('.player-glow');
+                    if (playerContainer) playerContainer.classList.add('player-active-pulse');
+                    lucide.createIcons();
                 }, 100);
             } else {
-                stopPlayback(); // Clean reset at end of playlist
-                setAutoplay(false);
                 playerStatus.textContent = "Sequence End Reached";
+                isAutoplay = false;
+                autoplayBtn.classList.remove('text-blue-400');
             }
-        }      
+        }        
 
         // --- DIARY LOGIC ---
         let currentDiaryEntries = [];
