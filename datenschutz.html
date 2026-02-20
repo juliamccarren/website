@@ -13,6 +13,8 @@
         a:hover { text-decoration: underline; }
         .footer-link { margin-top: 50px; border-top: 1px solid #333; padding-top: 20px; }
         strong { color: #fff; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -36,49 +38,38 @@
 
     <h3>Cloudflare R2 (Media Streaming)</h3>
     <p>
-        Für das Hosting und Streaming von Mediendateien (z. B. Videos oder Audioinhalte) nutzen wir den Speicherdienst <strong>Cloudflare R2</strong>. Wenn Sie Medieninhalte auf unserer Webseite abrufen, werden diese direkt von den Servern von Cloudflare (Storage) geladen. Dabei wird Ihre IP-Adresse technisch bedingt an Cloudflare übermittelt, um die Auslieferung der Inhalte an Ihren Browser zu ermöglichen. Dies erfolgt auf Grundlage unseres berechtigten Interesses an einer performanten und zuverlässigen Bereitstellung von Audio- und Videoinhalten (Art. 6 Abs. 1 lit. f DSGVO).
+        Für das Hosting und Streaming von Mediendateien nutzen wir den Speicherdienst <strong>Cloudflare R2</strong>. Wenn Sie Medieninhalte abrufen, werden diese direkt von den Servern von Cloudflare geladen. Dabei wird Ihre IP-Adresse technisch bedingt an Cloudflare übermittelt. Dies erfolgt auf Grundlage unseres berechtigten Interesses an einer performanten und zuverlässigen Bereitstellung von Inhalten (Art. 6 Abs. 1 lit. f DSGVO).
     </p>
 
     <h3>GitHub Pages</h3>
     <p>
-        Diese Webseite wird als statische Seite auf den Servern von <strong>GitHub Inc.</strong> (88 Colin P. Kelly Jr. St, San Francisco, CA 94107, USA) gehostet. Beim Aufruf dieser Seite werden durch GitHub automatisch Informationen erfasst (Logfiles), darunter Ihre IP-Adresse, um die Auslieferung der Webseite zu ermöglichen. Dies erfolgt auf Grundlage unseres berechtigten Interesses an einem sicheren und effizienten Betrieb unserer Webseite (Art. 6 Abs. 1 lit. f DSGVO).
+        Diese Webseite wird als statische Seite auf den Servern von <strong>GitHub Inc.</strong> gehostet. Beim Aufruf dieser Seite werden durch GitHub automatisch Informationen erfasst (Logfiles), darunter Ihre IP-Adresse. Dies erfolgt auf Grundlage unseres berechtigten Interesses an einem sicheren und effizienten Betrieb unserer Webseite (Art. 6 Abs. 1 lit. f DSGVO).
     </p>
 
     <h3>Design-Ressourcen (Tailwind CSS & Lucide Icons)</h3>
     <p>
-        Zur einheitlichen Darstellung der Seite nutzen wir Design-Ressourcen (Tailwind CSS) und Symbole (Lucide Icons). Diese sind <strong>lokal auf unserem Server installiert</strong>. Beim Laden dieser Ressourcen erfolgt keine Verbindung zu externen Servern von Drittanbietern und somit keine Übertragung Ihrer IP-Adresse an externe CDN-Betreiber.
+        Zur einheitlichen Darstellung der Seite nutzen wir Design-Ressourcen, die <strong>lokal auf unserem Server installiert</strong> sind. Beim Laden dieser Ressourcen erfolgt keine Verbindung zu externen Servern von Drittanbietern.
     </p>
 
-    <h2>3. Verlinkung auf Google Drive</h2>
+    <h2>3. Cookies und Lokale Speicherung</h2>
     <p>
-        Wir setzen auf unserer Website Links ein, die auf Dateien oder Ordner bei <strong>Google Drive</strong> verweisen. Anbieter dieses Dienstes ist die Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.
-    </p>
-    <p>
-        Wenn Sie einen solchen Link anklicken, verlassen Sie unsere Webseite und Ihr Browser baut eine direkte Verbindung zu den Servern von Google auf. Dabei wird Ihre IP-Adresse an Google übertragen. Sofern Sie zum Zeitpunkt des Klicks in Ihrem Google-Konto eingeloggt sind, kann Google diesen Besuch Ihrem persönlichen Profil zuordnen.
-    </p>
-    <p>
-        Die Verlinkung erfolgt auf Grundlage unseres berechtigten Interesses an einer nutzerfreundlichen Bereitstellung von Inhalten (Art. 6 Abs. 1 lit. f DSGVO). Weitere Informationen finden Sie in der Datenschutzerklärung von Google: 
-        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a>.
+        <strong>Diese Webseite verwendet keine Cookies zur Analyse oder für Marketingzwecke.</strong> Technisch notwendige Cookies unseres Sicherheitsanbieters Cloudflare dienen ausschließlich der Gewährleistung der Sicherheit.
     </p>
 
-    <h2>4. Cookies</h2>
+    <h3>Offline-Funktionalität (Cache Storage & Service Worker)</h3>
     <p>
-        <strong>Diese Webseite verwendet keine Cookies zur Analyse oder für Marketingzwecke.</strong> Sollten technisch notwendige Cookies durch unseren Sicherheitsanbieter Cloudflare gesetzt werden, geschieht dies zur Gewährleistung der Sicherheit der Webseite.
+        Um die Nutzung dieser Webseite im Offline-Modus (z. B. im Flugmodus) zu ermöglichen, nutzen wir moderne Browser-Technologien wie die <strong>Cache Storage API</strong> und <strong>Service Worker</strong>.
     </p>
+    <ul>
+        <li><strong>Zweck:</strong> Ausgewählte Audio-Dateien (Blobs) sowie die Programmlogik werden direkt in den Speicher Ihres Browsers übertragen. Dies ermöglicht eine Wiedergabe ohne Verzögerung (Zero-Latency) und stellt sicher, dass die App auch ohne Internetverbindung funktionsfähig bleibt.</li>
+        <li><strong>Kontrolle:</strong> Es werden keine personenbezogenen Daten in diesen Cache übertragen. Sie haben die volle Souveränität: Über den „Purge“-Button innerhalb der App oder über Ihre Browsereinstellungen können Sie diesen Speicher jederzeit vollständig leeren.</li>
+        <li><strong>Rechtsgrundlage:</strong> Die Speicherung erfolgt auf Grundlage unseres berechtigten Interesses an einer technisch autarken Bereitstellung unserer Inhalte (Art. 6 Abs. 1 lit. f DSGVO).</li>
+    </ul>
 
-    <h2>5. Datenerhebung und Sicherheit</h2>
+    <h2>4. Ihre Rechte</h2>
     <p>
-        Wir erheben keine personenbezogenen Daten durch Kontaktformulare oder Registrierungen. Zugriffe auf die Webseite werden lediglich im Rahmen der oben genannten Hosting-Logfiles verarbeitet, um die Stabilität und Sicherheit der Seite zu gewährleisten.
+        Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer personenbezogenen Daten sowie das Recht auf Datenübertragbarkeit und Widerspruch. Zudem steht Ihnen ein Beschwerderecht bei einer zuständigen Aufsichtsbehörde zu.
     </p>
-
-    <h2>6. Ihre Rechte</h2>
-    <p>
-        Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer personenbezogenen Daten sowie das Recht auf Datenübertragbarkeit und Widerspruch. Zudem steht Ihnen ein Beschwerderecht bei einer zuständigen Datenschutz-Aufsichtsbehörde zu.
-    </p>
-
-    <div class="footer-link">
-        <p><a href="index.html">&larr; Zurück zur Startseite</a></p>
-    </div>
 
 </body>
 </html>
