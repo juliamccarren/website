@@ -628,11 +628,19 @@
 
                         <input type="hidden" id="archive-count-input" value="6">
 
-                        <button onclick="loadAndDisplayArchiveSongs()" 
-                                class="touch-target glass-button text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group">
-                            <i data-lucide="refresh-cw" size="14" class="group-hover:rotate-180 transition-transform duration-700"></i>
-                            Reshuffle
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <button onclick="loadAndDisplayArchiveSongs()" 
+                                    class="touch-target glass-button text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group">
+                                <i data-lucide="refresh-cw" size="14" class="group-hover:rotate-180 transition-transform duration-700"></i>
+                                Reshuffle
+                            </button>
+
+                            <button onclick="purgeNeuralSpace()" 
+                                    class="touch-target border border-white/5 hover:border-red-500/30 hover:bg-red-500/5 text-neutral-500 hover:text-red-400 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group"
+                                    title="Purge Neural Cache">
+                                <i data-lucide="trash-2" size="14" class="group-hover:scale-110 transition-transform"></i>
+                            </button>
+                        </div>
                     </div>                
                 </div>    
 
@@ -947,6 +955,36 @@
         let currentPlaylist = [];
         let currentSongIndex = -1;            
 
+        // --- NEURAL CACHE ENGINE ---
+        const CACHE_NAME = 'julia-neural-v1';
+
+        async function forceCacheSong(url) {
+            const cache = await caches.open(CACHE_NAME);
+            const response = await fetch(url);
+            if (response.ok) {
+                await cache.put(url, response);
+                console.log("Neural Archive: Song in cache");
+            }
+        }
+
+        async function getCachedAudioUrl(url) {
+            const cache = await caches.open(CACHE_NAME);
+            const cachedResponse = await cache.match(url);
+            if (cachedResponse) {
+                const blob = await cachedResponse.blob();
+                return URL.createObjectURL(blob);
+            }
+            return null;
+        }
+
+        async function purgeNeuralSpace() {
+            const deleted = await caches.delete(CACHE_NAME);
+            if (deleted) {
+                console.log("Neural Space purged.");
+                window.location.reload(); // Reload for UI update after purge
+            }
+        }
+
         // --- AUDIO PLAYER LOGIC ---
         const audio = new Audio();
         const playBtn = document.getElementById('play-btn');
@@ -1097,9 +1135,19 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        function setupPlayer(song) {
+        async function setupPlayer(song) {
             const streamUrl = `${R2_DOMAIN}${song.id}.mp3`;
-            audio.src = streamUrl;
+            
+            // Versuche, die Datei als lokalen Blob aus dem Cache zu laden
+            const localBlobUrl = await getCachedAudioUrl(streamUrl);
+            
+            if (localBlobUrl) {
+                audio.src = localBlobUrl; // 0,0 KB Traffic, keine 304er möglich
+                console.log("PLAYBACK: Using local Neural Blob");
+            } else {
+                audio.src = streamUrl; // Fallback, falls Sync noch läuft
+                console.log("PLAYBACK: Streaming from R2");
+            }            
             
             // --- NEU: Metadata für Handy-Player (Media Session API) ---
             if ('mediaSession' in navigator) {
@@ -1155,57 +1203,57 @@
             }
         }
 
-        async function loadAndDisplayArchiveSongs() {
-            const songGrid = document.getElementById('song-grid');
-            const countInput = document.getElementById('archive-count-input');
+        // async function loadAndDisplayArchiveSongs() {
+        //     const songGrid = document.getElementById('song-grid');
+        //     const countInput = document.getElementById('archive-count-input');
             
-            // Get requested count from input, default to 6 if empty or invalid
-            let requestedCount = parseInt(countInput.value) || 6;
+        //     // Get requested count from input, default to 6 if empty or invalid
+        //     let requestedCount = parseInt(countInput.value) || 6;
 
-            try {
-                const allSongs = await loadAllSongs();
+        //     try {
+        //         const allSongs = await loadAllSongs();
                 
-                // Ensure requested count does not exceed available songs
-                const maxSongs = allSongs.length;
-                if (requestedCount > maxSongs) requestedCount = maxSongs;
-                if (requestedCount < 1) requestedCount = 1;
+        //         // Ensure requested count does not exceed available songs
+        //         const maxSongs = allSongs.length;
+        //         if (requestedCount > maxSongs) requestedCount = maxSongs;
+        //         if (requestedCount < 1) requestedCount = 1;
 
-                // Shuffle all songs and slice based on user input
-                currentArchiveSongs = allSongs
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, requestedCount);
+        //         // Shuffle all songs and slice based on user input
+        //         currentArchiveSongs = allSongs
+        //             .sort(() => 0.5 - Math.random())
+        //             .slice(0, requestedCount);
 
-                // Visual feedback: clear and fade out
-                songGrid.innerHTML = ''; 
-                songGrid.classList.add('opacity-0');
+        //         // Visual feedback: clear and fade out
+        //         songGrid.innerHTML = ''; 
+        //         songGrid.classList.add('opacity-0');
 
-                setTimeout(() => {
-                    songGrid.classList.remove('opacity-0');
-                    currentArchiveSongs.forEach((song, index) => {
-                        const card = document.createElement('div');
-                        card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4';
+        //         setTimeout(() => {
+        //             songGrid.classList.remove('opacity-0');
+        //             currentArchiveSongs.forEach((song, index) => {
+        //                 const card = document.createElement('div');
+        //                 card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4';
                         
-                        // Staggered animation delay
-                        card.style.animationDelay = `${index * 50}ms`;
+        //                 // Staggered animation delay
+        //                 card.style.animationDelay = `${index * 50}ms`;
                         
-                        card.innerHTML = `
-                            <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
-                            <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
-                            <button onclick="openSongFromArchiveSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
-                                Neural Playback <i data-lucide="play-circle" size="14"></i>
-                            </button>
-                        `;
-                        songGrid.appendChild(card);
-                    });
+        //                 card.innerHTML = `
+        //                     <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
+        //                     <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
+        //                     <button onclick="openSongFromArchiveSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
+        //                         Neural Playback <i data-lucide="play-circle" size="14"></i>
+        //                     </button>
+        //                 `;
+        //                 songGrid.appendChild(card);
+        //             });
                     
-                    // Re-render Lucide icons for the newly injected elements
-                    lucide.createIcons();
-                }, 150);
-            } catch (error) {
-                console.error('Archive-Fehler:', error);
-                songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
-            }
-        }
+        //             // Re-render Lucide icons for the newly injected elements
+        //             lucide.createIcons();
+        //         }, 150);
+        //     } catch (error) {
+        //         console.error('Archive-Fehler:', error);
+        //         songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
+        //     }
+        // }
 
         async function loadAndDisplayFeatureSongs(songId) {
             const songGrid = document.getElementById('feature-song-grid');
@@ -1473,11 +1521,11 @@
                 // --- NEURAL PRE-CACHE LOGIC ---
                 // We tell the browser to download the files into the cache immediately
                 currentArchiveSongs.forEach(song => {
-                    const fullUrl = `${R2_DOMAIN}${song.id}.mp3`; // Standardized R2 path
-                    
-                    fetch(fullUrl, { mode: 'no-cors', priority: 'low' })
-                        .then(() => console.log(`CACHE SUCCESS: ${song.title} is now available offline.`))
-                        .catch(err => console.warn(`CACHE FAILED for ${song.title}`, err));
+                    const fullUrl = `${R2_DOMAIN}${song.id}.mp3`;
+                    // Writes song into Cache Storage, making it available for instant playback and offline use
+                    forceCacheSong(fullUrl)
+                        .then(() => console.log(`SYSTEM: ${song.title} is cached`))
+                        .catch(err => console.warn(`SYNC FAILED for ${song.title}`, err));
                 });
 
                 setTimeout(() => {
@@ -1505,10 +1553,19 @@
         // Update your initialization
         window.addEventListener('DOMContentLoaded', async () => {
             try {
-                await loadAllSongs(); // Ensure songs are loaded first
-                initPickerDrum();
-                loadAndDisplayArchiveSongs();
-            } catch (e) { console.error(e); }
+                await loadAllSongs(); // Lädt die songs.json
+                
+                // Sicherstellen, dass der Input auf 6 steht beim Start
+                const countInput = document.getElementById('archive-count-input');
+                countInput.value = 6; 
+                
+                initPickerDrum(); // Initialisiert die optische Anzeige
+                updateDrumPosition(6); // Setzt die Anzeige auf die 6
+                
+                loadAndDisplayArchiveSongs(); // Startet den ersten Reshuffle mit 6 Songs
+            } catch (e) { 
+                console.error(e); 
+            }
         });
 
         // --- DIARY LOGIC ---
@@ -1581,7 +1638,7 @@
 
         // --- INIT ---
         loadAndDisplayFeatureSongs('peaks_of_gold');
-        loadAndDisplayArchiveSongs();  
+        // loadAndDisplayArchiveSongs();  // Called in DOMContentLoaded after songs are loaded
         loadAndDisplayDiary();
 
         // --- UI UTILS ---
