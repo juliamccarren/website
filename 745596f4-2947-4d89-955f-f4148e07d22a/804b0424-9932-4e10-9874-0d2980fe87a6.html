@@ -988,10 +988,29 @@
 
         async function forceCacheSong(url) {
             const cache = await caches.open(CACHE_NAME);
-            const response = await fetch(url);
-            if (response.ok) {
-                await cache.put(url, response);
-                console.log("Neural Archive: Song in cache");
+            
+            // 1. Erst im kontrollierten Cache Storage nachsehen
+            const cachedResponse = await cache.match(url);
+            if (cachedResponse) return; 
+
+            try {
+                // 2. Cache-Buster hinzufügen (?cb=timestamp), um den HTTP-Browser-Cache zu umgehen
+                // Wir nutzen 'reload', um eine saubere CORS-Antwort zu erzwingen
+                const busterUrl = `${url}?cb=${Date.now()}`;
+                
+                const response = await fetch(busterUrl, { 
+                    mode: 'cors',
+                    cache: 'reload' // Erzwingt den Abruf vom Server für diesen EINEN Request
+                });
+                
+                if (response.ok) {
+                    // 3. Speichere die Antwort unter der ORIGINAL-URL (ohne Parameter)
+                    // So findet audio.src = url die Datei später wieder
+                    await cache.put(url, response);
+                    console.log("Neural Archive: Freshly synced from R2 (Bypassed Disk Cache)");
+                }
+            } catch (err) {
+                console.error("Neural Sync Error:", url, err);
             }
         }
 
@@ -1418,7 +1437,7 @@
                 navigator.mediaSession.metadata = null;
             }
         }
-        
+
         // Slider update logic
         audio.addEventListener('timeupdate', () => {
             if(!isSeeking) {
