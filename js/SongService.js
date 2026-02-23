@@ -1,0 +1,74 @@
+/// --- SONG SERVICE CLASS ---
+class SongService {
+    constructor(url = 'songs.json') {
+        this.url = url;
+        this.cache = null;
+    }
+
+    /**
+     * Purges the neural cache and resets the internal song cache
+     */
+    async purgeCache() {
+        try {
+            // 1. Delete the specific music cache
+            const cacheName = 'julia-neural-v1';
+            const deleted = await caches.delete(cacheName);
+            
+            // 2. Clear internal memory cache
+            this.cache = null;
+
+            if (deleted) {
+                console.log("SYSTEM: Neural Space purged successfully.");
+                // Visual feedback: show the indicator shortly
+                const indicator = document.getElementById('neural-stream-indicator');
+                if (indicator) {
+                    indicator.classList.add('stream-active');
+                    setTimeout(() => indicator.classList.remove('stream-active'), 1000);
+                }
+                return true;
+            }
+        } catch (error) {
+            console.error("Purge Error:", error);
+        }
+        return false;
+    }   
+
+    /**
+     * Lädt alle Songs und speichert sie im internen Cache
+     */
+    async getAll() {
+        if (this.cache) return this.cache;
+        
+        try {
+            const response = await fetch(this.url);
+            if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+            this.cache = await response.json();
+            
+            // SEO Daten einmalig injizieren, falls vorhanden
+            if (typeof injectSEOData === 'function') injectSEOData(this.cache);
+            
+            return this.cache;
+        } catch (error) {
+            console.error('SongService Error:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Gibt eine zufällige Auswahl an Songs zurück
+     */
+    async getRandom(limit) {
+        const songs = await this.getAll();
+        return [...songs]
+            .sort(() => 0.5 - Math.random())
+            .slice(0, limit);
+    }
+
+    /**
+     * Sucht einen spezifischen Song anhand der ID
+     */
+    async getById(id) {
+        const songs = await this.getAll();
+        return songs.filter(s => s.id === id);
+    }
+}   
