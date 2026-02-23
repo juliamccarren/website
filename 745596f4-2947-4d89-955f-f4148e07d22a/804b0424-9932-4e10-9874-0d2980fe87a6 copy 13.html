@@ -977,139 +977,6 @@
         // TODO: REPLACE THIS WITH YOUR ACTUAL R2 PUBLIC BUCKET DOMAIN
         const R2_DOMAIN = 'https://music.juliamccarren.com/'; 
 
-        // --- SONG COLLECTION CLASS ---
-        class SongCollection {
-            constructor(containerId) {
-                this.container = document.getElementById(containerId);
-                this.songs = [];
-            }
-
-            /**
-             * Setzt die Songs der Kollektion und rendert sie.
-             * @param {Array} songArray - Die bereits gefilterten/sortierten Song-Objekte
-             */
-            update(songArray) {
-                this.songs = songArray;
-                this.preCacheSongs();
-                this.render();
-            }
-
-            /**
-             * Übernimmt das Pre-Caching für Offline-Resilienz
-             */
-            preCacheSongs() {
-                if (typeof forceCacheSong !== 'function') return;
-                this.songs.forEach(song => {
-                    const url = `${R2_DOMAIN}${song.id}.mp3`;
-                    forceCacheSong(url).catch(err => 
-                        console.warn(`Sync failed: ${song.title}`, err)
-                    );
-                });
-            }
-
-            /**
-             * Erzeugt das HTML-Grid
-             */
-            render() {
-                if (!this.container) return;
-
-                // Kurzer Fade-out Effekt für geschmeidige Übergänge
-                this.container.classList.add('opacity-0');
-                
-                setTimeout(() => {
-                    this.container.innerHTML = '';
-                    this.container.classList.remove('opacity-0');
-
-                    this.songs.forEach((song, index) => {
-                        const card = document.createElement('div');
-                        card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4';
-                        card.style.animationDelay = `${index * 50}ms`;
-                        
-                        card.innerHTML = `
-                            <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
-                            <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
-                            <button class="playback-trigger text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
-                                Neural Playback <i data-lucide="play-circle" size="14"></i>
-                            </button>
-                        `;
-
-                        // Event-Handling für den Play-Button
-                        card.querySelector('.playback-trigger').onclick = () => this.playSong(index);
-
-                        this.container.appendChild(card);
-                    });
-
-                    if (window.lucide) lucide.createIcons();
-                }, 150);
-            }
-
-            /**
-             * Startet das Modal und setzt die globale Playlist
-             */
-            playSong(index) {
-                scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-                currentPlaylist = this.songs;
-                currentSongIndex = index;
-                
-                if (typeof showSongModal === 'function') {
-                    showSongModal(this.songs[index], true);
-                }
-            }
-        }    
-        
-        /// --- SONG SERVICE CLASS ---
-        class SongService {
-            constructor(url = 'songs.json') {
-                this.url = url;
-                this.cache = null;
-            }
-
-            /**
-             * Lädt alle Songs und speichert sie im internen Cache
-             */
-            async getAll() {
-                if (this.cache) return this.cache;
-                
-                try {
-                    const response = await fetch(this.url);
-                    if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
-                    this.cache = await response.json();
-                    
-                    // SEO Daten einmalig injizieren, falls vorhanden
-                    if (typeof injectSEOData === 'function') injectSEOData(this.cache);
-                    
-                    return this.cache;
-                } catch (error) {
-                    console.error('SongService Error:', error);
-                    return [];
-                }
-            }
-
-            /**
-             * Gibt eine zufällige Auswahl an Songs zurück
-             */
-            async getRandom(limit) {
-                const songs = await this.getAll();
-                return [...songs]
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, limit);
-            }
-
-            /**
-             * Sucht einen spezifischen Song anhand der ID
-             */
-            async getById(id) {
-                const songs = await this.getAll();
-                return songs.filter(s => s.id === id);
-            }
-        }        
-
-        // Globale Instanzen
-        const songService = new SongService();
-        const archiveCollection = new SongCollection('song-grid');
-        const featureCollection = new SongCollection('feature-song-grid');
-
-        // --- GLOBAL STATE ---
         let isAutoplay = false;
         let isRepeating = false;
         let neuralSystemState = 'established';    
@@ -1717,14 +1584,7 @@
          * Updated load function: Now includes background pre-caching 
          * for the selected songs to ensure offline stability in the car.
          */
-
         async function loadAndDisplayArchiveSongs() {
-            const limit = parseInt(document.getElementById('archive-count-input').value) || 6;
-            const randomSongs = await songService.getRandom(limit);
-            archiveCollection.update(randomSongs);
-        }         
-
-        async function loadAndDisplayArchiveSongs_2() {
             const songGrid = document.getElementById('song-grid');
             const requestedCount = parseInt(document.getElementById('archive-count-input').value) || 6;
 
@@ -1767,7 +1627,7 @@
             } catch (error) {
                 console.error('Archive-Fehler:', error);
             }
-        }    
+        }
 
         // Update your initialization
         window.addEventListener('DOMContentLoaded', async () => {
@@ -1782,37 +1642,22 @@
 
             // 2. SYSTEM INITIALIZATION
             try {
-                // // Load the central song database
-                // await loadAllSongs(); 
+                // Load the central song database
+                await loadAllSongs(); 
                 
-                // // Initialize UI components
-                // const countInput = document.getElementById('archive-count-input');
-                // if (countInput) {
-                //     countInput.value = 6; // Set default limit
-                //     initPickerDrum();     // Build the visual number selector
-                //     updateDrumPosition(6); // Align the selector
-                // }
+                // Initialize UI components
+                const countInput = document.getElementById('archive-count-input');
+                if (countInput) {
+                    countInput.value = 6; // Set default limit
+                    initPickerDrum();     // Build the visual number selector
+                    updateDrumPosition(6); // Align the selector
+                }
                 
-                // // Initial sync of songs for offline/radio mode
-                // loadAndDisplayArchiveSongs(); 
+                // Initial sync of songs for offline/radio mode
+                loadAndDisplayArchiveSongs(); 
                 
-                // // Initialize other content sections
-                // loadAndDisplayFeatureSongs('peaks_of_gold');
-
-    // 1. Initialisierung des Drum-Pickers (für das Archiv-Limit)
-    const initialLimit = parseInt(document.getElementById('archive-count-input').value) || 6;
-
-    // 2. Feature Song laden (einfach via Service)
-    const featureData = await songService.getById('peaks_of_gold');
-    featureCollection.update(featureData);
-
-    // 3. Archiv laden
-    const archiveData = await songService.getRandom(initialLimit);
-    archiveCollection.update(archiveData);
-    
-    // UI Init (Drum Picker etc.)
-    initPickerDrum();
-
+                // Initialize other content sections
+                loadAndDisplayFeatureSongs('peaks_of_gold');
                 loadAndDisplayDiary();
 
             } catch (e) { 
@@ -1899,7 +1744,7 @@
         }
 
         // --- INIT ---
-        // loadAndDisplayFeatureSongs('peaks_of_gold'); // Called in DOMContentLoaded after songs are loaded
+        loadAndDisplayFeatureSongs('peaks_of_gold');
         // loadAndDisplayArchiveSongs();  // Called in DOMContentLoaded after songs are loaded
         loadAndDisplayDiary();
 
@@ -1959,8 +1804,6 @@
             script.text = JSON.stringify(schema);
             document.head.appendChild(script);
         }
-
-
     </script>
 </body>
 </html>

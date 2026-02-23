@@ -1,0 +1,16 @@
+{
+    "name": "Debugge meine Songs",
+    "type": "chrome",
+    "request": "launch",
+    "url": "http://127.0.0.1:5500/745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
+    "webRoot": "${workspaceFolder}",
+    "configurations": [
+    {
+        "name": "Launch Chrome",
+        "request": "launch",
+        "type": "chrome",
+        "url": "http://127.0.0.1:5500/745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
+        "webRoot": "${workspaceFolder}"
+    }
+    ]
+}
