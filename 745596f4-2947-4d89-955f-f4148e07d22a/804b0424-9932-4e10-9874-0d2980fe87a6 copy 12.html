@@ -821,53 +821,61 @@
 
     <!-- SONG DETAIL MODAL + CUSTOM PLAYER -->
     <div id="song-modal" class="fixed inset-0 z-[100] hidden modal-blur">
-        <div class="h-full w-full flex items-center justify-center p-0 md:p-8 lg:p-12">
-            
-            <div class="relative bg-neutral-900 border border-white/10 w-full h-full md:max-w-6xl md:max-h-[90vh] rounded-none md:rounded-[2rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden">
+        <div class="h-full w-full flex items-center justify-center p-4 md:p-8 lg:p-12">
+            <div class="relative bg-neutral-900 border border-white/10 w-full max-w-6xl h-full max-h-[90vh] rounded-[2rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden">
                 
-                <button onclick="closeSongModal()" class="absolute top-4 right-4 md:top-6 md:right-6 z-50 text-white/50 hover:text-white transition-colors bg-black/40 p-3 md:p-2 rounded-full backdrop-blur-md touch-target">
+                <!-- Close Button -->
+                <button onclick="closeSongModal()" class="absolute top-6 right-6 z-50 text-white/50 hover:text-white transition-colors bg-black/40 p-2 rounded-full backdrop-blur-md">
                     <i data-lucide="x" size="24"></i>
                 </button>
 
-                <div class="flex-1 overflow-y-auto p-6 md:p-12 scroll-smooth">
+                <!-- Left Column: Main Scrolling Pane (Background + Lyrics) -->
+                <div class="flex-1 overflow-y-auto p-8 md:p-12 scroll-smooth">
                     <div id="modal-tags" class="flex flex-wrap gap-2 mb-6"></div>
-                    <h2 id="modal-title" class="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-8 hero-text-mccarren leading-none" style="opacity: 1;"></h2>
+                    <h2 id="modal-title" class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-10 hero-text-mccarren leading-none" style="opacity: 1;"></h2>
                     
-                    <div class="mb-12">
+                    <!-- Content Section 1: Background -->
+                    <div class="mb-16">
                         <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500 mb-6 flex items-center gap-3">
                             <span class="w-8 h-[1px] bg-fuchsia-500/50"></span>
                             Origin & Context
                         </h4>
-                        <p id="modal-background" class="text-neutral-400 text-lg md:text-2xl leading-relaxed font-medium"></p>
+                        <p id="modal-background" class="text-neutral-400 text-xl md:text-2xl leading-relaxed font-medium"></p>
                     </div>
 
+                    <!-- Content Section 2: Lyrics (Neural Data) -->
                     <div class="mb-12">
                         <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500 mb-8 flex items-center gap-3">
                             <span class="w-8 h-[1px] bg-fuchsia-500/50"></span>
                             Linguistic Data Stream
                         </h4>
-                        <div class="bg-black/20 -mx-6 md:mx-0 rounded-none md:rounded-3xl border-y md:border border-white/5 p-6 md:p-12">
-                            <pre id="modal-lyrics" class="whitespace-pre-wrap font-sans text-neutral-300 leading-[1.8] text-base md:text-xl italic"></pre>
+                        <div class="bg-black/20 -mx-8 md:mx-0 rounded-none md:rounded-3xl border-y md:border border-white/5 p-8 md:p-12">
+                            <pre id="modal-lyrics" class="whitespace-pre-wrap font-sans text-neutral-300 leading-[1.8] text-lg md:text-xl italic"></pre>
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full lg:w-96 bg-neutral-950 p-6 md:p-12 flex flex-col justify-end border-t lg:border-t-0 lg:border-l border-white/5 relative overflow-hidden">
+                <!-- Right Sidebar: Interactive CUSTOM PLAYER -->
+                <div class="w-full lg:w-96 bg-neutral-950 p-8 md:p-12 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-white/5 relative overflow-hidden">
+                    <!-- Background aesthetic for player -->
                     <div class="absolute inset-0 bg-gradient-to-t from-fuchsia-900/10 to-transparent pointer-events-none"></div>
 
-                    <div class="hidden sm:block p-4 bg-white/5 space-y-2 rounded-2xl border border-white/5 mb-6">
-                        <div class="flex items-center gap-3 text-fuchsia-400 mb-1">
-                            <i data-lucide="waves" size="16"></i>
-                            <span class="text-[9px] font-black uppercase tracking-widest">Neural Stream</span>
+                    <!-- Cloudflare Hint: Hidden on mobile, visible from 'md' screen size up -->
+                    <div class="hidden md:block p-6 bg-white/5 space-y-2 rounded-2xl border border-white/5 mb-8">
+                        <div class="flex items-center gap-3 text-fuchsia-400 mb-2">
+                            <i data-lucide="waves" size="18"></i>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Neural Stream</span>
                         </div>
-                        <p class="text-[11px] text-neutral-400 leading-tight">
-                            Streaming via Cloudflare R2.
+                        <p class="text-xs text-neutral-400 leading-normal">
+                            Streaming directly from the high-resolution architecture via Cloudflare R2.
                         </p>
                     </div>
 
-                    <div class="space-y-6 relative z-10">
-                        <div id="player-pane" class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-5 player-glow">
-                            <div class="flex justify-between items-center text-xs font-bold text-neutral-500 tracking-widest mb-4">
+                    <div class="mt-auto space-y-6 relative z-10">
+                        <!-- Custom Player Controls -->
+                        <div id="player-pane" class="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 player-glow">
+                            <!-- Time Display -->
+                            <div class="flex justify-between items-center text-md font-bold text-normal-500 tracking-widest mb-4">
                                 <div class="flex items-center gap-2">
                                     <span id="current-time">0:00</span>
                                     <button onclick="playPreviousSong()" class="text-violet-300 transition-colors">
@@ -889,27 +897,30 @@
                                 </div>
                             </div>
                             
-                            <div class="mb-6 relative group">
-                                <input type="range" id="seek-slider" max="100" value="0" class="w-full cursor-pointer">
+                            <!-- Progress Bar -->
+                            <div class="mb-8 relative group">
+                                <input type="range" id="seek-slider" max="100" value="0">
                             </div>
 
-                            <div class="flex justify-center items-center gap-6">
-                                <button id="repeat-btn" onclick="handleRepeatToggle()" class="text-neutral-500 hover:text-fuchsia-500 transition-colors touch-target">
+                            <!-- Controls -->
+                            <div class="flex justify-center items-center gap-8">
+                                <button id="repeat-btn" onclick="handleRepeatToggle()" class="text-neutral-500 transition-colors">
                                     <i data-lucide="repeat" size="20"></i>
                                 </button>
 
-                                <button id="play-btn" class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-all duration-300 touch-target">
+                                <button id="play-btn" class="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
                                     <i data-lucide="play" size="24" class="fill-current ml-1"></i>
                                 </button>
 
-                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 hover:text-blue-400 transition-colors touch-target">
+                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 transition-colors">
                                     <i data-lucide="list-music" size="20"></i>
                                 </button>                                
                             </div>
                         </div>
                         
-                        <div class="text-center pb-2 md:pb-0">
-                            <p id="player-status" class="text-[9px] uppercase tracking-[0.3em] text-neutral-600 animate-pulse">Neural Link Established</p>
+                        <!-- Status -->
+                        <div class="text-center">
+                             <p id="player-status" class="text-[9px] uppercase tracking-[0.3em] text-neutral-600 animate-pulse">System Ready</p>
                         </div>
                     </div>
                 </div>
@@ -1316,54 +1327,36 @@
             }
         }        
 
-        // Global state to preserve the background position
-        let scrollPosition = 0;
-
         function openSongFromArchiveSongs(index) {
-            scrollPosition = window.pageYOffset || document.documentElement.scrollTop
             currentPlaylist = currentArchiveSongs; // Set playlist
             currentSongIndex = index;
             const song = currentArchiveSongs[index];
             if (!song) return;
-            showSongModal(song, true);
+            showSongModal(song);
         }
 
         function openSongFromFeatureSongs(index) {
-            scrollPosition = window.pageYOffset || document.documentElement.scrollTop
             currentPlaylist = currentFeatureSongs; // Set playlist
             currentSongIndex = index;
             const song = currentFeatureSongs[index];
             if (!song) return;
-            showSongModal(song, true);
+            showSongModal(song);
         }       
         
-        /**
-         * Opens the song modal and prevents background scrolling
-         * @param {Object} song - The song data object
-         */
-        function showSongModal(song, initialOpen = false) {
+        function showSongModal(song) {
             const modal = document.getElementById('song-modal');
             const scrollContainer = modal.querySelector('.overflow-y-auto');
 
-            // 2. Lock the background to prevent "scroll bleed"
-            // We use fixed positioning to ensure the background stays exactly where it is
-            // 2. Only apply the body-fix if it's the initial open
-            // If skipping songs, the body is already fixed
-            if (initialOpen) {    
-                document.body.style.overflow = 'hidden';
-                document.body.style.position = 'fixed';
-                document.body.style.top = `-${scrollPosition}px`;
-                document.body.style.width = '100%';
-            }
-
+            // 1. Make modal visible immediately (important for scroll command)
             modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
 
-            // 3. Populate Modal Content
+            // 2. Populate content
             document.getElementById('modal-title').textContent = song.title;
             document.getElementById('modal-background').textContent = song.background;
             document.getElementById('modal-lyrics').textContent = song.lyrics;
             
-            // Generate Tags
+            // Tags setzen
             const tagsCont = document.getElementById('modal-tags');
             tagsCont.innerHTML = '';
             song.tags.forEach(tag => {
@@ -1372,53 +1365,39 @@
                 span.textContent = tag;
                 tagsCont.appendChild(span);
             });
+            
+            // UI synchronization
+            setRepeat(isRepeating);
+            setAutoplay(isAutoplay);
 
-            // Initialize Audio Player
+            if (audio.paused) {
+                stopPlayback();
+            } else {
+                startPlayback();
+            }            
+
+            // Player init
             setupPlayer(song);
+            lucide.createIcons();
             
-            // Render Lucide Icons for the modal content
-            if (window.lucide) lucide.createIcons();
-            
-            // Reset scroll position of the lyrics pane to the top
+            // Scroll-Reset
             if (scrollContainer) {
-                setTimeout(() => { 
-                    scrollContainer.scrollTo({ top: 0, behavior: 'instant' }); 
-                }, 10); 
+                setTimeout(() => { scrollContainer.scrollTo({ top: 0, behavior: 'instant' }); }, 10); 
             }
         }
 
-        /**
-         * Closes the modal and restores the background scroll position
-         */
         function closeSongModal() {
-            const modal = document.getElementById('song-modal');
-            
-            // 1. Stop playback and reset audio states
-            stopPlayback(); 
+            stopPlayback(); // Resets Audio, Icons and Pulse-Animations
             audio.currentTime = 0;
-
-            // 2. Disable smooth scrolling on the entire document temporarily
-            // This prevents the browser from "sliding" back to the position
-            document.documentElement.style.scrollBehavior = 'auto';    
             
-            // 2. Remove body fixation
-            document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-
-            // 3. Restore the scroll position immediately
-            // This prevents the page from jumping back to the top
-            window.scrollTo(0, scrollPosition);
-
-            modal.classList.add('hidden');
+            // Use the setters to ensure UI and Logic are reset together
+            setRepeat(false);
+            setAutoplay(false);
             
-            // Clear Media Metadata for mobile lock-screens
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = null;
-            }
+            document.getElementById('song-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
-        
+
         // Slider update logic
         audio.addEventListener('timeupdate', () => {
             if(!isSeeking) {
@@ -1426,7 +1405,7 @@
                 seekSlider.value = progress || 0;
                 currentTimeEl.textContent = formatTime(audio.currentTime);
                 
-                // Update the 'fading' track effect
+                // The track maintains the Julia-McCarren gradient
                 seekSlider.style.background = `linear-gradient(to right, 
                     #f472b6 0%, 
                     #d946ef ${progress / 2}%, 
@@ -1612,48 +1591,20 @@
 
         // Update your initialization
         window.addEventListener('DOMContentLoaded', async () => {
-            // 1. MOBILE VIEWPORT HEIGHT FIX
-            // Prevents the address bar from cutting off the player on mobile browsers
-            const shadowHeight = () => {
-                const doc = document.documentElement;
-                doc.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-            };
-            window.addEventListener('resize', shadowHeight);
-            shadowHeight();
-
-            // 2. SYSTEM INITIALIZATION
             try {
-                // Load the central song database
-                await loadAllSongs(); 
+                await loadAllSongs(); // Lädt die songs.json
                 
-                // Initialize UI components
+                // Sicherstellen, dass der Input auf 6 steht beim Start
                 const countInput = document.getElementById('archive-count-input');
-                if (countInput) {
-                    countInput.value = 6; // Set default limit
-                    initPickerDrum();     // Build the visual number selector
-                    updateDrumPosition(6); // Align the selector
-                }
+                countInput.value = 6; 
                 
-                // Initial sync of songs for offline/radio mode
-                loadAndDisplayArchiveSongs(); 
+                initPickerDrum(); // Initialisiert die optische Anzeige
+                updateDrumPosition(6); // Setzt die Anzeige auf die 6
                 
-                // Initialize other content sections
-                loadAndDisplayFeatureSongs('peaks_of_gold');
-                loadAndDisplayDiary();
-
+                loadAndDisplayArchiveSongs(); // Startet den ersten Reshuffle mit 6 Songs
             } catch (e) { 
-                console.error("Neural System Initialization Failed:", e); 
+                console.error(e); 
             }
-
-            // 3. GLOBAL KEYBOARD CONTROLS (Optional but recommended for window mode)
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    const songModal = document.getElementById('song-modal');
-                    const diaryModal = document.getElementById('diary-modal');
-                    if (!songModal.classList.contains('hidden')) closeSongModal();
-                    if (!diaryModal.classList.contains('hidden')) closeDiaryModal();
-                }
-            });
         });
 
         // --- DIARY LOGIC ---
