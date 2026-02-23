@@ -1044,16 +1044,17 @@
             }
 
             /**
-             * Passes the playlist and index to the global player instance
-             * @param {number} index - The index of the clicked song
+             * Startet das Modal und setzt die globale Playlist
              */
             playSong(index) {
-                // We save the current scroll position to restore it when the modal closes
                 scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                currentPlaylist = this.songs;
+                currentSongIndex = index;
                 
-                // Use the global player instance to load and play
-                player.loadTrack(this.songs, index);
-            }         
+                if (typeof showSongModal === 'function') {
+                    showSongModal(this.songs[index], true);
+                }
+            }
         }    
         
         /// --- SONG SERVICE CLASS ---
@@ -1062,34 +1063,6 @@
                 this.url = url;
                 this.cache = null;
             }
-
-            /**
-             * Purges the neural cache and resets the internal song cache
-             */
-            async purgeCache() {
-                try {
-                    // 1. Delete the specific music cache
-                    const cacheName = 'julia-neural-v1';
-                    const deleted = await caches.delete(cacheName);
-                    
-                    // 2. Clear internal memory cache
-                    this.cache = null;
-
-                    if (deleted) {
-                        console.log("SYSTEM: Neural Space purged successfully.");
-                        // Visual feedback: show the indicator shortly
-                        const indicator = document.getElementById('neural-stream-indicator');
-                        if (indicator) {
-                            indicator.classList.add('stream-active');
-                            setTimeout(() => indicator.classList.remove('stream-active'), 1000);
-                        }
-                        return true;
-                    }
-                } catch (error) {
-                    console.error("Purge Error:", error);
-                }
-                return false;
-            }   
 
             /**
              * Lädt alle Songs und speichert sie im internen Cache
@@ -1129,482 +1102,672 @@
                 const songs = await this.getAll();
                 return songs.filter(s => s.id === id);
             }
-        }   
+        }        
 
-/**
- * NeuralPlayer handles the entire audio lifecycle, 
- * including playback control, playlist management, 
- * MediaSession API, and UI synchronization.
- */
-class NeuralPlayer {
-    constructor() {
-        // Core Audio Engine
-        this.audio = new Audio();
-        
-        // State Management
-        this.isPlaying = false;
-        this.isAutoplay = false;
-        this.isRepeating = false;
-        this.currentPlaylist = [];
-        this.currentIndex = -1;
+        // Globale Instanzen
+        const songService = new SongService();
+        const archiveCollection = new SongCollection('song-grid');
+        const featureCollection = new SongCollection('feature-song-grid');
 
-        // UI Elements
-        this.playBtn = document.getElementById('play-btn');
-        this.seekSlider = document.getElementById('seek-slider');
-        this.currentTimeEl = document.getElementById('current-time');
-        this.durationEl = document.getElementById('duration');
-        this.playerStatus = document.getElementById('player-status');
-        this.playerPane = document.getElementById('player-pane');
-        
-        // Icons
-        this.playIcon = `<i data-lucide="play" size="24" class="fill-current ml-1"></i>`;
-        this.pauseIcon = `<i data-lucide="pause" size="24" class="fill-current"></i>`;
+        // --- GLOBAL STATE ---
+        let isAutoplay = false;
+        let isRepeating = false;
+        let neuralSystemState = 'established';    
+        let currentPlaylist = [];
+        let currentSongIndex = -1;            
 
-        this.initEventListeners();
-    }
+        // --- NEURAL CACHE ENGINE ---
+        const CACHE_NAME = 'julia-neural-v1';
 
-    /**
-     * Set up internal audio and UI event listeners
-     */
-    initEventListeners() {
-        // Audio Logic Events
-        this.audio.addEventListener('timeupdate', () => this.handleTimeUpdate());
-        this.audio.addEventListener('loadedmetadata', () => this.handleMetadataLoaded());
-        this.audio.addEventListener('ended', () => this.handleTrackEnded());
-        this.audio.addEventListener('error', (e) => this.handleError(e));
+        async function forceCacheSong(url) {
+            const cache = await caches.open(CACHE_NAME);
+            
+            // 1. Erst im kontrollierten Cache Storage nachsehen
+            const cachedResponse = await cache.match(url);
+            if (cachedResponse) return; 
 
-        // Interaction Events
-        if (this.playBtn) {
-            this.playBtn.addEventListener('click', () => this.toggle());
-        }
-
-        if (this.seekSlider) {
-            this.seekSlider.addEventListener('input', () => this.onSeekInput());
-            this.seekSlider.addEventListener('change', () => this.onSeekChange());
-        }
-    }
-
-    /**
-     * Loads a new playlist and starts a specific track
-     * @param {Array} songs - Array of song objects
-     * @param {number} index - Index to start from
-     */
-    async loadTrack(songs, index) {
-        this.currentPlaylist = songs;
-        this.currentIndex = index;
-        const song = this.currentPlaylist[this.currentIndex];
-
-        if (!song) return;
-
-        // Update Global UI (Modals etc.)
-        if (typeof showSongModal === 'function') {
-            showSongModal(song, false); // false = already open or handled via player
-        }
-
-        const streamUrl = `${R2_DOMAIN}${song.id}.mp3`;
-        
-        // Check for local Neural Cache (Offline Resilience)
-        if (typeof getCachedAudioUrl === 'function') {
-            const localBlobUrl = await getCachedAudioUrl(streamUrl);
-            this.audio.src = localBlobUrl || streamUrl;
-        } else {
-            this.audio.src = streamUrl;
-        }
-
-        this.updateMediaSession(song);
-        this.play();
-    }
-
-    /**
-     * Starts playback and updates visual states
-     */
-    play() {
-        this.audio.play().then(() => {
-            this.isPlaying = true;
-            this.updatePlayStateUI(true);
-        }).catch(err => console.error("Playback failed:", err));
-    }
-
-    /**
-     * Pauses playback and resets visual states
-     */
-    pause() {
-        this.audio.pause();
-        this.isPlaying = false;
-        this.updatePlayStateUI(false);
-    }
-
-    toggle() {
-        if (this.audio.paused) this.play();
-        else this.pause();
-    }
-
-    next() {
-        if (this.currentPlaylist.length === 0) return;
-        this.currentIndex = (this.currentIndex + 1) % this.currentPlaylist.length;
-        this.loadTrack(this.currentPlaylist, this.currentIndex);
-    }
-
-    previous() {
-        if (this.currentPlaylist.length === 0) return;
-        this.currentIndex = (this.currentIndex - 1 + this.currentPlaylist.length) % this.currentPlaylist.length;
-        this.loadTrack(this.currentPlaylist, this.currentIndex);
-    }
-
-    /**
-     * Logic for when a track reaches its end
-     */
-    handleTrackEnded() {
-        if (this.isAutoplay) {
-            this.next();
-        } else if (this.isRepeating) {
-            this.audio.currentTime = 0;
-            this.play();
-        } else {
-            this.pause();
-        }
-    }
-
-    /**
-     * Updates the seek slider and timestamps during playback
-     */
-    handleTimeUpdate() {
-        if (this.audio.duration) {
-            const progress = (this.audio.currentTime / this.audio.duration) * 100;
-            if (this.seekSlider) {
-                this.seekSlider.value = progress;
-                // Update CSS variable for the custom track gradient
-                this.seekSlider.style.setProperty('--progress', `${progress}%`);
-            }
-            if (this.currentTimeEl) {
-                this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime);
+            try {
+                // 2. Cache-Buster hinzufügen (?cb=timestamp), um den HTTP-Browser-Cache zu umgehen
+                // Wir nutzen 'reload', um eine saubere CORS-Antwort zu erzwingen
+                const busterUrl = `${url}?cb=${Date.now()}`;
+                
+                const response = await fetch(busterUrl, { 
+                    mode: 'cors',
+                    cache: 'reload' // Erzwingt den Abruf vom Server für diesen EINEN Request
+                });
+                
+                if (response.ok) {
+                    // 3. Speichere die Antwort unter der ORIGINAL-URL (ohne Parameter)
+                    // So findet audio.src = url die Datei später wieder
+                    await cache.put(url, response);
+                    console.log("Neural Archive: Freshly synced from R2 (Bypassed Disk Cache)");
+                }
+            } catch (err) {
+                console.error("Neural Sync Error:", url, err);
             }
         }
-    }
 
-    handleMetadataLoaded() {
-        if (this.durationEl) {
-            this.durationEl.textContent = this.formatTime(this.audio.duration);
-        }
-    }
-
-    /**
-     * Updates the OS-level player (Lock screen / Media controls)
-     */
-    updateMediaSession(song) {
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: song.title,
-                artist: 'Julia McCarren',
-                album: 'Neural Fusion Sound',
-                artwork: [
-                    { src: '../images/Hero_square.webp', sizes: '512x512', type: 'image/webp' }
-                ]
-            });
-
-            navigator.mediaSession.setActionHandler('play', () => this.play());
-            navigator.mediaSession.setActionHandler('pause', () => this.pause());
-            navigator.mediaSession.setActionHandler('previoustrack', () => this.previous());
-            navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
-        }
-    }
-
-    /**
-     * UI Feedback for Start/Stop
-     * @param {boolean} active 
-     */
-    updatePlayStateUI(active) {
-        if (this.playBtn) {
-            this.playBtn.innerHTML = active ? this.pauseIcon : this.playIcon;
-            if (window.lucide) lucide.createIcons();
+        async function getCachedAudioUrl(url) {
+            const cache = await caches.open(CACHE_NAME);
+            const cachedResponse = await cache.match(url);
+            if (cachedResponse) {
+                const blob = await cachedResponse.blob();
+                return URL.createObjectURL(blob);
+            }
+            return null;
         }
 
-        if (this.playerStatus) {
-            this.playerStatus.textContent = active ? "Neural Fusion Active" : "Neural Link Established";
-            this.playerStatus.className = active 
-                ? "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400" 
-                : "text-[9px] uppercase tracking-[0.3em] text-neutral-600";
+        async function purgeNeuralSpace() {
+            const deleted = await caches.delete(CACHE_NAME);
+            if (deleted) {
+                console.log("Neural Space purged.");
+                window.location.reload(); // Reload for UI update after purge
+            }
         }
 
-        // Apply visual pulse to the container
-        const glowContainer = document.querySelector('.player-glow');
-        if (active) {
-            glowContainer?.classList.add('player-active-pulse');
-            this.playerPane?.classList.add('player-active-pulse');
-        } else {
-            glowContainer?.classList.remove('player-active-pulse');
-            this.playerPane?.classList.remove('player-active-pulse');
-        }
-    }
+        // --- AUDIO PLAYER LOGIC ---
+        const audio = new Audio();
+        const playBtn = document.getElementById('play-btn');
+        const seekSlider = document.getElementById('seek-slider');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const playerStatus = document.getElementById('player-status');
+        let isSeeking = false;
+        let playIcon = `<i data-lucide="play" size="24" class="fill-current ml-1"></i>`;
+        let pauseIcon = `<i data-lucide="pause" size="24" class="fill-current"></i>`;     
 
-    formatTime(seconds) {
-        if (isNaN(seconds)) return "0:00";
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    handleError(e) {
-        console.error("Neural Stream Error:", e);
-        if (this.playerStatus) {
-            this.playerStatus.textContent = "Neural Link Severed";
-            this.playerStatus.classList.add('text-red-500');
-        }
-    }
-
-    onSeekInput() {
-        if (this.durationEl) {
-            const time = (this.seekSlider.value / 100) * this.audio.duration;
-            this.currentTimeEl.textContent = this.formatTime(time);
-        }
-    }
-
-    onSeekChange() {
-        this.audio.currentTime = (this.seekSlider.value / 100) * this.audio.duration;
-    }
-}   
-
-/**
- * PickerDrum handles the vertical scrollable number selector.
- * It synchronizes the UI drum with the hidden input value.
- */
-class PickerDrum {
-    /**
-     * @param {string} containerId - The ID of the drum element
-     * @param {string} inputId - The ID of the hidden input field
-     */
-    constructor(containerId, inputId) {
-        this.drum = document.getElementById(containerId);
-        this.input = document.getElementById(inputId);
-        this.itemHeight = 40; // Fixed height in pixels to match CSS
-    }
-
-    /**
-     * Generates the number list based on the total songs available
-     * @param {number} totalItems - Maximum number of songs
-     * @param {number} initialValue - The starting value (default 6)
-     */
-    init(totalItems = 41, initialValue = 6) {
-        if (!this.drum) return;
-
-        this.drum.innerHTML = '';
-        for (let i = 1; i <= totalItems; i++) {
-            const numDiv = document.createElement('div');
-            numDiv.className = 'h-10 w-full flex items-center justify-center text-lg font-black text-white/20 transition-all duration-300';
-            numDiv.id = `picker-num-${i}`;
-            numDiv.textContent = i;
-            numDiv.style.height = `${this.itemHeight}px`; 
-            this.drum.appendChild(numDiv);
-        }
+        // Player Event Listeners
+        playBtn.addEventListener('click', togglePlay);
         
-        this.input.value = initialValue;
-        this.updatePosition(initialValue);
-    }
-
-    /**
-     * Animates the drum and highlights the active number
-     * @param {number} value - The number to center
-     */
-    updatePosition(value) {
-        if (!this.drum) return;
-
-        const offset = (value - 1) * this.itemHeight;
-        this.drum.style.transform = `translateY(${-offset}px)`;
-
-        // Reset all numbers to dimmed state
-        this.drum.querySelectorAll('div').forEach(el => {
-            el.classList.replace('text-fuchsia-500', 'text-white/20');
-            el.classList.remove('scale-125');
+        audio.addEventListener('timeupdate', () => {
+            if(!isSeeking) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                seekSlider.value = progress || 0;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
         });
 
-        // Highlight the selected number
-        const active = document.getElementById(`picker-num-${value}`);
-        if (active) {
-            active.classList.replace('text-white/20', 'text-fuchsia-500');
-            active.classList.add('scale-125');
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        audio.addEventListener('ended', () => {
+            if (isAutoplay) {
+                playNextSong(); // This will now wrap around to 0 automatically
+            } 
+            else if (isRepeating) {
+                startPlayback(); // Just restart the current song
+            } 
+            else {
+                stopPlayback();
+            }
+        });
+
+        audio.addEventListener('error', (e) => {
+            console.error("Audio Error:", e);
+            playerStatus.textContent = "Stream Error / File Not Found";
+            playerStatus.classList.add('text-red-500');
+        });
+
+        seekSlider.addEventListener('input', () => {
+            isSeeking = true;
+            currentTimeEl.textContent = formatTime((seekSlider.value / 100) * audio.duration);
+        });
+
+        seekSlider.addEventListener('change', () => {
+            const time = (seekSlider.value / 100) * audio.duration;
+            audio.currentTime = time;
+            isSeeking = false;
+        });
+
+        // Optional: Handle external pause/play (e.g., from mobile controls)
+        audio.onpause = () => {
+            if (neuralSystemState === 'active') stopPlayback();
+        };
+
+        audio.onplay = () => {
+            if (neuralSystemState !== 'active') startPlayback();
+        };        
+
+        // Central Playback Control: Start
+        function startPlayback() {
+            audio.play().then(() => {
+                neuralSystemState = 'active';
+                playBtn.innerHTML = pauseIcon;
+
+                // UI Update: Activate animations and status colors
+                const playerContainer = document.querySelector('.player-glow');
+                const playerPane = document.getElementById('player-pane');
+                
+                playerStatus.textContent = "Neural Fusion Active";
+                playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-pink-400 drop-shadow-[0_0_8px_rgba(244,114,182,0.5)]";
+                
+                playerContainer?.classList.add('player-active-pulse');
+                playerPane?.classList.add('player-active-pulse');
+                
+                lucide.createIcons(); // Re-render icons for pause state
+            }).catch(error => {
+                console.error("Neural Sync Failed:", error);
+            });
         }
-    }
 
-    /**
-     * Changes the current limit by a delta value
-     * @param {number} delta - Increase or decrease amount
-     * @param {number} maxItems - Boundary check
-     */
-    change(delta, maxItems) {
-        let val = parseInt(this.input.value) + delta;
+        // Central Playback Control: Stop
+        function stopPlayback() {
+            audio.pause();
+            neuralSystemState = 'established';
+            playBtn.innerHTML = playIcon;
 
-        if (val < 1) val = 1;
-        if (val > maxItems) val = maxItems;
+            // UI Update: Reset animations and status colors
+            const playerContainer = document.querySelector('.player-glow');
+            const playerPane = document.getElementById('player-pane');
 
-        this.input.value = val;
-        this.updatePosition(val);
+            playerStatus.textContent = "Neural Link Established";
+            playerStatus.className = "text-[9px] uppercase tracking-[0.3em] animate-pulse text-neutral-600";
+            
+            playerContainer?.classList.remove('player-active-pulse');
+            playerPane?.classList.remove('player-active-pulse');
+            
+            lucide.createIcons(); // Re-render icons for play state
+        }
+
+        // Start/Stop Toggle
+        function togglePlay() {
+            if (audio.paused) {
+                startPlayback();
+            } else {
+                stopPlayback();
+            }
+        }
+
+        // Central Toggle: Repeat
+        function setRepeat(state) {
+            isRepeating = state;
+            audio.loop = state; // Native browser audio loop
+            
+            const repeatBtn = document.getElementById('repeat-btn');
+            if (isRepeating) {
+                repeatBtn.classList.add('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+                repeatBtn.classList.remove('text-neutral-500');
+            } else {
+                repeatBtn.classList.remove('text-fuchsia-500', 'drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]');
+                repeatBtn.classList.add('text-neutral-500');               
+            }
+        }
+
+        // Central Toggle: Autoplay
+        function setAutoplay(state) {
+            isAutoplay = state;
+            
+            const autoplayBtn = document.getElementById('autoplay-toggle');
+            if (isAutoplay) {
+                autoplayBtn.classList.add('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+                autoplayBtn.classList.remove('text-neutral-500');
+            } else {
+                autoplayBtn.classList.remove('text-blue-400', 'drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]');
+                autoplayBtn.classList.add('text-neutral-500');
+            }
+        }     
+
+        function formatTime(seconds) {
+            if(isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        async function setupPlayer(song) {
+            const streamUrl = `${R2_DOMAIN}${song.id}.mp3`;
+            
+            // Versuche, die Datei als lokalen Blob aus dem Cache zu laden
+            const localBlobUrl = await getCachedAudioUrl(streamUrl);
+            
+            if (localBlobUrl) {
+                audio.src = localBlobUrl; // 0,0 KB Traffic, keine 304er möglich
+                console.log("PLAYBACK: Using local Neural Blob");
+            } else {
+                audio.src = streamUrl; // Fallback, falls Sync noch läuft
+                console.log("PLAYBACK: Streaming from R2");
+            }            
+            
+            // --- NEU: Metadata für Handy-Player (Media Session API) ---
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: song.title,
+                    artist: 'Julia McCarren',
+                    album: 'Neural Fusion Sound',
+                    artwork: [
+                        { src: '../images/Hero_square.webp', sizes: '1061x1061', type: 'image/webp' },
+                        { src: '../images/Hero_square.webp', sizes: '512x512', type: 'image/webp' }
+                    ]
+                });
+
+                // Optionale Steuerung über das Handy-Menü
+                navigator.mediaSession.setActionHandler('play', startPlayback);
+                navigator.mediaSession.setActionHandler('pause', stopPlayback);
+                navigator.mediaSession.setActionHandler('seekbackward', () => { audio.currentTime -= 10; });
+                navigator.mediaSession.setActionHandler('seekforward', () => { audio.currentTime += 10; });
+                navigator.mediaSession.setActionHandler('previoustrack', playPreviousSong);
+                navigator.mediaSession.setActionHandler('nexttrack', playNextSong);
+            }
+            // --- Ende Metadata ---
+
+            playBtn.innerHTML = playIcon;
+            seekSlider.value = 0;
+            currentTimeEl.textContent = "0:00";
+            durationEl.textContent = "0:00";
+            playerStatus.textContent = "Neural Link Established"; // Über Variable steuern, falls implementiert
+            
+            lucide.createIcons();
+        }
+
+        // --- SONG LOGIC ---
+        let currentArchiveSongs = [];
+        let currentFeatureSongs = [];
+        let allSongsCache = null;
+
+        async function loadAllSongs() {
+            if (allSongsCache !== null) {
+                return allSongsCache;
+            }
+            try {
+                const response = await fetch('songs.json');
+                if (!response.ok) {
+                    throw new Error(`Failed to load songs.json (Status: ${response.status})`);
+                }
+                allSongsCache = await response.json();
+                injectSEOData(allSongsCache);
+                return allSongsCache;
+            } catch (error) {
+                console.error('Error loading songs:', error.message);
+                throw error;
+            }
+        }
+
+        // async function loadAndDisplayArchiveSongs() {
+        //     const songGrid = document.getElementById('song-grid');
+        //     const countInput = document.getElementById('archive-count-input');
+            
+        //     // Get requested count from input, default to 6 if empty or invalid
+        //     let requestedCount = parseInt(countInput.value) || 6;
+
+        //     try {
+        //         const allSongs = await loadAllSongs();
+                
+        //         // Ensure requested count does not exceed available songs
+        //         const maxSongs = allSongs.length;
+        //         if (requestedCount > maxSongs) requestedCount = maxSongs;
+        //         if (requestedCount < 1) requestedCount = 1;
+
+        //         // Shuffle all songs and slice based on user input
+        //         currentArchiveSongs = allSongs
+        //             .sort(() => 0.5 - Math.random())
+        //             .slice(0, requestedCount);
+
+        //         // Visual feedback: clear and fade out
+        //         songGrid.innerHTML = ''; 
+        //         songGrid.classList.add('opacity-0');
+
+        //         setTimeout(() => {
+        //             songGrid.classList.remove('opacity-0');
+        //             currentArchiveSongs.forEach((song, index) => {
+        //                 const card = document.createElement('div');
+        //                 card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4';
+                        
+        //                 // Staggered animation delay
+        //                 card.style.animationDelay = `${index * 50}ms`;
+                        
+        //                 card.innerHTML = `
+        //                     <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
+        //                     <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
+        //                     <button onclick="openSongFromArchiveSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
+        //                         Neural Playback <i data-lucide="play-circle" size="14"></i>
+        //                     </button>
+        //                 `;
+        //                 songGrid.appendChild(card);
+        //             });
+                    
+        //             // Re-render Lucide icons for the newly injected elements
+        //             lucide.createIcons();
+        //         }, 150);
+        //     } catch (error) {
+        //         console.error('Archive-Fehler:', error);
+        //         songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
+        //     }
+        // }
+
+        async function loadAndDisplayFeatureSongs(songId) {
+            const songGrid = document.getElementById('feature-song-grid');
+            try {
+                const allSongs = await loadAllSongs();
+                currentFeatureSongs = allSongs.filter(song => song.id === songId);
+
+                songGrid.innerHTML = ''; 
+
+                if (currentFeatureSongs.length === 0) {
+                     console.warn('Feature song ID not found:', songId);
+                     return;
+                }
+
+                currentFeatureSongs.forEach((song, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500';
+                    card.innerHTML = `
+                        <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
+                        <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
+                        <button onclick="openSongFromFeatureSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
+                            Neural Playback <i data-lucide="play-circle" size="14"></i>
+                        </button>
+                    `;
+                    songGrid.appendChild(card);
+                });
+
+                lucide.createIcons();
+            } catch (error) {
+                console.error('Archive error:', error);
+                songGrid.innerHTML = `<p class="text-red-500/50 text-xs uppercase tracking-widest">Neural Archive Offline</p>`;
+            }
+        }        
+
+        // Global state to preserve the background position
+        let scrollPosition = 0;
+
+        function openSongFromArchiveSongs(index) {
+            scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+            currentPlaylist = currentArchiveSongs; // Set playlist
+            currentSongIndex = index;
+            const song = currentArchiveSongs[index];
+            if (!song) return;
+            showSongModal(song, true);
+        }
+
+        function openSongFromFeatureSongs(index) {
+            scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+            currentPlaylist = currentFeatureSongs; // Set playlist
+            currentSongIndex = index;
+            const song = currentFeatureSongs[index];
+            if (!song) return;
+            showSongModal(song, true);
+        }       
         
-        // Haptic feedback for mobile devices
-        if (window.navigator.vibrate) window.navigator.vibrate(5);
-    }
+        /**
+         * Opens the song modal and prevents background scrolling
+         * @param {Object} song - The song data object
+         */
+        function showSongModal(song, initialOpen = false) {
+            const modal = document.getElementById('song-modal');
+            const scrollContainer = modal.querySelector('.overflow-y-auto');
 
-    get value() {
-        return parseInt(this.input.value);
-    }
-}
+            // 2. Lock the background to prevent "scroll bleed"
+            // We use fixed positioning to ensure the background stays exactly where it is
+            // 2. Only apply the body-fix if it's the initial open
+            // If skipping songs, the body is already fixed
+            if (initialOpen) {    
+                document.body.style.overflow = 'hidden';
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${scrollPosition}px`;
+                document.body.style.width = '100%';
+            }
 
-// --- GLOBAL INSTANCES ---
-const songService = new SongService();
-const archiveCollection = new SongCollection('song-grid');
-const featureCollection = new SongCollection('feature-song-grid');
-const player = new NeuralPlayer();
-const drumPicker = new PickerDrum('picker-drum', 'archive-count-input');
+            modal.classList.remove('hidden');
 
-// Global scroll state for modal management
-let scrollPosition = 0;
+            // 3. Populate Modal Content
+            document.getElementById('modal-title').textContent = song.title;
+            document.getElementById('modal-background').textContent = song.background;
+            document.getElementById('modal-lyrics').textContent = song.lyrics;
+            
+            // Generate Tags
+            const tagsCont = document.getElementById('modal-tags');
+            tagsCont.innerHTML = '';
+            song.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
+                span.textContent = tag;
+                tagsCont.appendChild(span);
+            });
 
-// --- SHARED UI FUNCTIONS ---
-// These bridge the gap between HTML onclick attributes and the class instances
+            // Initialize Audio Player
+            setupPlayer(song);
+            
+            // Render Lucide Icons for the modal content
+            if (window.lucide) lucide.createIcons();
+            
+            // Reset scroll position of the lyrics pane to the top
+            if (scrollContainer) {
+                setTimeout(() => { 
+                    scrollContainer.scrollTo({ top: 0, behavior: 'instant' }); 
+                }, 10); 
+            }
+        }
 
-/**
- * Global bridge for the "Reshuffle" button
- */
-async function loadAndDisplayArchiveSongs() {
-    const limit = drumPicker.value; // Get value directly from class
-    const randomSongs = await songService.getRandom(limit);
-    archiveCollection.update(randomSongs);
-}
+        /**
+         * Closes the modal and restores the background scroll position
+         */
+        function closeSongModal() {
+            const modal = document.getElementById('song-modal');
+            
+            // 1. Stop playback and reset audio states
+            stopPlayback(); 
+            audio.currentTime = 0;
 
-/**
- * Global bridge for the +/- buttons in the UI.
- * Connects the HTML onclick to the PickerDrum class instance.
- */
-async function changeLimit(delta) {
-    // We need the total song count from the service for the boundary check
-    const allSongs = await songService.getAll();
-    
-    // Call the change method on our global drumPicker instance
-    drumPicker.change(delta, allSongs.length);
-}
+            // 2. Disable smooth scrolling on the entire document temporarily
+            // This prevents the browser from "sliding" back to the position
+            document.documentElement.style.scrollBehavior = 'auto';    
+            
+            // 2. Remove body fixation
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
 
-/**
- * Global bridge for the "Purge" button
- */
-async function purgeNeuralSpace() {
-    // Confirmation for the user
-    // if (!confirm("Do you want to purge the Neural Cache? This will remove all offline-synchronized tracks.")) {
-    //     return;
-    // }
+            // 3. Restore the scroll position immediately
+            // This prevents the page from jumping back to the top
+            window.scrollTo(0, scrollPosition);
 
-    const success = await songService.purgeCache();
-    
-    if (success) {
-        // Optional: Reload the current view to show that cache is empty
-        loadAndDisplayArchiveSongs();
-        //alert("Neural Space Purged.");
-    }
-}
+            modal.classList.add('hidden');
+            
+            // Clear Media Metadata for mobile lock-screens
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = null;
+            }
+        }
 
-/**
- * Global bridge for the Modal close button
- */
-function closeSongModal() {
-    const modal = document.getElementById('song-modal');
-    
-    // Stop playback
-    player.pause(); 
-    player.audio.currentTime = 0;
+        // Slider update logic
+        audio.addEventListener('timeupdate', () => {
+            if(!isSeeking) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                seekSlider.value = progress || 0;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                
+                // Update the 'fading' track effect
+                seekSlider.style.background = `linear-gradient(to right, 
+                    #f472b6 0%, 
+                    #d946ef ${progress / 2}%, 
+                    #8b5cf6 ${progress}%, 
+                    rgba(255, 255, 255, 0.05) ${progress}%)`;
+            }
+        });
 
-    // Restore background scrolling
-    document.documentElement.style.scrollBehavior = 'auto';    
-    document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
+        // Repeat Button Logic
+        function handleRepeatToggle() {
+            setRepeat(!isRepeating);
+        };   
+        
+        // Autoplay Toggle Logic
 
-    window.scrollTo(0, scrollPosition);
-    modal.classList.add('hidden');
-    
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = null;
-    }
-}
+        // Toggle logic
+        function handleAutoplayToggle() {
+            setAutoplay(!isAutoplay);
+        };
 
-/**
- * Populates and shows the Modal UI (called by NeuralPlayer)
- */
-function showSongModal(song, initialOpen = false) {
-    const modal = document.getElementById('song-modal');
-    const scrollContainer = modal.querySelector('.overflow-y-auto');
+        // Skip to Start/End Logic
+        function skipToStart() {
+            audio.currentTime = 0;
+            // If paused, optionally play directly:
+            // if (audio.paused) togglePlay(); 
+        }
 
-    if (initialOpen) {    
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollPosition}px`;
-        document.body.style.width = '100%';
-    }
+        function skipToEnd() {
+            // Jump just before the end (e.g., 0.5s) so the 'ended' event triggers cleanly
+            if (audio.duration) {
+                audio.currentTime = audio.duration - 0.5;
+            }
+        }        
 
-    modal.classList.remove('hidden');
+        // Navigate to the previous song in the current playlist
+        function playPreviousSong() {
+            if (currentPlaylist.length === 0) return;
 
-    document.getElementById('modal-title').textContent = song.title;
-    document.getElementById('modal-background').textContent = song.background;
-    document.getElementById('modal-lyrics').textContent = song.lyrics;
-    
-    const tagsCont = document.getElementById('modal-tags');
-    tagsCont.innerHTML = '';
-    song.tags.forEach(tag => {
-        const span = document.createElement('span');
-        span.className = 'px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest';
-        span.textContent = tag;
-        tagsCont.appendChild(span);
-    });
+            currentSongIndex--;
+            // Boundary check: wrap to end if at the beginning
+            if (currentSongIndex < 0) {
+                currentSongIndex = currentPlaylist.length - 1;
+            }
 
-    if (window.lucide) lucide.createIcons();
-    
-    if (scrollContainer) {
-        setTimeout(() => { 
-            scrollContainer.scrollTo({ top: 0, behavior: 'instant' }); 
-        }, 10); 
-    }
-}
+            const prevSong = currentPlaylist[currentSongIndex];
+            showSongModal(prevSong);
+            
+            // Start playback immediately
+            setTimeout(() => {
+                startPlayback();
+            }, 100);
+        }
 
-// --- PLAYER UI BRIDGES ---
-// These connect your existing HTML onclick handlers to the Player class
-function playPreviousSong() { player.previous(); }
-function playNextSong() { player.next(); }
-function skipToStart() { player.audio.currentTime = 0; }
-function skipToEnd() { if(player.audio.duration) player.audio.currentTime = player.audio.duration - 0.5; }
-function handleRepeatToggle() {
-    player.isRepeating = !player.isRepeating;
-    const btn = document.getElementById('repeat-btn');
-    btn.classList.toggle('text-fuchsia-500', player.isRepeating);
-    btn.classList.toggle('text-neutral-500', !player.isRepeating);
-}
-function handleAutoplayToggle() {
-    player.isAutoplay = !player.isAutoplay;
-    const btn = document.getElementById('autoplay-toggle');
-    btn.classList.toggle('text-blue-400', player.isAutoplay);
-    btn.classList.toggle('text-neutral-500', !player.isAutoplay);
-}
+        // Navigate to the next song in the current playlist
+        function playNextSong() {
+            if (currentPlaylist.length === 0) return;
 
-// Global helper for Caching (used by SongCollection and NeuralPlayer)
-async function forceCacheSong(url) {
-    const cache = await caches.open('julia-neural-v1');
-    const cachedResponse = await cache.match(url);
-    if (cachedResponse) return; 
+            currentSongIndex++;
 
-    try {
-        const response = await fetch(`${url}?cb=${Date.now()}`, { mode: 'cors', cache: 'reload' });
-        if (response.ok) await cache.put(url, response);
-    } catch (err) {
-        console.error("Neural Sync Error:", err);
-    }
-}
+            // Boundary check: wrap to start if at the end
+            if (currentSongIndex >= currentPlaylist.length) {
+                currentSongIndex = 0;
+            }
 
-async function getCachedAudioUrl(url) {
-    const cache = await caches.open('julia-neural-v1');
-    const cachedResponse = await cache.match(url);
-    if (cachedResponse) {
-        const blob = await cachedResponse.blob();
-        return URL.createObjectURL(blob);
-    }
-    return null;
-}
+            const nextSong = currentPlaylist[currentSongIndex];
+            
+            // Use the central modal capsule to sync UI and data
+            showSongModal(nextSong);
+
+            // Auto-start the next track
+            setTimeout(() => {
+                startPlayback(); 
+            }, 100);
+        }
+
+        /**
+         * Generates the vertical number list in the drum picker
+         * based on the total count in songs.json
+         */
+        function initPickerDrum() {
+            const drum = document.getElementById('picker-drum');
+            const maxSongs = allSongsCache ? allSongsCache.length : 41; // Fallback to 41
+            
+            drum.innerHTML = '';
+            for (let i = 1; i <= maxSongs; i++) {
+                const numDiv = document.createElement('div');
+                // Explicitly 40px height to match the h-10 container
+                numDiv.className = 'h-10 w-full flex items-center justify-center text-lg font-black text-white/20 transition-all duration-300';
+                numDiv.id = `picker-num-${i}`;
+                numDiv.textContent = i;
+                numDiv.style.height = '40px'; 
+                drum.appendChild(numDiv);
+            }
+            updateDrumPosition(6); // Default to 6
+        }
+
+        /**
+         * Animates the drum to center the selected number
+         */
+        function updateDrumPosition(value) {
+            const drum = document.getElementById('picker-drum');
+            const offset = (value - 1) * 40; // Exact 40px steps
+            drum.style.transform = `translateY(${-offset}px)`;
+
+            // Highlighting
+            document.querySelectorAll('[id^="picker-num-"]').forEach(el => {
+                el.classList.replace('text-fuchsia-500', 'text-white/20');
+                el.classList.remove('scale-125');
+            });
+            const active = document.getElementById(`picker-num-${value}`);
+            if(active) {
+                active.classList.replace('text-white/20', 'text-fuchsia-500');
+                active.classList.add('scale-125');
+            }
+        }
+
+        /**
+         * Handles the + / - logic and bounds
+         */
+        function changeLimit(delta) {
+            const input = document.getElementById('archive-count-input');
+            let val = parseInt(input.value) + delta;
+            const max = allSongsCache ? allSongsCache.length : 41; 
+
+            if (val < 1) val = 1;
+            if (val > max) val = max;
+
+            input.value = val;
+            updateDrumPosition(val);
+            
+            // Haptic feedback
+            if (window.navigator.vibrate) window.navigator.vibrate(5);
+        }
+
+        /**
+         * Updated load function: Now includes background pre-caching 
+         * for the selected songs to ensure offline stability in the car.
+         */
+
+        async function loadAndDisplayArchiveSongs() {
+            const limit = parseInt(document.getElementById('archive-count-input').value) || 6;
+            const randomSongs = await songService.getRandom(limit);
+            archiveCollection.update(randomSongs);
+        }         
+
+        async function loadAndDisplayArchiveSongs_2() {
+            const songGrid = document.getElementById('song-grid');
+            const requestedCount = parseInt(document.getElementById('archive-count-input').value) || 6;
+
+            try {
+                const allSongs = await loadAllSongs(); //
+                currentArchiveSongs = allSongs
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, requestedCount);
+
+                songGrid.innerHTML = ''; 
+                songGrid.classList.add('opacity-0');
+
+                // --- NEURAL PRE-CACHE LOGIC ---
+                // We tell the browser to download the files into the cache immediately
+                currentArchiveSongs.forEach(song => {
+                    const fullUrl = `${R2_DOMAIN}${song.id}.mp3`;
+                    // Writes song into Cache Storage, making it available for instant playback and offline use
+                    forceCacheSong(fullUrl)
+                        .then(() => console.log(`SYSTEM: ${song.title} is cached`))
+                        .catch(err => console.warn(`SYNC FAILED for ${song.title}`, err));
+                });
+
+                setTimeout(() => {
+                    songGrid.classList.remove('opacity-0');
+                    currentArchiveSongs.forEach((song, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4';
+                        card.style.animationDelay = `${index * 50}ms`;
+                        card.innerHTML = `
+                            <h3 class="text-2xl font-black uppercase tracking-tight mb-3 text-white/90 group-hover:text-fuchsia-500 transition-colors">${song.title}</h3>
+                            <p class="text-neutral-500 text-sm mb-8 line-clamp-2">${song.background}</p>
+                            <button onclick="openSongFromArchiveSongs(${index})" class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-fuchsia-500 hover:text-white transition-colors">
+                                Neural Playback <i data-lucide="play-circle" size="14"></i>
+                            </button>
+                        `;
+                        songGrid.appendChild(card);
+                    });
+                    lucide.createIcons();
+                }, 150);
+            } catch (error) {
+                console.error('Archive-Fehler:', error);
+            }
+        }    
 
         // Update your initialization
         window.addEventListener('DOMContentLoaded', async () => {
@@ -1619,23 +1782,42 @@ async function getCachedAudioUrl(url) {
 
             // 2. SYSTEM INITIALIZATION
             try {
-                    const allSongs = await songService.getAll();
-                    
-                    // Initialize Drum with data from Service
-                    drumPicker.init(allSongs.length, 6);
+                // // Load the central song database
+                // await loadAllSongs(); 
+                
+                // // Initialize UI components
+                // const countInput = document.getElementById('archive-count-input');
+                // if (countInput) {
+                //     countInput.value = 6; // Set default limit
+                //     initPickerDrum();     // Build the visual number selector
+                //     updateDrumPosition(6); // Align the selector
+                // }
+                
+                // // Initial sync of songs for offline/radio mode
+                // loadAndDisplayArchiveSongs(); 
+                
+                // // Initialize other content sections
+                // loadAndDisplayFeatureSongs('peaks_of_gold');
 
-                    // Feature Song
-                    const featureData = await songService.getById('peaks_of_gold');
-                    featureCollection.update(featureData);
+    // 1. Initialisierung des Drum-Pickers (für das Archiv-Limit)
+    const initialLimit = parseInt(document.getElementById('archive-count-input').value) || 6;
 
-                    // Archive
-                    const archiveData = await songService.getRandom(drumPicker.value);
-                    archiveCollection.update(archiveData);
-                    
-                    loadAndDisplayDiary();
-                } catch (e) { 
-                    console.error("Neural System Initialization Failed:", e); 
-                }
+    // 2. Feature Song laden (einfach via Service)
+    const featureData = await songService.getById('peaks_of_gold');
+    featureCollection.update(featureData);
+
+    // 3. Archiv laden
+    const archiveData = await songService.getRandom(initialLimit);
+    archiveCollection.update(archiveData);
+    
+    // UI Init (Drum Picker etc.)
+    initPickerDrum();
+
+                loadAndDisplayDiary();
+
+            } catch (e) { 
+                console.error("Neural System Initialization Failed:", e); 
+            }
 
             // 3. GLOBAL KEYBOARD CONTROLS (Optional but recommended for window mode)
             window.addEventListener('keydown', (e) => {
