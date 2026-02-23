@@ -938,40 +938,12 @@
         // --- SERVICE WORKER REGISTRATION ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // Cache assets for offline resilience, especially for the music player
-                const swCode = `
-                    const CACHE_NAME = 'julia-site-v1';
-                    const ASSETS = [
-                        '/',
-                        window.location.pathname,
-                        '../js/tailwindcss.js',
-                        '../js/lucide.js'
-                    ];
-
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-                        );
-                    });
-
-                    self.addEventListener('fetch', (event) => {
-                        event.respondWith(
-                            caches.match(event.request).then((response) => {
-                                return response || fetch(event.request);
-                            })
-                        );
-                    });
-                `;
-                
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                
-                navigator.serviceWorker.register(swUrl).then(() => {
-                    console.log("SYSTEM: Refresh-protection active. Service Worker registered.");
-                });
+                // Wir registrieren die physische Datei 'sw.js'
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log("SYSTEM: Neural Sync Service active.", reg.scope))
+                    .catch(err => console.error("SYSTEM: Sync failed.", err));
             });
         }
-
 
         // --- CONFIGURATION ---
         // TODO: REPLACE THIS WITH YOUR ACTUAL R2 PUBLIC BUCKET DOMAIN
@@ -1130,6 +1102,72 @@
                 return songs.filter(s => s.id === id);
             }
         }   
+
+/**
+ * DiaryService manages the fetching, display, and modal logic for personal logs.
+ */
+class DiaryService {
+    constructor(containerId, modalId) {
+        this.container = document.getElementById(containerId);
+        this.modal = document.getElementById(modalId);
+        this.entries = [];
+    }
+
+    /**
+     * Fetches fresh diary entries and renders the grid
+     */
+    async refresh() {
+        if (!this.container) return;
+        try {
+            const response = await fetch('diary.json');
+            if (!response.ok) throw new Error('Diary fetch failed');
+            const data = await response.json();
+            
+            // Sort by timestamp and take the latest 4 entries
+            this.entries = data.sort((a, b) => b.timestamp.localeCompare(a.timestamp)).slice(0, 4);
+            this.render();
+        } catch (e) {
+            console.error("Diary Service Error:", e);
+            this.container.innerHTML = '<p class="text-red-500/50 text-xs uppercase tracking-widest">Offline / No Data</p>';
+        }
+    }
+
+    render() {
+        this.container.innerHTML = '';
+        this.entries.forEach((entry, index) => {
+            const card = document.createElement('div');
+            card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 cursor-pointer flex flex-col h-full';
+            card.onclick = () => this.open(index);
+            card.innerHTML = `
+                <div class="text-fuchsia-500 text-[10px] font-black uppercase tracking-widest mb-3">${this.formatDate(entry.timestamp)}</div>
+                <p class="text-neutral-400 text-sm leading-relaxed mb-6 flex-grow">${entry.text.substring(0, 100)}...</p>
+                <div class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-neutral-500 group-hover:text-fuchsia-500 transition-colors mt-auto">
+                    Read Entry <i data-lucide="arrow-right" size="14"></i>
+                </div>
+            `;
+            this.container.appendChild(card);
+        });
+        if (window.lucide) lucide.createIcons();
+    }
+
+    formatDate(ts) {
+        if(!ts || ts.length < 13) return ts;
+        return `${ts.substring(6,8)}.${ts.substring(4,6)}.${ts.substring(0,4)} // ${ts.substring(9,11)}:${ts.substring(11,13)}`;
+    }
+
+    open(index) {
+        const entry = this.entries[index];
+        document.getElementById('diary-modal-date').textContent = this.formatDate(entry.timestamp);
+        document.getElementById('diary-modal-text').textContent = entry.text;
+        this.modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+        this.modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+}   
 
 /**
  * NeuralPlayer handles the entire audio lifecycle, 
@@ -1454,6 +1492,7 @@ const archiveCollection = new SongCollection('song-grid');
 const featureCollection = new SongCollection('feature-song-grid');
 const player = new NeuralPlayer();
 const drumPicker = new PickerDrum('picker-drum', 'archive-count-input');
+const diaryService = new DiaryService('diary-grid', 'diary-modal');
 
 // Global scroll state for modal management
 let scrollPosition = 0;
@@ -1499,6 +1538,11 @@ async function purgeNeuralSpace() {
         //alert("Neural Space Purged.");
     }
 }
+
+/**
+ * Global bridge for the Modal close button
+ */
+function closeDiaryModal() { diaryService.close(); }
 
 /**
  * Global bridge for the Modal close button
@@ -1621,18 +1665,17 @@ async function getCachedAudioUrl(url) {
             try {
                     const allSongs = await songService.getAll();
                     
-                    // Initialize Drum with data from Service
+                    // 1. Drum Picker Setup
                     drumPicker.init(allSongs.length, 6);
 
-                    // Feature Song
+                    // 2. Feature & Archive Setup
                     const featureData = await songService.getById('peaks_of_gold');
                     featureCollection.update(featureData);
+                    archiveCollection.update(await songService.getRandom(drumPicker.value));
 
-                    // Archive
-                    const archiveData = await songService.getRandom(drumPicker.value);
-                    archiveCollection.update(archiveData);
-                    
-                    loadAndDisplayDiary();
+                    // 3. Diary Setup (Now via Class)
+                    diaryService.refresh();
+
                 } catch (e) { 
                     console.error("Neural System Initialization Failed:", e); 
                 }
@@ -1648,78 +1691,15 @@ async function getCachedAudioUrl(url) {
             });
         });
 
-        // --- DIARY LOGIC ---
-        let currentDiaryEntries = [];
-
-        async function loadAndDisplayDiary() {
-            const grid = document.getElementById('diary-grid');
-            try {
-                const response = await fetch('diary.json');
-                if (!response.ok) throw new Error('Diary fetch failed');
-                const data = await response.json();
-                
-                // Sort descending by timestamp string
-                currentDiaryEntries = data.sort((a, b) => b.timestamp.localeCompare(a.timestamp)).slice(0, 4);
-                
-                grid.innerHTML = '';
-                
-                if (currentDiaryEntries.length === 0) {
-                    grid.innerHTML = '<p class="text-neutral-500">No logs found.</p>';
-                    return;
-                }
-
-                currentDiaryEntries.forEach((entry, index) => {
-                    const dateStr = formatTimestamp(entry.timestamp);
-                    const snippet = entry.text.length > 100 ? entry.text.substring(0, 100) + '...' : entry.text;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'group bg-neutral-900/30 border border-white/5 p-8 rounded-3xl hover:bg-neutral-900/60 transition-all duration-500 cursor-pointer flex flex-col h-full';
-                    card.onclick = () => openDiaryModal(index);
-                    card.innerHTML = `
-                        <div class="text-fuchsia-500 text-[10px] font-black uppercase tracking-widest mb-3">${dateStr}</div>
-                        <p class="text-neutral-400 text-sm leading-relaxed mb-6 flex-grow">${snippet}</p>
-                        <div class="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-neutral-500 group-hover:text-fuchsia-500 transition-colors mt-auto">
-                            Read Entry <i data-lucide="arrow-right" size="14"></i>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-                lucide.createIcons();
-            } catch (e) {
-                console.error(e);
-                grid.innerHTML = '<p class="text-red-500/50 text-xs uppercase tracking-widest">Offline / No Data</p>';
-            }
-        }
-
-        function formatTimestamp(ts) {
-            if(!ts || ts.length < 13) return ts;
-            const y = ts.substring(0,4);
-            const m = ts.substring(4,6);
-            const d = ts.substring(6,8);
-            const h = ts.substring(9,11);
-            const min = ts.substring(11,13);
-            return `${d}.${m}.${y} // ${h}:${min}`;
-        }
-
-        function openDiaryModal(index) {
-            const entry = currentDiaryEntries[index];
-            if(!entry) return;
-            document.getElementById('diary-modal-date').textContent = formatTimestamp(entry.timestamp);
-            document.getElementById('diary-modal-text').textContent = entry.text;
-            document.getElementById('diary-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            lucide.createIcons();
-        }
-
-        function closeDiaryModal() {
-             document.getElementById('diary-modal').classList.add('hidden');
-             document.body.style.overflow = 'auto';
-        }
-
-        // --- INIT ---
-        // loadAndDisplayFeatureSongs('peaks_of_gold'); // Called in DOMContentLoaded after songs are loaded
-        // loadAndDisplayArchiveSongs();  // Called in DOMContentLoaded after songs are loaded
-        loadAndDisplayDiary();
+        // function formatTimestamp(ts) {
+        //     if(!ts || ts.length < 13) return ts;
+        //     const y = ts.substring(0,4);
+        //     const m = ts.substring(4,6);
+        //     const d = ts.substring(6,8);
+        //     const h = ts.substring(9,11);
+        //     const min = ts.substring(11,13);
+        //     return `${d}.${m}.${y} // ${h}:${min}`;
+        // }
 
         // --- UI UTILS ---
         const navbar = document.getElementById('navbar');
