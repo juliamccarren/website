@@ -140,6 +140,7 @@ function showSongModal(song, initialOpen = false) {
     artImg.src = `../artwork/${song.id}.webp`; // e.g., ../artwork/brooklyn.webp
     artImg.alt = `${song.title} Artwork`;
     artImg.className = 'w-full h-auto rounded-2xl mb-8 border border-white/10 shadow-2xl animate-in fade-in duration-700';
+    artImg.style.contentVisibility = 'visible'; // Force loading even if initially off-screen
     
     // If the image fails to load (file not found), remove it to stay "as today"
     artImg.onerror = function() {
