@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,14 +19,14 @@
             background-clip: text;
         }
         .glass-panel {
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(217, 70, 239, 0.2);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
         .input-field {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
         }
         .input-field:focus {
@@ -35,138 +35,177 @@
             background: rgba(217, 70, 239, 0.05);
             box-shadow: 0 0 15px rgba(217, 70, 239, 0.1);
         }
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
 
         .active-song-card {
             border-color: #d946ef;
-            background: rgba(217, 70, 239, 0.1);
+            background: rgba(217, 70, 239, 0.12);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col overflow-hidden">
 
     <!-- Header -->
-    <header class="border-b border-white/10 py-6 sticky top-0 z-50 bg-black/80 backdrop-blur-md">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-fuchsia-500 flex items-center justify-center shadow-[0_0_20px_rgba(217,70,239,0.5)]">
-                    <i data-lucide="database" class="text-white" size="20"></i>
+    <header class="border-b border-white/10 py-4 bg-black/80 backdrop-blur-md z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-fuchsia-600 flex items-center justify-center shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+                    <i data-lucide="cpu" class="text-white" size="20"></i>
                 </div>
-                <h1 class="text-2xl font-black uppercase tracking-tighter">
+                <h1 class="text-xl font-black uppercase tracking-tighter">
                     Neural <span class="hero-text-mccarren">Archive Editor</span>
                 </h1>
             </div>
             
             <div class="flex items-center gap-3">
                 <input type="file" id="json-input" class="hidden" accept=".json">
-                <button onclick="document.getElementById('json-input').click()" class="px-5 py-2 rounded-full border border-white/10 hover:bg-white/5 transition-all flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
-                    <i data-lucide="upload" size="14"></i> Load JSON
+                <button onclick="document.getElementById('json-input').click()" class="px-5 py-2 rounded-full border border-white/10 hover:bg-white/5 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="upload" size="14"></i> Import
                 </button>
-                <button onclick="exportJson()" class="px-5 py-2 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 shadow-lg shadow-fuchsia-500/20 transition-all flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
-                    <i data-lucide="download" size="14"></i> Export / Save
+                <button onclick="exportJson()" class="px-5 py-2 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 shadow-lg shadow-fuchsia-500/20 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="download" size="14"></i> Export
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-6 py-10 flex flex-col lg:flex-row gap-8 overflow-hidden" style="max-height: calc(100vh - 100px);">
+    <main class="flex-grow flex flex-col lg:flex-row h-[calc(100vh-73px)]">
         
-        <!-- Song List Sidebar -->
-        <div class="w-full lg:w-80 flex flex-col gap-4 overflow-hidden">
-            <div class="relative">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size="16"></i>
-                <input type="text" id="song-search" placeholder="Filter Songs..." class="w-full pl-12 pr-4 py-3 rounded-2xl input-field text-sm font-bold uppercase tracking-wider">
-            </div>
-
-            <div id="song-list" class="flex-grow overflow-y-auto space-y-2 pr-2">
-                <!-- Songs will be listed here -->
-                <div class="p-12 text-center text-white/20 uppercase font-black text-xs tracking-widest border border-dashed border-white/10 rounded-3xl">
-                    No JSON Loaded
+        <!-- Sidebar: Song List -->
+        <div class="w-full lg:w-80 border-r border-white/5 flex flex-col bg-neutral-950/50">
+            <div class="p-6 border-b border-white/5 space-y-4">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size="14"></i>
+                    <input type="text" id="song-search" placeholder="Search..." class="w-full pl-10 pr-4 py-2.5 rounded-xl input-field text-[11px] font-bold uppercase tracking-wider">
                 </div>
-            </div>
-
-            <button onclick="addNewSong()" class="w-full py-3 rounded-2xl border border-dashed border-white/20 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                <i data-lucide="plus" size="14"></i> Add New Fragment
-            </button>
-        </div>
-
-        <!-- Editor Form -->
-        <div id="editor-pane" class="flex-grow glass-panel rounded-[2rem] p-8 md:p-12 overflow-y-auto hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Internal ID</label>
-                        <input type="text" id="edit-id" class="w-full p-4 rounded-xl input-field font-mono text-sm" placeholder="e.g. peaks_of_gold">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Display Title</label>
-                        <input type="text" id="edit-title" class="w-full p-4 rounded-xl input-field font-bold text-lg" placeholder="Song Title">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Tags (comma separated)</label>
-                        <input type="text" id="edit-tags" class="w-full p-4 rounded-xl input-field text-sm" placeholder="Pop, Energy, Olympic">
-                    </div>
-                </div>
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Background / Context</label>
-                        <textarea id="edit-background" class="w-full p-4 rounded-xl input-field text-sm h-[188px] resize-none leading-relaxed" placeholder="The story behind the song..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-10">
-                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-4 flex items-center gap-2">
-                    <i data-lucide="align-left" size="14"></i> Linguistic Data Stream (Lyrics)
-                </label>
-                <textarea id="edit-lyrics" class="w-full p-8 rounded-3xl input-field font-mono text-sm h-96 resize-y leading-relaxed" placeholder="[Verse 1]&#10;Line one..."></textarea>
-            </div>
-
-            <div class="flex justify-between items-center pt-8 border-t border-white/5">
-                <button onclick="deleteCurrentSong()" class="px-6 py-3 rounded-xl border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
-                    <i data-lucide="trash-2" size="14"></i> Delete Song
+                <button onclick="addNewSong()" class="w-full py-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-fuchsia-500/50 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                    <i data-lucide="plus-circle" size="14"></i> Add Song
                 </button>
-                <p class="text-[9px] font-bold text-white/20 uppercase tracking-[0.5em]">Neural Link Synchronized</p>
+            </div>
+
+            <div id="song-list" class="flex-grow overflow-y-auto p-4 space-y-2">
+                <div class="py-20 text-center text-white/10 uppercase font-black text-[10px] tracking-widest">
+                    No JSON loaded
+                </div>
             </div>
         </div>
 
-        <!-- Empty State -->
-        <div id="empty-pane" class="flex-grow flex flex-col items-center justify-center text-center p-12 opacity-30">
-            <i data-lucide="layers" size="64" class="mb-6 text-fuchsia-500"></i>
-            <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">Neural Buffer Empty</h2>
-            <p class="max-w-xs text-sm font-bold uppercase tracking-widest leading-loose">Upload your songs.json to start navigating the latent data stream.</p>
-        </div>
+        <!-- Content Area -->
+        <div class="flex-grow relative overflow-hidden bg-black">
+            
+            <!-- Empty State -->
+            <div id="empty-pane" class="absolute inset-0 flex flex-col items-center justify-center text-center p-12 opacity-20">
+                <i data-lucide="layers" size="64" class="mb-6 text-fuchsia-500"></i>
+                <h2 class="text-2xl font-black uppercase tracking-tighter mb-2">Neural Buffer Empty</h2>
+                <p class="max-w-xs text-[10px] font-bold uppercase tracking-[0.3em] leading-relaxed">Select a song from the list or upload a songs.json file.</p>
+            </div>
 
+            <!-- View Pane (Display Only) -->
+            <div id="view-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-wrap gap-2 mb-6" id="view-tags"></div>
+                    <h2 id="view-title" class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-10 hero-text-mccarren leading-none"></h2>
+                    
+                    <div class="flex gap-4 mb-16">
+                        <button onclick="enterEditMode()" class="px-8 py-3 rounded-full bg-white text-black font-black uppercase tracking-widest text-[11px] flex items-center gap-2 hover:scale-105 transition-transform">
+                            <i data-lucide="edit-3" size="16"></i> Edit
+                        </button>
+                        <button onclick="deleteCurrentSong()" class="px-8 py-3 rounded-full border border-red-500/30 text-red-500 font-black uppercase tracking-widest text-[11px] flex items-center gap-2 hover:bg-red-500/5 transition-all">
+                            <i data-lucide="trash-2" size="16"></i> Delete
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div class="md:col-span-1">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-4">Internal ID</h4>
+                            <p id="view-id" class="font-mono text-fuchsia-400 text-sm"></p>
+                            
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mt-10 mb-4">Background</h4>
+                            <p id="view-background" class="text-neutral-400 text-sm leading-relaxed italic"></p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-6 flex items-center gap-3">
+                                <span class="w-8 h-[1px] bg-fuchsia-500/30"></span>
+                                Linguistic Data Stream
+                            </h4>
+                            <div class="bg-white/5 rounded-3xl p-8 border border-white/5">
+                                <pre id="view-lyrics" class="whitespace-pre-wrap font-sans text-neutral-300 leading-relaxed text-lg italic"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Pane (Editing) -->
+            <div id="edit-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center justify-between mb-12">
+                        <h2 class="text-2xl font-black uppercase tracking-tighter">Editing <span class="hero-text-mccarren">Mode</span></h2>
+                        <div class="flex gap-3">
+                            <button onclick="exitEditMode(true)" class="px-6 py-2 rounded-full border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Cancel</button>
+                            <button onclick="exitEditMode(false)" class="px-8 py-2 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-fuchsia-500 transition-colors shadow-lg shadow-fuchsia-500/20">Save & View</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Internal ID</label>
+                                <input type="text" id="edit-id" class="w-full p-4 rounded-xl input-field font-mono text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Title</label>
+                                <input type="text" id="edit-title" class="w-full p-4 rounded-xl input-field font-bold text-lg">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Tags (comma separated)</label>
+                                <input type="text" id="edit-tags" class="w-full p-4 rounded-xl input-field text-sm" placeholder="Love, Electronic...">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Background / Context</label>
+                            <textarea id="edit-background" class="w-full p-4 rounded-xl input-field text-sm h-[252px] resize-none leading-relaxed"></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-4 flex items-center gap-2">
+                            <i data-lucide="align-left" size="14"></i> Lyrics (Linguistic Data Stream)
+                        </label>
+                        <textarea id="edit-lyrics" class="w-full p-8 rounded-3xl input-field font-mono text-sm h-96 resize-y leading-relaxed" placeholder="[Verse 1]..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <script>
         let songs = [];
         let currentIdx = -1;
+        let isEditMode = false;
 
-        // --- DOM ELEMENTS ---
         const jsonInput = document.getElementById('json-input');
         const songList = document.getElementById('song-list');
         const searchInput = document.getElementById('song-search');
-        const editorPane = document.getElementById('editor-pane');
+        
         const emptyPane = document.getElementById('empty-pane');
+        const viewPane = document.getElementById('view-pane');
+        const editPane = document.getElementById('edit-pane');
 
-        // --- LOAD LOGIC ---
+        // --- IMPORT ---
         jsonInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = (event) => {
                 try {
                     songs = JSON.parse(event.target.result);
                     renderList();
                     selectSong(0);
-                } catch (err) {
-                    alert("Invalid JSON file. Check the structure.");
-                }
+                } catch (err) { alert("Invalid JSON."); }
             };
             reader.readAsText(file);
         });
@@ -174,15 +213,14 @@
         function renderList() {
             const filter = searchInput.value.toLowerCase();
             songList.innerHTML = '';
-
             songs.forEach((song, idx) => {
                 if (song.title.toLowerCase().includes(filter) || song.id.toLowerCase().includes(filter)) {
                     const card = document.createElement('div');
-                    card.className = `p-4 rounded-2xl cursor-pointer transition-all border border-white/5 hover:bg-white/5 flex flex-col gap-1 ${idx === currentIdx ? 'active-song-card' : 'bg-neutral-900/50'}`;
+                    card.className = `p-4 rounded-2xl cursor-pointer transition-all border border-white/5 hover:bg-white/5 flex flex-col gap-1 ${idx === currentIdx ? 'active-song-card' : 'bg-white/5'}`;
                     card.onclick = () => selectSong(idx);
                     card.innerHTML = `
-                        <div class="text-[10px] font-black uppercase tracking-widest text-fuchsia-500/60">${song.id}</div>
-                        <div class="text-sm font-black uppercase tracking-tight text-white/90">${song.title}</div>
+                        <div class="text-[9px] font-black uppercase tracking-widest text-fuchsia-500/60">${song.id}</div>
+                        <div class="text-xs font-black uppercase tracking-tight text-white/90">${song.title}</div>
                     `;
                     songList.appendChild(card);
                 }
@@ -192,86 +230,110 @@
 
         searchInput.addEventListener('input', renderList);
 
-        // --- EDIT LOGIC ---
+        // --- NAVIGATION & VIEWS ---
         function selectSong(idx) {
-            if (currentIdx !== -1) saveCurrentChanges();
-            
+            if (isEditMode) {
+                if(!confirm("Discard changes?")) return;
+                isEditMode = false;
+            }
             currentIdx = idx;
-            const song = songs[idx];
+            renderView();
+            renderList();
+        }
 
+        function renderView() {
+            const song = songs[currentIdx];
             if (!song) {
-                editorPane.classList.add('hidden');
+                viewPane.classList.add('hidden');
+                editPane.classList.add('hidden');
                 emptyPane.classList.remove('hidden');
                 return;
             }
 
-            editorPane.classList.remove('hidden');
             emptyPane.classList.add('hidden');
+            editPane.classList.add('hidden');
+            viewPane.classList.remove('hidden');
+
+            document.getElementById('view-title').textContent = song.title;
+            document.getElementById('view-id').textContent = song.id;
+            document.getElementById('view-background').textContent = song.background;
+            document.getElementById('view-lyrics').textContent = song.lyrics;
+
+            const tagsCont = document.getElementById('view-tags');
+            tagsCont.innerHTML = '';
+            (song.tags || []).forEach(tag => {
+                const s = document.createElement('span');
+                s.className = "px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest";
+                s.textContent = tag;
+                tagsCont.appendChild(s);
+            });
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function enterEditMode() {
+            const song = songs[currentIdx];
+            isEditMode = true;
+            viewPane.classList.add('hidden');
+            editPane.classList.remove('hidden');
 
             document.getElementById('edit-id').value = song.id || '';
             document.getElementById('edit-title').value = song.title || '';
             document.getElementById('edit-tags').value = (song.tags || []).join(', ');
             document.getElementById('edit-background').value = song.background || '';
-            
-            // Textarea converts JSON escaped \n automatically back to visual newlines
             document.getElementById('edit-lyrics').value = song.lyrics || '';
+        }
 
+        function exitEditMode(cancel = false) {
+            if (!cancel) {
+                const song = songs[currentIdx];
+                song.id = document.getElementById('edit-id').value;
+                song.title = document.getElementById('edit-title').value;
+                song.background = document.getElementById('edit-background').value;
+                song.lyrics = document.getElementById('edit-lyrics').value;
+                const tagStr = document.getElementById('edit-tags').value;
+                song.tags = tagStr.split(',').map(t => t.trim()).filter(t => t !== '');
+            }
+            isEditMode = false;
+            renderView();
             renderList();
         }
 
-        function saveCurrentChanges() {
-            if (currentIdx === -1 || !songs[currentIdx]) return;
-
-            const song = songs[currentIdx];
-            song.id = document.getElementById('edit-id').value;
-            song.title = document.getElementById('edit-title').value;
-            song.background = document.getElementById('edit-background').value;
-            song.lyrics = document.getElementById('edit-lyrics').value; // Multi-line capture
-            
-            const tagInput = document.getElementById('edit-tags').value;
-            song.tags = tagInput.split(',').map(t => t.trim()).filter(t => t !== '');
-        }
-
+        // --- ACTIONS ---
         function addNewSong() {
-            saveCurrentChanges();
             const newSong = {
-                id: "new_fragment_" + Date.now(),
-                title: "New Song Title",
-                background: "",
-                tags: [],
+                id: "new_id_" + Date.now(),
+                title: "New Song",
+                background: "Context here...",
+                tags: ["New"],
                 lyrics: "[Verse 1]\n..."
             };
             songs.unshift(newSong);
+            currentIdx = 0;
             renderList();
-            selectSong(0);
+            enterEditMode(); // Jump straight into edit mode
         }
 
         function deleteCurrentSong() {
             if (currentIdx === -1) return;
-            if (confirm("Permanently delete this fragment from the archive?")) {
+            if (confirm("Are you sure you want to delete this song from the archive?")) {
                 songs.splice(currentIdx, 1);
-                currentIdx = -1;
+                currentIdx = songs.length > 0 ? 0 : -1;
+                isEditMode = false;
                 renderList();
-                selectSong(songs.length > 0 ? 0 : -1);
+                renderView();
             }
         }
 
         // --- EXPORT ---
         function exportJson() {
-            saveCurrentChanges();
-            // JSON.stringify will correctly escape real newlines in the string back to \n
+            if (isEditMode) exitEditMode(false);
             const dataStr = JSON.stringify(songs, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = 'songs.json';
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', 'songs.json');
+            link.click();
         }
-
-        // Auto-save on any input
-        document.getElementById('editor-pane').addEventListener('input', saveCurrentChanges);
 
         window.onload = () => lucide.createIcons();
     </script>
