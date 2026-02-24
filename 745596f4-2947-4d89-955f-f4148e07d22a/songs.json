@@ -1,5 +1,95 @@
 [
   {
+    "id": "introverted_girl",
+    "title": "Introverted Girl",
+    "background": "You won't believe me. I am really introverted. I am an organist and computer scientist. That should be proof enough.",
+    "tags": [
+      "Introverted",
+      "Quiet"
+    ],
+    "lyrics": "[Verse]\nShe runs through the streets with a reckless heart\nTearing through the dark like a stolen spark\nLeaves a trail of noise and neon signs\nBut her laughter hides the silent lines\n\n[Prechorus]\nShe’s a riot in a leather jacket\nBut there’s a whisper she won’t unpack it\n\n[Chorus]\nI am an introverted girl\nLiving loud in a noisy world\nI shout but my echo’s small\nI dance but I’m afraid to fall\nI am an introverted girl\n\n[Verse 2]\nShe’s the wildfire that never burns out\nBut inside she’s a storm of doubt\nBuilds her walls with bricks of gold\nHides her heart where it won’t be told\n\n[Guitar solo]\n\n[Prechorus]\nShe’s a hurricane\nA quiet fighter\nBut the weight inside feels no lighter\n\n[Chorus]\nI am an introverted girl\nLiving loud in a noisy world\nI shout but my echo’s small\nI dance but I’m afraid to fall\nI am an introverted girl"
+  },
+  {
+    "id": "little_butterflies",
+    "title": "Little Butterflies",
+    "background": "The moment the children leave home and living a life of their own.",
+    "tags": [
+      "Family",
+      "Growing up"
+    ],
+    "lyrics": "[Verse]\nIn the garden they once played\nShoes untied\nHands in the dirt\nChasing dreams outside\nThe wind whispered secrets they'd never confide\n\n[Chorus]\nLittle butterflies\nWings so bright\nFlying higher\nOut of sight\nYou were mine\nNow you're the sky\nLittle butterflies\nOh how time flies\n\n[Verse 2]\nBraids and ribbons\nTea for two\nStories of dragons\nSkies so blue\nNow they're queens of worlds I never knew\n\n[Prechorus]\nI blinked\nI missed the tide\nThey slipped through time\nThey never lied\n\n[Chorus]\nLittle butterflies\nWings so bright\nFlying higher\nOut of sight\nYou were mine\nNow you're the sky\nLittle butterflies\nOh how time flies\n\n[Bridge]\nI held them close\nThey held the stars\nI mended knees\nThey broke my heart\nNow they're soaring\nNear and far"
+  },
+  {
+    "id": "hes_still_here",
+    "title": "He's Still Here",
+    "background": "It's one of the most devastating moments in life when your father passes away. But I will carry him always with me. He is still here.",
+    "tags": [
+      "Death",
+      "Father"
+    ],
+    "lyrics": "[Verse]\nThe chair is empty where he’d sit each day\nHis laughter echoes but it fades away\nThe house feels hollow like a solemn prayer\nYet somehow we feel him still lingering there\n\n[Chorus]\nHe’s in the whispers of the evening breeze\nIn the rustling leaves of the old oak trees\nThough he’s gone his love won’t disappear\nWe close our eyes and he’s still here\n\n[Verse 2]\nThe table’s set but his plate’s not filled\nThe silence louder than we thought it’d build\nYet in the shadows his warmth still glows\nIn every story that the heart still knows\n\n[Chorus]\nHe’s in the whispers of the evening breeze\nIn the rustling leaves of the old oak trees\nThough he’s gone his love won’t disappear\nWe close our eyes and he’s still here\n\n[Bridge]\nTwo little girls with their mother’s embrace\nTears fall but strength takes their place\nThey feel his hand though it’s out of sight\nGuiding them through the darkest night\n\n[Chorus]\nHe’s in the whispers of the evening breeze\nIn the rustling leaves of the old oak trees\nThough he’s gone his love won’t disappear\nWe close our eyes and he’s still here"
+  },
+  {
+    "id": "electric_hearts",
+    "title": "Electric Hearts",
+    "background": "Remember your first love? You felt like the world was yours.",
+    "tags": [
+      "Love",
+      "Hearts"
+    ],
+    "lyrics": "[Verse]\nWe ran through streets of neon glow\nHearts on fire where the wild winds blow\nYour hand in mine a spark ignites\nTwo young souls in electric nights\n\n[Chorus]\nOh love so loud it shakes the ground\nWe’re untamed thunder no walls can bound\nOur hearts collide like stars in flight\nBurning brighter than the city lights\n\n[Verse 2]\nYour laugh’s a tune I can’t forget\nLike a song the universe hasn’t met yet\nWe’re reckless hope we’re fearless dreams\nA love so big it tears the seams\n\n[Chorus]\nOh love so loud it shakes the ground\nWe’re untamed thunder no walls can bound\nOur hearts collide like stars in flight\nBurning brighter than the city lights\n\n[Bridge]\nWe’re endless roads no map can find\nThe world can wait we’re lost in time\nTwo hearts so bold they cannot break\nForever ours this love we make\n\n[Chorus]\nOh love so loud it shakes the ground\nWe’re untamed thunder no walls can bound\nOur hearts collide like stars in flight\nBurning brighter than the city lights"
+  },
+  {
+    "id": "her_first_truck",
+    "title": "Her First Truck",
+    "background": "When I got my first car it has been pure freedom.",
+    "tags": [
+      "Cars",
+      "Freedom"
+    ],
+    "lyrics": "[Verse]\nShe saved every dime from the diner on Main,\nWorked late every night through the cold and the rain.\nHer boots hit the ground, her dreams took flight,\nThat old red Chevy felt just right.\n\n[Chorus]\nShe's got her own truck, rolling down the lane,\nWindows rolled down, radio playing her name.\nDust on the tires, freedom in her veins,\nAn American girl breaking her chains.\n\n[Verse 2]\nThe paint's a bit faded, the engine might groan,\nBut to her, it's more than just steel and chrome.\nIt's a ticket to the hills, where the wild winds hum,\nHer very own anthem, wherever she runs.\n\n[Chorus]\nShe's got her own truck, rolling down the lane,\nWindows rolled down, radio playing her name.\nDust on the tires, freedom in her veins,\nAn American girl breaking her chains.\n\n[Bridge]\nEvery scratch, every dent, tells a story of grit,\nIt's not just a truck; it's the life she built.\nFrom the backroads to the stars above,\nThat Chevy carries her heart and love.\n\n[Chorus]\nShe's got her own truck, rolling down the lane,\nWindows rolled down, radio playing her name.\nDust on the tires, freedom in her veins,\nAn American girl breaking her chains."
+  },
+  {
+    "id": "from_first_steps_to_stardom",
+    "title": "From First Steps to Stardom",
+    "background": "Since my early years I have been practicing.",
+    "tags": [
+      "Dreams",
+      "Stage"
+    ],
+    "lyrics": "[Verse]\nTiny shoes on wooden floors\nSpinning dreams through open doors\nA little girl with fire inside\nLearning steps with arms spread wide\n\n[Verse 2]\nMirror walls and echoing halls\nShe stumbles but she never falls\nEach pirouette a spark of flame\nBuilding strength and chasing fame\n\n[Chorus]\nFrom first steps to the brightest lights\nShe fought through days and endless nights\nA world star born from a simple start\nWith every move she showed her heart\n\n[Verse 3]\nCrowds would gather in the town\nTo see the girl who earned her crown\nHer passion roared like thunder’s call\nShe danced her way to conquer all\n\n[Guitar solo]\n\n[Bridge]\nThe stage her home the world her view\nHer heart beat loud her spirit grew\nShe leapt she soared she reached the skies\nA star was born before their eyes\n\n[Chorus]\nFrom first steps to the brightest lights\nShe fought through days and endless nights\nA world star born from a simple start\nWith every move she showed her heart"
+  },
+  {
+    "id": "golden_days",
+    "title": "Golden Days",
+    "background": "I had a wonderful childhood. Our whole family grew up together.",
+    "tags": [
+      "Nostalgia",
+      "Family"
+    ],
+    "lyrics": "[Intro]\nWe ran through fields with grass so tall\nTwo sisters laughing through it all\nOur parents' voices soft and clear\nA lucky life\nNo room for fear\n\n[Chorus]\nGolden days\nThey shine so bright\nMemories glow in soft moonlight\nA family bound by love so true\nThe past is home\nWhere hearts renew\n\n[Verse 2]\nMom's old stories by the fire's glow\nDad's strong hands\nThe seeds he'd sow\nWe'd dance in the kitchen\nSpinning wild\nTwo sisters held like carefree child\n\n[Chorus]\nGolden days\nThey shine so bright\nMemories glow in soft moonlight\nA family bound by love so true\nThe past is home\nWhere hearts renew\n\n[Bridge]\nThe echoes call\nThey're in my dreams\nA life so simple\nBursting seams\nTwo sisters' laughter still remains\nA melody in love's refrain\n\n[Verse 3]\nNow grown but still\nThe ties remain\nOur lucky life\nNo need to feign\nParents' wisdom\nSisters' grace\nForever held in time’s embrace"
+  },
+  {
+    "id": "big_dreams_shine",
+    "title": "Big Dreams Shine",
+    "background": "Follow you dreams. Who doesn't move won't get results.",
+    "tags": [
+      "Dreams",
+      "Stage"
+    ],
+    "lyrics": "[Verse]\nLights are blinding but they feel so warm\nHeart is pounding like a thunderstorm\nShe’s a spark in a sea of haze\nFirst time ever on a big stage\n\n[Orchestral interlude]\n\n[Verse 2]\nShe takes a breath she steadies her hands\nA world of dreams where she finally stands\nEvery whisper turns into a roar\nHer voice soars like never before\n\n[Chorus]\nShe's a comet burning through the night\nA star that's finding her own light\nFear is fading replaced with grace\nFirst time a girl on a big stage\n\n[Verse 3]\nShadows fall but they don’t scare her now\nEvery note feels like a sacred vow\nHer reflection in the crowd’s wide eyes\nShe’s alive where the music flies\n\n[Orchestral interlude]\n\n[Bridge]\nShe was once just a face in the crowd\nNow she’s singing her soul out loud\nNo regrets no fear to erase\nShe’s a girl owning the big stage\n\n[Chorus]\nShe's a comet burning through the night\nA star that's finding her own light\nFear is fading replaced with grace\nFirst time a girl on a big stage"
+  },
+  {
+    "id": "paradox_love",
+    "title": "Paradox Love",
+    "background": "He is right for me, he is not right for me.",
+    "tags": [
+      "Love",
+      "Break up"
+    ],
+    "lyrics": "[Verse]\nYou hold me close but push me away\nYour words are fire but cold as clay\nI’m lost in circles you’ve designed\nA paradox love I can’t define\n\n[Chorus]\nYou’re the lock and you’re the key\nYou’re the chain that sets me free\nTwist my heart like a Rubik’s cube\nParadox love I can’t refuse\n\n[Verse 2]\nYou’re the thunder and the rain\nThe pleasure tangled up in pain\nYou’re the chaos I call my home\nParadox love I can’t disown\n\n[Chorus]\nYou’re the lock and you’re the key\nYou’re the chain that sets me free\nTwist my heart like a Rubik’s cube\nParadox love I can’t refuse\n\n[Bridge]\nYou’re the truth wrapped in a lie\nThe spark that burns and makes me cry\nI can’t escape I don’t want to\nParadox love pulls me through\n\n[Chorus]\nYou’re the lock and you’re the key\nYou’re the chain that sets me free\nTwist my heart like a Rubik’s cube\nParadox love I can’t refuse"
+  },
+  {
     "id": "password_expired",
     "title": "Password Expired",
     "background": "Break up in the style of a computer scientist.",
@@ -86,8 +176,8 @@
   },
   {
     "id": "autumns_whisper",
-    "title": "Autumns Whisper",
-    "background": "The special feeling when nights are getting colder. You know that summer is over. The colours are warmer. It's my favorite season.",
+    "title": "Autumn's Whisper",
+    "background": "The special feeling when nights are getting colder. You know that summer is over. The colors are warmer. It's my favorite season.",
     "tags": [
       "Seasons",
       "Nostalgia"
