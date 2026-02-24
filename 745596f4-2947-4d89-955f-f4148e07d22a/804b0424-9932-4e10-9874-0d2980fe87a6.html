@@ -84,19 +84,17 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 2px;
+            width: 0%; /* Start bei Null */
+            height: 4px; /* Etwas dicker für bessere Sichtbarkeit */
             z-index: 9999;
             background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
             opacity: 0;
-            transition: opacity 0.8s ease;
-            box-shadow: 0 0 15px rgba(217, 70, 239, 0);
+            transition: opacity 0.4s ease, width 0.3s ease-out; /* Breite sanft animieren */
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0.8);
         }
 
         .stream-active {
-            /* Sichtbar machen, wenn aktiv */
-            opacity: 1; 
-            animation: indicator-pulse 3s ease-in-out infinite;
+            opacity: 1 !important; /* Sichtbar, wenn aktiv */
         }
 
         @keyframes indicator-pulse {

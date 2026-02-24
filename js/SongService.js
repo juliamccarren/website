@@ -10,20 +10,20 @@ class SongService {
      */
     async purgeCache() {
         try {
-            // 1. Delete the specific music cache
             const cacheName = 'julia-neural-v1';
             const deleted = await caches.delete(cacheName);
-            
-            // 2. Clear internal memory cache
             this.cache = null;
 
             if (deleted) {
-                console.log("SYSTEM: Neural Space purged successfully.");
-                // Visual feedback: show the indicator shortly
+                // Den Balken kurz als "Reset" aufblitzen lassen
                 const indicator = document.getElementById('neural-stream-indicator');
                 if (indicator) {
+                    indicator.style.width = '100%';
                     indicator.classList.add('stream-active');
-                    setTimeout(() => indicator.classList.remove('stream-active'), 1000);
+                    setTimeout(() => {
+                        indicator.classList.remove('stream-active');
+                        setTimeout(() => { indicator.style.width = '0%'; }, 400);
+                    }, 300);
                 }
                 return true;
             }
@@ -31,7 +31,7 @@ class SongService {
             console.error("Purge Error:", error);
         }
         return false;
-    }   
+    }  
 
     /**
      * Lädt alle Songs und speichert sie im internen Cache
