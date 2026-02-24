@@ -104,6 +104,10 @@ function closeSongModal() {
 /**
  * Populates and shows the Modal UI (called by NeuralPlayer)
  */
+/**
+ * Populates and shows the Modal UI (called by NeuralPlayer)
+ * Now includes dynamic artwork loading from the /artwork/ folder.
+ */
 function showSongModal(song, initialOpen = false) {
     const modal = document.getElementById('song-modal');
     const scrollContainer = modal.querySelector('.overflow-y-auto');
@@ -117,10 +121,35 @@ function showSongModal(song, initialOpen = false) {
 
     modal.classList.remove('hidden');
 
+    // Basic Info
     document.getElementById('modal-title').textContent = song.title;
     document.getElementById('modal-background').textContent = song.background;
     document.getElementById('modal-lyrics').textContent = song.lyrics;
     
+    // --- ARTWORK LOGIC START ---
+    // Select the title element to insert the image after it
+    const titleEl = document.getElementById('modal-title');
+    
+    // Remove any existing artwork from previous modal opens
+    const existingArt = document.getElementById('modal-artwork');
+    if (existingArt) existingArt.remove();
+
+    // Create the new image element
+    const artImg = document.createElement('img');
+    artImg.id = 'modal-artwork';
+    artImg.src = `../artwork/${song.id}.webp`; // e.g., ../artwork/brooklyn.webp
+    artImg.alt = `${song.title} Artwork`;
+    artImg.className = 'w-full h-auto rounded-2xl mb-8 border border-white/10 shadow-2xl animate-in fade-in duration-700';
+    
+    // If the image fails to load (file not found), remove it to stay "as today"
+    artImg.onerror = function() {
+        this.remove();
+    };
+
+    // Insert directly under the title
+    titleEl.insertAdjacentElement('afterend', artImg);
+    // --- ARTWORK LOGIC END ---
+
     const tagsCont = document.getElementById('modal-tags');
     tagsCont.innerHTML = '';
     song.tags.forEach(tag => {
