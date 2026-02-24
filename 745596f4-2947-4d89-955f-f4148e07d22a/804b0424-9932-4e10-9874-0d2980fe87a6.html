@@ -290,20 +290,22 @@
         }
 
         /* The track - Glassy and subtle */
+        /* Der Track - mit erzwungenem Gradient-Hintergrund */
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
             height: 6px;
-            /* Wir nutzen einen Verlauf von Grau (links) zu Transparent/Dunkel (rechts) */
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            
+            /* WICHTIG: Die Reihenfolge im Gradient sorgt für die harte Kante am Knauf */
             background: linear-gradient(to right, 
-                rgba(255, 255, 255, 0.2) 0%, 
-                rgba(255, 255, 255, 0.2) var(--progress, 0%), 
+                rgba(255, 255, 255, 0.25) 0%, 
+                rgba(255, 255, 255, 0.25) var(--progress, 0%), 
                 rgba(255, 255, 255, 0.05) var(--progress, 0%), 
                 rgba(255, 255, 255, 0.05) 100%
-            );
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            transition: background 0.1s ease;
+            ) !important; /* !important stellt sicher, dass Tailwind-Standardwerte überschrieben werden */
         }
 
         /* The slider thumb - The "glowing jewel" */
