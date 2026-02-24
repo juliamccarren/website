@@ -145,17 +145,15 @@ function playPreviousSong() { player.previous(); }
 function playNextSong() { player.next(); }
 function skipToStart() { player.audio.currentTime = 0; }
 function skipToEnd() { if(player.audio.duration) player.audio.currentTime = player.audio.duration - 0.5; }
+
 function handleRepeatToggle() {
     player.isRepeating = !player.isRepeating;
-    const btn = document.getElementById('repeat-btn');
-    btn.classList.toggle('text-fuchsia-500', player.isRepeating);
-    btn.classList.toggle('text-neutral-500', !player.isRepeating);
+    player.syncUI();
 }
+
 function handleAutoplayToggle() {
     player.isAutoplay = !player.isAutoplay;
-    const btn = document.getElementById('autoplay-toggle');
-    btn.classList.toggle('text-blue-400', player.isAutoplay);
-    btn.classList.toggle('text-neutral-500', !player.isAutoplay);
+    player.syncUI();
 }
 
 // Global helper for Caching (used by SongCollection and NeuralPlayer)

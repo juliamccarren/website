@@ -122,15 +122,41 @@ class NeuralPlayer {
      * Logic for when a track reaches its end
      */
     handleTrackEnded() {
-        if (this.isAutoplay) {
-            this.next();
-        } else if (this.isRepeating) {
+        console.log("SYSTEM: Track ended. Checking playback rules...");
+
+        if (this.isRepeating) {
+            // REPEAT hat Vorrang: Song von vorne starten
             this.audio.currentTime = 0;
             this.play();
+            console.log("SYSTEM: Repeating current track.");
+        } else if (this.isAutoplay) {
+            // AUTOPLAY: Nächsten Song aus der Liste laden
+            console.log("SYSTEM: Autoplay active. Shifting to next track.");
+            this.next();
         } else {
+            // Keines von beiden: Stop
             this.pause();
+            console.log("SYSTEM: Playback stopped.");
         }
     }
+
+    /**
+    * Updates toggle UI states for Repeat and Autoplay buttons
+    */
+    syncUI() {
+        const repeatBtn = document.getElementById('repeat-btn');
+        const autoplayBtn = document.getElementById('autoplay-toggle');
+
+        if (repeatBtn) {
+            repeatBtn.classList.toggle('text-fuchsia-500', this.isRepeating);
+            repeatBtn.classList.toggle('text-neutral-500', !this.isRepeating);
+        }
+
+        if (autoplayBtn) {
+            autoplayBtn.classList.toggle('text-blue-400', this.isAutoplay);
+            autoplayBtn.classList.toggle('text-neutral-500', !this.isAutoplay);
+        }
+    }    
 
     /**
      * Updates the seek slider and timestamps during playback
@@ -223,6 +249,7 @@ class NeuralPlayer {
         if (this.durationEl) {
             const time = (this.seekSlider.value / 100) * this.audio.duration;
             this.currentTimeEl.textContent = this.formatTime(time);
+            this.seekSlider.style.setProperty('--progress', `${progress}%`);
         }
     }
 

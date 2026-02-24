@@ -293,11 +293,17 @@
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
             height: 6px;
-            background: rgba(255, 255, 255, 0.05);
+            /* Wir nutzen einen Verlauf von Grau (links) zu Transparent/Dunkel (rechts) */
+            background: linear-gradient(to right, 
+                rgba(255, 255, 255, 0.2) 0%, 
+                rgba(255, 255, 255, 0.2) var(--progress, 0%), 
+                rgba(255, 255, 255, 0.05) var(--progress, 0%), 
+                rgba(255, 255, 255, 0.05) 100%
+            );
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            transition: all 0.3s ease;
+            transition: background 0.1s ease;
         }
 
         /* The slider thumb - The "glowing jewel" */
@@ -894,7 +900,7 @@
                             </div>
 
                             <div class="flex justify-center items-center gap-6">
-                                <button id="repeat-btn" onclick="handleRepeatToggle()" class="text-neutral-500 hover:text-fuchsia-500 transition-colors touch-target">
+                                <button id="repeat-btn" onclick="handleRepeatToggle()" class="text-neutral-500 transition-colors touch-target">
                                     <i data-lucide="repeat" size="20"></i>
                                 </button>
 
@@ -902,7 +908,7 @@
                                     <i data-lucide="play" size="24" class="fill-current ml-1"></i>
                                 </button>
 
-                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 hover:text-blue-400 transition-colors touch-target">
+                                <button id="autoplay-toggle" onclick="handleAutoplayToggle()" class="text-neutral-500 transition-colors touch-target">
                                     <i data-lucide="list-music" size="20"></i>
                                 </button>                                
                             </div>
