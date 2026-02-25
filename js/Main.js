@@ -297,10 +297,6 @@ function updateOnlineStatus() {
     }
 }
 
-// --- NEURAL STATUS LISTENERS ---
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-
 // Update your initialization
 window.addEventListener('DOMContentLoaded', async () => {
     // ERST HIER, wenn alle Skripte geladen sind, erstellen wir die Objekte
@@ -310,6 +306,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     player = new NeuralPlayer();
     drumPicker = new PickerDrum('picker-drum', 'archive-count-input');
     diaryService = new DiaryService('diary-grid', 'diary-modal');
+
+    // --- NETWORK LOGIC ---
+    // Auf Änderungen während der Laufzeit reagieren
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // Einmaliger Check beim Start
+    updateOnlineStatus();
 
     // 1. MOBILE VIEWPORT HEIGHT FIX
     // Prevents the address bar from cutting off the player on mobile browsers
