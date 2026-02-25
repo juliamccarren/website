@@ -103,19 +103,37 @@ async function fillCache() {
 /**
  * Global bridge for the "Purge Cache" button
  */
-async function purgeCache() {
-    // Confirmation for the user
-    if (!confirm("Do you want to purge the cache? This will remove all offline-synchronized tracks.")) {
-        return;
-    }
-
-    const success = await songService.purgeCache();
+function purgeCache() {
+    const modal = document.getElementById('purge-modal');
+    modal.classList.remove('hidden');
     
+    // Event-Listener für den Confirm-Button einmalig binden
+    const confirmBtn = document.getElementById('confirm-purge-btn');
+    confirmBtn.onclick = async () => {
+        await executePurge();
+        closePurgeModal();
+    };
+}
+
+/**
+ * Schließt das Modal.
+ */
+function closePurgeModal() {
+    document.getElementById('purge-modal').classList.add('hidden');
+}
+
+/**
+ * Führt den eigentlichen Löschvorgang aus.
+ */
+async function executePurge() {
+    const success = await songService.purgeCache();
     if (success) {
-        // Optional: Reload the current view to show that cache is empty
-        loadAndDisplayFeatureSongs();
-        loadAndDisplayArchiveSongs();
-        //alert("Neural Space Purged.");
+        // UI Refresh
+        await loadAndDisplayFeatureSongs();
+        await loadAndDisplayArchiveSongs();
+        
+        // Optional: Kleines haptisches Feedback für Mobile
+        if (window.navigator.vibrate) window.navigator.vibrate(50);
     }
 }
 
