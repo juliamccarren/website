@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Diary Editor | Julia McCarren</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        .hero-text-mccarren {
+            background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(217, 70, 239, 0.2);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #d946ef;
+            background: rgba(217, 70, 239, 0.05);
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0.1);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
+
+        .active-entry-card {
+            border-color: #d946ef;
+            background: rgba(217, 70, 239, 0.12);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-hidden">
+
+    <header class="border-b border-white/10 py-4 bg-black/80 backdrop-blur-md z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-fuchsia-600 flex items-center justify-center shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+                    <i data-lucide="book-open" class="text-white" size="20"></i>
+                </div>
+                <h1 class="text-xl font-black uppercase tracking-tighter">
+                    Neural <span class="hero-text-mccarren">Diary Editor</span>
+                </h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <input type="file" id="json-input" class="hidden" accept=".json">
+                <button onclick="document.getElementById('json-input').click()" class="px-5 py-2 rounded-full border border-white/10 hover:bg-white/5 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="upload" size="14"></i> Import
+                </button>
+                <button onclick="exportJson()" class="px-5 py-2 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 shadow-lg shadow-fuchsia-500/20 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="download" size="14"></i> Export
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col lg:flex-row h-[calc(100vh-73px)]">
+        
+        <div class="w-full lg:w-80 border-r border-white/5 flex flex-col bg-neutral-950/50">
+            <div class="p-6 border-b border-white/5 space-y-4">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size="14"></i>
+                    <input type="text" id="entry-search" placeholder="Search entries..." class="w-full pl-10 pr-4 py-2.5 rounded-xl input-field text-[11px] font-bold uppercase tracking-wider">
+                </div>
+                <button onclick="addNewEntry()" class="w-full py-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-fuchsia-500/50 transition-all text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                    <i data-lucide="plus-circle" size="14"></i> New Entry
+                </button>
+            </div>
+
+            <div id="entry-list" class="flex-grow overflow-y-auto p-4 space-y-2">
+                <div class="py-20 text-center text-white/10 uppercase font-black text-[10px] tracking-widest">
+                    No Diary Loaded
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-grow relative overflow-hidden bg-black">
+            
+            <div id="empty-pane" class="absolute inset-0 flex flex-col items-center justify-center text-center p-12 opacity-20">
+                <i data-lucide="ghost" size="64" class="mb-6 text-fuchsia-500"></i>
+                <h2 class="text-2xl font-black uppercase tracking-tighter mb-2">Memory Void</h2>
+                <p class="max-w-xs text-[10px] font-bold uppercase tracking-[0.3em] leading-relaxed">Select an entry or upload your diary.json file.</p>
+            </div>
+
+            <div id="view-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
+                <div class="max-w-4xl mx-auto">
+                    <h4 id="view-timestamp-label" class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-4">Entry Timestamp</h4>
+                    <h2 id="view-timestamp" class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-10 hero-text-mccarren leading-none"></h2>
+                    
+                    <div class="flex gap-4 mb-16">
+                        <button onclick="enterEditMode()" class="px-8 py-3 rounded-full bg-white text-black font-black uppercase tracking-widest text-[11px] flex items-center gap-2 hover:scale-105 transition-transform">
+                            <i data-lucide="edit-3" size="16"></i> Edit Entry
+                        </button>
+                        <button onclick="deleteCurrentEntry()" class="px-8 py-3 rounded-full border border-red-500/30 text-red-500 font-black uppercase tracking-widest text-[11px] flex items-center gap-2 hover:bg-red-500/5 transition-all">
+                            <i data-lucide="trash-2" size="16"></i> Delete
+                        </button>
+                    </div>
+
+                    <div class="bg-white/5 rounded-3xl p-8 md:p-12 border border-white/5">
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-8 flex items-center gap-3">
+                            <span class="w-8 h-[1px] bg-fuchsia-500/30"></span>
+                            Reflections
+                        </h4>
+                        <p id="view-text" class="text-neutral-300 leading-relaxed text-xl italic whitespace-pre-wrap"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="edit-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center justify-between mb-12">
+                        <h2 class="text-2xl font-black uppercase tracking-tighter">Syncing <span class="hero-text-mccarren">Thought</span></h2>
+                        <div class="flex gap-3">
+                            <button onclick="exitEditMode(true)" class="px-6 py-2 rounded-full border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Cancel</button>
+                            <button onclick="exitEditMode(false)" class="px-8 py-2 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-fuchsia-500 transition-colors shadow-lg shadow-fuchsia-500/20">Commit to Archive</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-10">
+                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Timestamp (YYYYMMDD_HHMM)</label>
+                        <input type="text" id="edit-timestamp" class="w-full p-4 rounded-xl input-field font-mono text-lg text-fuchsia-400">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-4 flex items-center gap-2">
+                            <i data-lucide="pen-tool" size="14"></i> Entry Content
+                        </label>
+                        <textarea id="edit-text" class="w-full p-8 rounded-3xl input-field text-lg h-[400px] resize-y leading-relaxed" placeholder="What's on your mind?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let entries = [];
+        let currentIdx = -1;
+        let isEditMode = false;
+
+        const jsonInput = document.getElementById('json-input');
+        const entryList = document.getElementById('entry-list');
+        const searchInput = document.getElementById('entry-search');
+        
+        const emptyPane = document.getElementById('empty-pane');
+        const viewPane = document.getElementById('view-pane');
+        const editPane = document.getElementById('edit-pane');
+
+        jsonInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    entries = JSON.parse(event.target.result);
+                    renderList();
+                    selectEntry(0);
+                } catch (err) { alert("Invalid Diary JSON."); }
+            };
+            reader.readAsText(file);
+        });
+
+        function renderList() {
+            const filter = searchInput.value.toLowerCase();
+            entryList.innerHTML = '';
+            
+            entries.forEach((entry, idx) => {
+                if (entry.timestamp.toLowerCase().includes(filter) || entry.text.toLowerCase().includes(filter)) {
+                    const card = document.createElement('div');
+                    card.className = `p-4 rounded-2xl cursor-pointer transition-all border border-white/5 hover:bg-white/5 flex items-start gap-4 ${idx === currentIdx ? 'active-entry-card' : 'bg-white/5'}`;
+                    card.onclick = () => selectEntry(idx);
+                    card.innerHTML = `
+                        <div class="flex flex-col gap-1 flex-1">
+                            <div class="text-[9px] font-black uppercase tracking-widest text-fuchsia-500/60">${entry.timestamp}</div>
+                            <div class="text-xs font-bold text-white/70 line-clamp-1">${entry.text.substring(0, 40)}...</div>
+                        </div>
+                    `;
+                    entryList.appendChild(card);
+                }
+            });
+            if (window.lucide) lucide.createIcons();
+        }
+
+        searchInput.addEventListener('input', renderList);
+
+        function selectEntry(idx) {
+            if (isEditMode) {
+                if(!confirm("Discard unsynced thoughts?")) return;
+                isEditMode = false;
+            }
+            currentIdx = idx;
+            renderView();
+            renderList();
+        }
+
+        function renderView() {
+            const entry = entries[currentIdx];
+            if (!entry) {
+                viewPane.classList.add('hidden');
+                editPane.classList.add('hidden');
+                emptyPane.classList.remove('hidden');
+                return;
+            }
+
+            emptyPane.classList.add('hidden');
+            editPane.classList.add('hidden');
+            viewPane.classList.remove('hidden');
+
+            document.getElementById('view-timestamp').textContent = entry.timestamp;
+            document.getElementById('view-text').textContent = entry.text;
+            
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function enterEditMode() {
+            const entry = entries[currentIdx];
+            isEditMode = true;
+            viewPane.classList.add('hidden');
+            editPane.classList.remove('hidden');
+
+            document.getElementById('edit-timestamp').value = entry.timestamp || '';
+            document.getElementById('edit-text').value = entry.text || '';
+        }
+
+        function exitEditMode(cancel = false) {
+            if (!cancel) {
+                const entry = entries[currentIdx];
+                entry.timestamp = document.getElementById('edit-timestamp').value;
+                entry.text = document.getElementById('edit-text').value;
+            }
+            isEditMode = false;
+            renderView();
+            renderList();
+        }
+
+        function addNewEntry() {
+            const now = new Date();
+            const ts = now.getFullYear() + 
+                       String(now.getMonth() + 1).padStart(2, '0') + 
+                       String(now.getDate()).padStart(2, '0') + "_" + 
+                       String(now.getHours()).padStart(2, '0') + 
+                       String(now.getMinutes()).padStart(2, '0');
+            
+            const newEntry = {
+                timestamp: ts,
+                text: ""
+            };
+            entries.unshift(newEntry);
+            currentIdx = 0;
+            renderList();
+            enterEditMode();
+        }
+
+        function deleteCurrentEntry() {
+            if (currentIdx === -1) return;
+            if (confirm("Delete this memory from the archive?")) {
+                entries.splice(currentIdx, 1);
+                currentIdx = entries.length > 0 ? 0 : -1;
+                isEditMode = false;
+                renderList();
+                renderView();
+            }
+        }
+
+        function exportJson() {
+            if (isEditMode) exitEditMode(false);
+            const dataStr = JSON.stringify(entries, null, 4);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', 'diary.json');
+            link.click();
+        }
+
+        window.onload = () => lucide.createIcons();
+    </script>
+</body>
+</html>
