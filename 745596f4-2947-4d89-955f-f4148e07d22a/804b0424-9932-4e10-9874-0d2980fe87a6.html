@@ -29,6 +29,35 @@
         @keyframes text-breathing {
             0%, 100% { opacity: 0.6; letter-spacing: 0.8em; }
             50% { opacity: 1; letter-spacing: 0.85em; }
+        }    
+        
+        #update-banner {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(217, 70, 239, 0.9); /* Fuchsia mit Transparenz */
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            z-index: 9999;
+            cursor: pointer;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(217, 70, 239, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #update-banner:hover {
+            transform: translateX(-50%) scale(1.05);
+            background: #d946ef;
         }        
 
         .cache-status {
@@ -391,7 +420,7 @@
                 <a href="#" id="nav-title" class="nav-hidden text-xl md:text-2xl font-black tracking-tighter block">
                     <span class="text-white/90">Julia</span>
                     <span class="hero-text-mccarren" style="opacity: 1;">McCarren</span>
-                </a>
+                </a>              
             </div>
 
             <div class="hidden lg:flex gap-14 flex-1 justify-center">
@@ -404,7 +433,11 @@
             </div>
 
             <div class="hidden lg:flex gap-8 items-center flex-1 justify-end text-neutral-500">
-                <a href="https://www.youtube.com/@JuliaMcCarren/releases" class="hover:text-fuchsia-500 transition-colors" target="_blank"><i data-lucide="youtube" size="18"></i></a>
+                <div id="status-menu-item" class="text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-500"></div>
+                
+                <a href="https://www.youtube.com/@JuliaMcCarren/releases" class="hover:text-fuchsia-500 transition-colors" target="_blank">
+                    <i data-lucide="youtube" size="18"></i>
+                </a>
             </div>
 
             <button id="menu-toggle" class="lg:hidden text-white p-2">
@@ -1018,16 +1051,6 @@
     </div>    
 
     <script>
-        // --- SERVICE WORKER REGISTRATION ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Wir registrieren die physische Datei 'sw.js'
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log("SYSTEM: Neural Sync Service active.", reg.scope))
-                    .catch(err => console.error("SYSTEM: Sync failed.", err));
-            });
-        }
-
         // --- CONFIGURATION ---
         // TODO: REPLACE THIS WITH YOUR ACTUAL R2 PUBLIC BUCKET DOMAIN
         const R2_DOMAIN = 'https://music.juliamccarren.com/'; 

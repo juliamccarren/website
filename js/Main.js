@@ -6,6 +6,7 @@ let featureCollection;
 let player;
 let drumPicker;
 let diaryService;
+let cacheName = 'julia-music-v1'; // Einheitlicher Cache-Name für die gesamte App
 
 // Global scroll state for modal management
 let scrollPosition = 0;
@@ -57,7 +58,7 @@ async function changeLimit(delta) {
  */
 async function updateGlobalCacheStatus(songId) {
     const url = `${R2_DOMAIN}${songId}.mp3`;
-    const cache = await caches.open('julia-neural-v1');
+    const cache = await caches.open(cacheName);
     const response = await cache.match(url);
     
     // Findet alle Punkte, egal in welcher Liste sie liegen
@@ -254,7 +255,7 @@ function handleAutoplayToggle() {
 
 // Global helper for Caching (used by SongCollection and NeuralPlayer)
 async function forceCacheSong(url) {
-    const cache = await caches.open('julia-neural-v1');
+    const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(url);
     if (cachedResponse) return; 
 
@@ -267,7 +268,7 @@ async function forceCacheSong(url) {
 }
 
 async function getCachedAudioUrl(url) {
-    const cache = await caches.open('julia-neural-v1');
+    const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(url);
     if (cachedResponse) {
         const blob = await cachedResponse.blob();
@@ -275,6 +276,30 @@ async function getCachedAudioUrl(url) {
     }
     return null;
 }
+
+/**
+ * Aktualisiert das visuelle Feedback für den Online/Offline Status
+ */
+function updateOnlineStatus() {
+    const menuItem = document.getElementById('status-menu-item');
+    if (!menuItem) return;
+
+    if (navigator.onLine) {
+        // ONLINE: Fuchsia
+        menuItem.textContent = 'Online';
+        menuItem.classList.remove('text-neutral-500');
+        menuItem.classList.add('text-fuchsia-500');
+    } else {
+        // OFFLINE: Grau
+        menuItem.textContent = 'Offline';
+        menuItem.classList.remove('text-fuchsia-500');
+        menuItem.classList.add('text-neutral-500');
+    }
+}
+
+// --- NEURAL STATUS LISTENERS ---
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
 
 // Update your initialization
 window.addEventListener('DOMContentLoaded', async () => {
@@ -305,6 +330,9 @@ window.addEventListener('DOMContentLoaded', async () => {
             await loadAndDisplayArchiveSongs(); 
 
             diaryService.refresh();
+
+            // INITIALER STATUS CHECK HIER EINFÜGEN
+            updateOnlineStatus();
         } catch (e) { 
             console.error("Neural System Initialization Failed:", e); 
         }
@@ -339,16 +367,35 @@ const heroImage = document.getElementById('hero-image');
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const triggerPoint = 450;
+    const badge = document.getElementById('neural-status-badge'); // Neu hinzugefügt
+
     if (scrollY < window.innerHeight) {
         heroContent.style.transform = `translateY(${scrollY * -0.55}px)`;
         heroImage.style.transform = `scale(${1 + (scrollY * 0.00015)})`;
     }
+
     if (scrollY > triggerPoint) {
-        navbar.classList.add('glass-nav', 'py-4'); navbar.classList.remove('py-10');
-        navTitle.classList.add('nav-visible'); navTitle.classList.remove('nav-hidden');
+        navbar.classList.add('glass-nav', 'py-4'); 
+        navbar.classList.remove('py-10');
+        navTitle.classList.add('nav-visible'); 
+        navTitle.classList.remove('nav-hidden');
+        
+        // Badge sichtbar machen
+        if (badge) {
+            badge.classList.add('nav-visible');
+            badge.classList.remove('nav-hidden');
+        }
     } else {
-        navbar.classList.remove('glass-nav', 'py-4'); navbar.classList.add('py-10');
-        navTitle.classList.remove('nav-visible'); navTitle.classList.add('nav-hidden');
+        navbar.classList.remove('glass-nav', 'py-4'); 
+        navbar.classList.add('py-10');
+        navTitle.classList.remove('nav-visible'); 
+        navTitle.classList.add('nav-hidden');
+
+        // Badge verstecken
+        if (badge) {
+            badge.classList.remove('nav-visible');
+            badge.classList.add('nav-hidden');
+        }
     }
 });
 
@@ -386,3 +433,55 @@ function injectSEOData(songs) {
     script.text = JSON.stringify(schema);
     document.head.appendChild(script);
 }
+
+// --- SERVICE WORKER REGISTRATION ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // Optimiere diesen Teil in deiner Main.js:
+        navigator.serviceWorker.register('../sw.js').then(reg => {
+            // FALL A: Ein Update wurde bereits im Hintergrund geladen und wartet
+            if (reg.waiting) {
+                showUpdateBanner(reg);
+            }
+
+            // FALL B: Ein Update wird gerade erst gefunden
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        showUpdateBanner(reg);
+                    }
+                });
+            });
+        });
+    });
+}
+
+function showUpdateBanner(registration) {
+    if (document.getElementById('update-banner')) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'update-banner';
+    banner.innerHTML = `
+        <span>Update verfügbar</span>
+        <i data-lucide="refresh-cw" style="width:14px; height:14px;"></i>
+    `;
+    document.body.appendChild(banner);
+    if (window.lucide) lucide.createIcons();
+
+    banner.onclick = () => {
+        // Sende Befehl an den wartenden Service Worker
+        if (registration.waiting) {
+            registration.waiting.postMessage('SKIP_WAITING');
+        }
+    };
+}
+
+// Sobald der neue SW die Kontrolle übernimmt -> Refresh
+let refreshing = false;
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+        window.location.reload();
+        refreshing = true;
+    }
+});

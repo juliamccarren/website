@@ -111,7 +111,7 @@ class SongCollection {
      */
     async updateCacheUIStatus(songId, statusId) {
         const url = `${R2_DOMAIN}${songId}.mp3`;
-        const cache = await caches.open('julia-neural-v1');
+        const cache = await caches.open(cacheName);
         const response = await cache.match(url);
         const indicator = document.getElementById(statusId);
         
@@ -124,7 +124,7 @@ class SongCollection {
     // // Neue Hilfsmethode zur Prüfung des Cache-Status
     // async updateCacheUIStatus(songId) {
     //     const url = `${R2_DOMAIN}${songId}.mp3`;
-    //     const cache = await caches.open('julia-neural-v1');
+    //     const cache = await caches.open(cacheName);
     //     const response = await cache.match(url);
         
     //     // Wir suchen alle Status-Punkte auf der gesamten Seite, die zu dieser Song-ID gehören

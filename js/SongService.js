@@ -10,7 +10,7 @@ class SongService {
      */
     async cacheSong(songId) {
         const url = `${R2_DOMAIN}${songId}.mp3`;
-        const cache = await caches.open('julia-neural-v1');
+        const cache = await caches.open(cacheName);
         const cachedResponse = await cache.match(url);
 
         // Nur laden, wenn noch nicht vorhanden
@@ -31,7 +31,6 @@ class SongService {
      */
     async purgeCache() {
         try {
-            const cacheName = 'julia-neural-v1';
             const deleted = await caches.delete(cacheName);
             this.cache = null;
 
