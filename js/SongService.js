@@ -6,7 +6,28 @@ class SongService {
     }
 
     /**
-     * Purges the neural cache and resets the internal song cache
+     * Caches a single song by its ID, if not already cached
+     */
+    async cacheSong(songId) {
+        const url = `${R2_DOMAIN}${songId}.mp3`;
+        const cache = await caches.open('julia-neural-v1');
+        const cachedResponse = await cache.match(url);
+
+        // Nur laden, wenn noch nicht vorhanden
+        if (!cachedResponse) {
+            try {
+                await forceCacheSong(url);
+                return true;
+            } catch (e) {
+                console.error(`Sync failed for ${songId}`, e);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Purges the cache
      */
     async purgeCache() {
         try {

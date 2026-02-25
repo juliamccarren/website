@@ -21,6 +21,16 @@
             color: #fff;
         }
 
+        #hero-content p {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            animation: text-breathing 4s ease-in-out infinite;
+        }
+
+        @keyframes text-breathing {
+            0%, 100% { opacity: 0.6; letter-spacing: 0.8em; }
+            50% { opacity: 1; letter-spacing: 0.85em; }
+        }        
+
         .cache-status {
             position: absolute;
             top: 1.5rem;
@@ -428,12 +438,12 @@
                 <h1 class="text-7xl md:text-[12vw] font-black tracking-tighter leading-[0.8] hero-text-mccarren">McCarren</h1>
             </div>
             
-            <p class="mt-12 text-sm md:text-3xl font-extralight tracking-[0.5em] uppercase text-neutral-100/70">
+            <p class="mt-12 text-sm md:text-3xl font-extralight tracking-[0.5em] uppercase text-white-100/70">
                 Neural Fusion Sound
             </p>
             
             <div class="mt-16 flex flex-col md:flex-row gap-6">
-                <a href="#archives" class="fusion-fading-button text-white px-20 md:px-60 py-5 font-light uppercase tracking-[0.6em] leading-loose flex items-center justify-center gap-3 group transition-all duration-1000">
+                <a href="#archives" class="fusion-fading-button text-neutral-100 px-20 md:px-60 py-5 font-light uppercase tracking-[0.6em] leading-loose flex items-center justify-center gap-3 group transition-all duration-1000">
                     Explore Fusion
                 </a>
             </div>
@@ -628,9 +638,9 @@
                             Radio & Offline Mode
                         </p>
                         <p class="text-sm text-neutral-400 mt-2">
-                            By setting your limit and using <span class="text-fuchsia-500">Reshuffle</span>, the chosen tracks are fully synchronized with your local device. 
+                            By setting your limit and using <span class="text-fuchsia-500">Fill Cache</span>, the chosen tracks are fully synchronized with your local device. 
                             This ensures a seamless, interruption-free radio experience, even in environments without network access, such as long journeys or transit. 
-                            <br><br><span class="italic text-fuchsia-500">To save mobile data volumes, perform the initial sync via Wi-Fi, especially when the reshuffle is performed for the first time on a lot of songs.</span>
+                            <br><br><span class="italic text-fuchsia-500">To save mobile data volumes, perform the initial sync via Wi-Fi, especially when the caching is performed for the first time on a lot of songs.</span>
                         </p>
                     </div>
                 </div>
@@ -671,16 +681,35 @@
                                 <i data-lucide="refresh-cw" size="14" class="group-hover:rotate-180 transition-transform duration-700"></i>
                                 Reshuffle
                             </button>
-
-                            <button onclick="purgeNeuralSpace()" 
-                                    class="touch-target border border-white/5 hover:border-red-500/30 hover:bg-red-500/5 text-neutral-500 hover:text-red-400 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group"
-                                    title="Purge Neural Cache">
-                                <i data-lucide="trash-2" size="14" class="group-hover:scale-110 transition-transform"></i>
-                            </button>
                         </div>
                     </div>                
                 </div>
 
+                <!-- Interactive Controls for caching -->
+                <div class="w-full md:w-fit mb-12">
+                    <div class="flex flex-col md:flex-row items-center gap-4 bg-neutral-900/30 p-3 md:p-1.5 rounded-3xl md:rounded-full border border-white/5 backdrop-blur-xl">
+                        
+                        <div class="px-6 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500 border-r border-white/5 hidden md:block">
+                            Local Cache
+                        </div>
+
+                        <div class="flex items-center gap-3 w-full md:w-auto justify-center">
+                            <button onclick="fillCache()" 
+                                    class="touch-target border border-blue-500/30 hover:bg-blue-500/10 text-blue-400 px-8 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group flex-1 md:flex-none transition-all">
+                                <i data-lucide="download-cloud" size="14" class="group-hover:translate-y-0.5 transition-transform"></i>
+                                Fill Cache
+                            </button>
+
+                            <button onclick="purgeCache()" 
+                                    class="touch-target border border-white/5 hover:border-red-500/30 hover:bg-red-500/5 text-neutral-500 hover:text-red-400 px-8 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] flex items-center gap-2 group flex-1 md:flex-none transition-all">
+                                <i data-lucide="trash-2" size="14" class="group-hover:scale-110 transition-transform"></i>
+                                Purge Cache
+                            </button>
+                        </div>
+                    </div>                
+                </div>                
+
+                <!-- Song Grid for JS injection -->
                 <div id="song-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                     </div>
                 
@@ -688,7 +717,7 @@
 
             <div class="container mx-auto px-6 mt-12 mb-12 text-center">
                 <div class="flex flex-col items-center gap-6">
-                    <a href="lyrics.html" class="fusion-fading-button text-white px-14 py-4 font-black uppercase tracking-widest leading-loose flex items-center justify-center gap-3 group">
+                    <a href="lyrics.html" class="fusion-fading-button text-neutral-100 px-20 md:px-60 py-5 font-light uppercase tracking-[0.6em] leading-loose flex items-center justify-center gap-3 group transition-all duration-1000">
                         Explore Lyrics Archive
                         <i data-lucide="book-open" size="20" class="group-hover:translate-x-1 transition-transform"></i>
                     </a>

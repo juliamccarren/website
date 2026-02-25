@@ -53,13 +53,61 @@ async function changeLimit(delta) {
 }
 
 /**
- * Global bridge for the "Purge" button
+ * Aktualisiert alle Cache-Indikatoren für einen bestimmten Song auf der gesamten Seite.
  */
-async function purgeNeuralSpace() {
+async function updateGlobalCacheStatus(songId) {
+    const url = `${R2_DOMAIN}${songId}.mp3`;
+    const cache = await caches.open('julia-neural-v1');
+    const response = await cache.match(url);
+    
+    // Findet alle Punkte, egal in welcher Liste sie liegen
+    const indicators = document.querySelectorAll(`[id$="-${songId}"]`);
+    
+    indicators.forEach(indicator => {
+        if (response) {
+            indicator.classList.remove('cache-offline', 'cache-syncing');
+            indicator.classList.add('cache-online');
+        } else {
+            indicator.classList.remove('cache-online');
+            indicator.classList.add('cache-offline');
+        }
+    });
+}
+
+/**
+ * Global bridge for the "Fill Cache" button
+ */
+async function fillCache() {
+    const allVisibleSongs = [
+        ...featureCollection.songs,
+        ...archiveCollection.songs
+    ];
+
+    if (allVisibleSongs.length === 0) return;
+
+    // Dubletten filtern (ID-basiert)
+    const uniqueSongs = Array.from(new Set(allVisibleSongs.map(s => s.id)))
+        .map(id => allVisibleSongs.find(s => s.id === id));
+
+    for (let i = 0; i < uniqueSongs.length; i++) {
+        const song = uniqueSongs[i];
+        
+        // 1. Technischer Check/Download via Service
+        await songService.cacheSong(song.id);
+        
+        // 2. Globaler UI-Update (erwischt Feature UND Archiv)
+        await updateGlobalCacheStatus(song.id);
+    }
+}
+
+/**
+ * Global bridge for the "Purge Cache" button
+ */
+async function purgeCache() {
     // Confirmation for the user
-    // if (!confirm("Do you want to purge the Neural Cache? This will remove all offline-synchronized tracks.")) {
-    //     return;
-    // }
+    if (!confirm("Do you want to purge the cache? This will remove all offline-synchronized tracks.")) {
+        return;
+    }
 
     const success = await songService.purgeCache();
     

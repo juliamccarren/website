@@ -11,59 +11,59 @@ class SongCollection {
      */
     update(songArray) {
         this.songs = songArray;
-        this.preCacheSongs();
+        // this.preCacheSongs(); Separate method
         this.render();
     }
 
     /**
      * Übernimmt das Pre-Caching für Offline-Resilienz
      */
-    async preCacheSongs() {
-        if (typeof forceCacheSong !== 'function') return;
+    // async preCacheSongs() {
+    //     if (typeof forceCacheSong !== 'function') return;
                 
-        const songsToCache = Array.isArray(this.songs) ? this.songs : [this.songs];
-        const indicator = document.getElementById('neural-stream-indicator');
+    //     const songsToCache = Array.isArray(this.songs) ? this.songs : [this.songs];
+    //     const indicator = document.getElementById('neural-stream-indicator');
         
-        // if (indicator) {
-        //     // Reset auf 0 und Sichtbarkeit erzwingen
-        //     indicator.style.transition = 'none'; // Animation kurz aus für harten Reset
-        //     indicator.style.width = '0%';
-        //     indicator.classList.add('stream-active');
+    //     // if (indicator) {
+    //     //     // Reset auf 0 und Sichtbarkeit erzwingen
+    //     //     indicator.style.transition = 'none'; // Animation kurz aus für harten Reset
+    //     //     indicator.style.width = '0%';
+    //     //     indicator.classList.add('stream-active');
             
-        //     // Kleiner Trick: Ein Frame warten, damit der Browser den Reset merkt
-        //     requestAnimationFrame(() => {
-        //         indicator.style.transition = 'opacity 0.4s ease, width 0.3s ease-out';
-        //     });
-        // }
+    //     //     // Kleiner Trick: Ein Frame warten, damit der Browser den Reset merkt
+    //     //     requestAnimationFrame(() => {
+    //     //         indicator.style.transition = 'opacity 0.4s ease, width 0.3s ease-out';
+    //     //     });
+    //     // }
 
-        let completed = 0;
-        for (const song of songsToCache) {
-            if (song && song.id) {
-                const url = `${R2_DOMAIN}${song.id}.mp3`;
-                try {
-                    await forceCacheSong(url);
-                    this.updateCacheUIStatus(song.id, `cache-status-${song.id}`);
+    //     let completed = 0;
+    //     for (const song of songsToCache) {
+    //         if (song && song.id) {
+    //             const url = `${R2_DOMAIN}${song.id}.mp3`;
+    //             try {
+    //                 await forceCacheSong(url);
+    //                 this.updateCacheUIStatus(song.id, `cache-status-${song.id}`);
                     
-                    // Fortschritt berechnen
-                    completed++;
-                    if (indicator) {
-                        const progress = (completed / songsToCache.length) * 100;
-                        indicator.style.width = `${progress}%`;
-                    }
-                } catch (err) {
-                    console.warn(`Sync failed: ${song.title}`, err);
-                }
-            }
-        }
+    //                 // Fortschritt berechnen
+    //                 completed++;
+    //                 if (indicator) {
+    //                     const progress = (completed / songsToCache.length) * 100;
+    //                     indicator.style.width = `${progress}%`;
+    //                 }
+    //             } catch (err) {
+    //                 console.warn(`Sync failed: ${song.title}`, err);
+    //             }
+    //         }
+    //     }
 
-        // Balken nach kurzem Delay ausfaden
-        // setTimeout(() => {
-        //     if (indicator) {
-        //         indicator.classList.remove('stream-active');
-        //         setTimeout(() => { indicator.style.width = '0%'; }, 800);
-        //     }
-        // }, 1000);
-    }
+    //     // Balken nach kurzem Delay ausfaden
+    //     // setTimeout(() => {
+    //     //     if (indicator) {
+    //     //         indicator.classList.remove('stream-active');
+    //     //         setTimeout(() => { indicator.style.width = '0%'; }, 800);
+    //     //     }
+    //     // }, 1000);
+    // }
 
     /**
      * Erzeugt das HTML-Grid
@@ -106,30 +106,45 @@ class SongCollection {
         }, 150);
     }
 
-    // Neue Hilfsmethode zur Prüfung des Cache-Status
-    async updateCacheUIStatus(songId) {
+    /**
+     * Prüft den Cache-Status für ein spezifisches Element
+     */
+    async updateCacheUIStatus(songId, statusId) {
         const url = `${R2_DOMAIN}${songId}.mp3`;
         const cache = await caches.open('julia-neural-v1');
         const response = await cache.match(url);
+        const indicator = document.getElementById(statusId);
         
-        // Wir suchen alle Status-Punkte auf der gesamten Seite, die zu dieser Song-ID gehören
-        // Wir nutzen dafür ein Query-Selektor-Pattern
-        const indicators = document.querySelectorAll(`[id$="-${songId}"]`);
+        if (indicator && response) {
+            indicator.classList.remove('cache-offline');
+            indicator.classList.add('cache-online');
+        }
+    }    
+
+    // // Neue Hilfsmethode zur Prüfung des Cache-Status
+    // async updateCacheUIStatus(songId) {
+    //     const url = `${R2_DOMAIN}${songId}.mp3`;
+    //     const cache = await caches.open('julia-neural-v1');
+    //     const response = await cache.match(url);
         
-        indicators.forEach(indicator => {
-            if (response) {
-                indicator.classList.remove('cache-offline', 'cache-syncing');
-                indicator.classList.add('cache-online');
-                indicator.title = "Neural Sync: Active";
-            } else {
-                // Wenn wir wissen, dass gerade ein Reshuffle/Sync läuft, 
-                // könnten wir hier cache-syncing lassen, sonst rot.
-                if (!indicator.classList.contains('cache-syncing')) {
-                    indicator.classList.add('cache-offline');
-                }
-            }
-        });
-    }
+    //     // Wir suchen alle Status-Punkte auf der gesamten Seite, die zu dieser Song-ID gehören
+    //     // Wir nutzen dafür ein Query-Selektor-Pattern
+    //     const indicators = document.querySelectorAll(`[id$="-${songId}"]`);
+        
+    //     indicators.forEach(indicator => {
+    //         if (response) {
+    //             indicator.classList.remove('cache-offline', 'cache-syncing');
+    //             indicator.classList.add('cache-online');
+    //             indicator.title = "Neural Sync: Active";
+    //         } else {
+    //             // Wenn wir wissen, dass gerade ein Reshuffle/Sync läuft, 
+    //             // könnten wir hier cache-syncing lassen, sonst rot.
+    //             if (!indicator.classList.contains('cache-syncing')) {
+    //                 indicator.classList.add('cache-offline');
+    //             }
+    //         }
+    //     });
+    // }
 
     /**
      * Passes the playlist and index to the global player instance
