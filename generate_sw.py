@@ -4,7 +4,7 @@ import json
 # --- KONFIGURATION ---
 
 # Version
-VERSION = "v10"  # Erhöhe diese Version bei jeder Änderung, damit der Service Worker aktualisiert wird
+VERSION = "v11"  # Erhöhe diese Version bei jeder Änderung, damit der Service Worker aktualisiert wird
 
 # Pfade relativ zum Skript-Standort
 BASE_DIR = "." 
@@ -21,6 +21,7 @@ EXTRA_FILES = [
     "legal_notice.html",
     "datenschutz.html",
     "privacy_policy.html",
+    "manifest.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/songs.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/lyrics.html",

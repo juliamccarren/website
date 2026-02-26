@@ -1,4 +1,4 @@
-const STATIC_CACHE = 'julia-site-v10';
+const STATIC_CACHE = 'julia-site-v11';
 
 // Synchronisierte Neural App Shell Assets
 const ASSETS = [
@@ -50,6 +50,8 @@ const ASSETS = [
     "images/Stage_6.webp",
     "images/Stage_7.webp",
     "images/Stage_8.webp",
+    "images/icons/app_icon_192.png",
+    "images/icons/app_icon_512.png",
     "images/original/Guitar-in-Dolomites.png",
     "images/original/Hero.jpg",
     "images/original/Hero_square.jpg",
@@ -73,6 +75,7 @@ const ASSETS = [
     "js/lucide.js",
     "js/tailwindcss.js",
     "legal_notice.html",
+    "manifest.json",
     "privacy_policy.html"
 ];
 
