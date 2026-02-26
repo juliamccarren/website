@@ -1,4 +1,4 @@
-const STATIC_CACHE = 'julia-site-v25';
+const STATIC_CACHE = 'julia-site-v26';
 const ASSETS = [
     "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
@@ -81,7 +81,7 @@ const ASSETS = [
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(STATIC_CACHE).then(cache => {
-            console.log('SYSTEM: Neural App Shell v25 syncing...');
+            console.log('SYSTEM: Neural App Shell v26 syncing...');
             return cache.addAll(ASSETS);
         })
     );
