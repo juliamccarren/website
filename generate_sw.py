@@ -6,7 +6,7 @@ import uuid
 # --- KONFIGURATION ---
 
 # Eine einzige, fortlaufende Nummer für Cache und Anzeige
-VERSION = "16" 
+VERSION = "17" 
 
 # Pfade relativ zum Skript-Standort
 BASE_DIR = "." 
@@ -22,7 +22,6 @@ EXTRA_FILES = [
     "datenschutz.html",
     "privacy_policy.html",
     "manifest.json",
-    "version.json", # Wird mitgeneriert
     "745596f4-2947-4d89-955f-f4148e07d22a/songs.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/lyrics.html",
@@ -104,6 +103,27 @@ self.addEventListener('fetch', event => {{
         f.write(sw_content)
     print(f"SUCCESS: {OUTPUT_SW} (Cache: {CACHE_NAME}) mit {len(asset_list)} Assets erstellt.")
 
+def generate_version_class():
+    build_info = {
+        "number": VERSION,
+        "hash": uuid.uuid4().hex[:6].upper()
+    }
+    
+    # Wir generieren eine statische Klasse
+    js_content = f"""
+class VersionCore {{
+    static info = {json.dumps(build_info)};
+    
+    static get display() {{
+        return `CORE_V${{this.info.number}} [${{this.info.hash}}]`;
+    }}
+}}
+"""
+    with open("js/VersionCore.js", "w", encoding="utf-8") as f:
+        f.write(js_content)
+    print(f"SYSTEM: VersionCore.js (v{VERSION}) bereitgestellt.")    
+
 if __name__ == "__main__":
     assets = generate_assets()
     generate_service_worker(assets)
+    generate_version_class()

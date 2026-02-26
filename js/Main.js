@@ -297,26 +297,20 @@ function updateOnlineStatus() {
     }
 }
 
-async function updateFooterVersion() {
+function updateFooterVersion() {
     try {
-        // Die URL wird dynamisch relativ zur aktuellen Seite generiert
-        // Das verhindert Pfad-Fehler nach dem Deployment (z.B. Unterordner)
-        const versionUrl = window.location.origin + '/version.json';
-        console.log("DEBUG: Suche version.json unter:", versionUrl);
-        
-        const response = await fetch(versionUrl);
-        if (!response.ok) throw new Error('Version check failed');
-        
-        const data = await response.json();
+        // Direkter Zugriff auf die statische Klasse
+        const info = VersionCore.info;
 
-        // 1. Versionsnummer setzen
-        document.getElementById('version-number').textContent = data.version;
-        
-        // 2. Hash setzen (der technische Fingerabdruck)
-        document.getElementById('build-hash').textContent = data.hash;
-        
-    } catch (error) {
-        console.log("SYSTEM: Using local cache version info.");
+        const versionEl = document.getElementById('version-number');
+        const hashEl = document.getElementById('build-hash');
+
+        if (versionEl) versionEl.textContent = info.number;
+        if (hashEl) hashEl.textContent = info.hash;
+
+        console.log(`> SYSTEM: ${VersionCore.display} geladen.`);
+    } catch (e) {
+        console.warn("> SYSTEM: VersionCore noch nicht initialisiert.");
     }
 }
 
