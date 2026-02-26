@@ -506,6 +506,9 @@ function showUpdateBanner(registration) {
 let refreshing = false;
 navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (!refreshing) {
+        // Wir hängen einen kurzen Hash an die URL an, NUR für diesen einen Reload
+        // Das zwingt den Browser, den Memory-Cache der Scripte komplett zu verwerfen.
+        window.location.href = window.location.origin + window.location.pathname + '?v=' + Date.now();
         window.location.reload();
         refreshing = true;
     }
