@@ -299,7 +299,12 @@ function updateOnlineStatus() {
 
 async function updateFooterVersion() {
     try {
-        const response = await fetch('/version.json');
+        // Die URL wird dynamisch relativ zur aktuellen Seite generiert
+        // Das verhindert Pfad-Fehler nach dem Deployment (z.B. Unterordner)
+        const versionUrl = window.location.origin + '/version.json';
+        console.log("DEBUG: Suche version.json unter:", versionUrl);
+        
+        const response = await fetch(versionUrl);
         if (!response.ok) throw new Error('Version check failed');
         
         const data = await response.json();
