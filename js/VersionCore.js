@@ -1,6 +1,6 @@
 
 class VersionCore {
-    static info = {"number": "20", "hash": "7F8D96"};
+    static info = {"number": "21", "hash": "FAC3E1"};
     
     static get display() {
         return `CORE_V${this.info.number} [${this.info.hash}]`;
