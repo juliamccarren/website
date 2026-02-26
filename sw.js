@@ -1,4 +1,4 @@
-const STATIC_CACHE = 'julia-site-v14';
+const STATIC_CACHE = 'julia-site-v15';
 const ASSETS = [
     "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
@@ -81,7 +81,7 @@ const ASSETS = [
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(STATIC_CACHE).then(cache => {
-            console.log('SYSTEM: Neural App Shell v14 syncing...');
+            console.log('SYSTEM: Neural App Shell v15 syncing...');
             return cache.addAll(ASSETS);
         })
     );

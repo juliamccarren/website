@@ -299,7 +299,7 @@ function updateOnlineStatus() {
 
 async function updateFooterVersion() {
     try {
-        const response = await fetch('../version.json');
+        const response = await fetch('/version.json');
         if (!response.ok) throw new Error('Version check failed');
         
         const data = await response.json();
