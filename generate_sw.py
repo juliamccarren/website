@@ -4,7 +4,7 @@ import json
 # --- KONFIGURATION ---
 
 # Version
-VERSION = "v11"  # Erhöhe diese Version bei jeder Änderung, damit der Service Worker aktualisiert wird
+VERSION = "v12"  # Erhöhe diese Version bei jeder Änderung, damit der Service Worker aktualisiert wird
 
 # Pfade relativ zum Skript-Standort
 BASE_DIR = "." 
