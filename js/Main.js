@@ -317,42 +317,6 @@ function updateFooterVersion() {
 // Update your initialization
 window.addEventListener('DOMContentLoaded', async () => {
 
-    // Cache update
-    const currentVersion = VersionCore.info.number; 
-    const lastVersion = localStorage.getItem('neural_core_version') || "-1";
-
-    if (lastVersion !== currentVersion) {
-        console.warn(`SYSTEM: Hard Reset triggered (v${lastVersion} -> v${currentVersion})`);
-        
-        // 1. Caches radikal löschen
-        const cacheKeys = await caches.keys();
-        await Promise.all(cacheKeys.map(key => caches.delete(key)));
-        
-        // 2. Service Worker sofort entkoppeln
-        if ('serviceWorker' in navigator) {
-            const registrations = await navigator.serviceWorker.getRegistrations();
-            for (let reg of registrations) { 
-                await reg.unregister(); 
-            }
-        }
-
-        // 3. Version im Speicher aktualisieren
-        localStorage.setItem('neural_core_version', currentVersion);
-        
-        // 4. Neustart erzwingen - bricht die restliche Initialisierung ab
-        window.location.reload(true);
-        return; 
-    }
-
-    // --- ERST HIER FOLGT DIE SERVICE WORKER REGISTRIERUNG ---
-    // Wenn wir hier ankommen, sind LocalStorage und VersionCore bereits synchron.
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('../sw.js').then(reg => {
-            // Standard Update-Logik nur für inkrementelle Änderungen (z.B. neue Songs)
-            //
-        });
-    }
-
     // ERST HIER, wenn alle Skripte geladen sind, erstellen wir die Objekte
     songService = new SongService();
     archiveCollection = new SongCollection('song-grid');
@@ -496,27 +460,27 @@ function injectSEOData(songs) {
 }
 
 // --- SERVICE WORKER REGISTRATION ---
-// if ('serviceWorker' in navigator) {
-//     window.addEventListener('load', () => {
-//         // Optimiere diesen Teil in deiner Main.js:
-//         navigator.serviceWorker.register('../sw.js').then(reg => {
-//             // FALL A: Ein Update wurde bereits im Hintergrund geladen und wartet
-//             if (reg.waiting) {
-//                 showUpdateBanner(reg);
-//             }
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // Optimiere diesen Teil in deiner Main.js:
+        navigator.serviceWorker.register('../sw.js').then(reg => {
+            // FALL A: Ein Update wurde bereits im Hintergrund geladen und wartet
+            if (reg.waiting) {
+                showUpdateBanner(reg);
+            }
 
-//             // FALL B: Ein Update wird gerade erst gefunden
-//             reg.addEventListener('updatefound', () => {
-//                 const newWorker = reg.installing;
-//                 newWorker.addEventListener('statechange', () => {
-//                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-//                         showUpdateBanner(reg);
-//                     }
-//                 });
-//             });
-//         });
-//     });
-// }
+            // FALL B: Ein Update wird gerade erst gefunden
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        showUpdateBanner(reg);
+                    }
+                });
+            });
+        });
+    });
+}
 
 function showUpdateBanner(registration) {
     if (document.getElementById('update-banner')) return;

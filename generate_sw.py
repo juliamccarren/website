@@ -6,7 +6,7 @@ import uuid
 # --- KONFIGURATION ---
 
 # Eine einzige, fortlaufende Nummer für Cache und Anzeige
-VERSION = "21" 
+VERSION = "22" 
 
 # Pfade relativ zum Skript-Standort
 BASE_DIR = "." 
