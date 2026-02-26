@@ -172,6 +172,9 @@ class NeuralPlayer {
             if (this.currentTimeEl) {
                 this.currentTimeEl.textContent = this.formatTime(this.audio.currentTime);
             }
+
+            // Update position in mediaplayer
+            this.updatePlaybackPosition();
         }
     }
 
@@ -201,6 +204,21 @@ class NeuralPlayer {
             navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
         }
     }
+
+     /**
+     * Updates the position in the mediaplayer
+     */   
+    updatePlaybackPosition() {
+        if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+            if (this.audio.duration && !isNaN(this.audio.duration)) {
+                navigator.mediaSession.setPositionState({
+                    duration: this.audio.duration,
+                    playbackRate: this.audio.playbackRate,
+                    position: this.audio.currentTime
+                });
+            }
+        }
+    }    
 
     /**
      * UI Feedback for Start/Stop
