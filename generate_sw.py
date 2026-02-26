@@ -6,7 +6,7 @@ import uuid
 # --- KONFIGURATION ---
 
 # Eine einzige, fortlaufende Nummer für Cache und Anzeige
-VERSION = "18" 
+VERSION = "19" 
 
 # Pfade relativ zum Skript-Standort
 BASE_DIR = "." 
@@ -39,10 +39,6 @@ def generate_assets():
         "hash": uuid.uuid4().hex[:6].upper(), # Kurzer technischer Fingerabdruck
     }
     
-    with open(OUTPUT_VERSION, "w", encoding="utf-8") as f:
-        json.dump(build_data, f, indent=4)
-    print(f"CORE: {OUTPUT_VERSION} (v{VERSION}) generiert.")
-
     # 2. Asset-Liste für Service Worker scannen
     assets = set(EXTRA_FILES)
     for directory in DIRECTORIES_TO_SCAN:
