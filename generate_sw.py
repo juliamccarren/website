@@ -4,7 +4,7 @@ import json
 # --- KONFIGURATION ---
 
 # Version
-VERSION = "v8"  # Erhöhe diese Version bei jeder Änderung, damit der Service Worker aktualisiert wird
+VERSION = "v10"  # Erhöhe diese Version bei jeder Änderung, damit der Service Worker aktualisiert wird
 
 # Pfade relativ zum Skript-Standort
 BASE_DIR = "." 
@@ -17,8 +17,13 @@ DIRECTORIES_TO_SCAN = [
 # Einzelne Dateien (z.B. die App-Shell)
 EXTRA_FILES = [
     "index.html",
+    "impressum.html",
+    "legal_notice.html",
+    "datenschutz.html",
+    "privacy_policy.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/songs.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
+    "745596f4-2947-4d89-955f-f4148e07d22a/lyrics.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html"
 ]
 OUTPUT_FILE = "sw.js"

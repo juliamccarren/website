@@ -33,26 +33,35 @@
         
         #update-banner {
             position: fixed;
-            bottom: 2rem;
+            /* Nutzt 'env(safe-area-inset-top)', um Platz für Notches/Statusbars zu lassen */
+            top: calc(1rem + env(safe-area-inset-top)); 
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(217, 70, 239, 0.9); /* Fuchsia mit Transparenz */
-            backdrop-filter: blur(10px);
+            
+            width: 90%;
+            max-width: 400px; 
+            
+            background: rgba(217, 70, 239, 0.95);
+            backdrop-filter: blur(15px);
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 9999px;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
             z-index: 9999;
-            cursor: pointer;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.75rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 40px rgba(217, 70, 239, 0.4);
+            
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.75rem;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            
+            /* Animation kommt jetzt von oben herab */
+            animation: slide-down 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(217, 70, 239, 0.3);
+        }
+
+        @keyframes slide-down {
+            from { transform: translate(-50%, -100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
         }
 
         #update-banner:hover {

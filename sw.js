@@ -1,9 +1,10 @@
-const STATIC_CACHE = 'julia-site-v8';
+const STATIC_CACHE = 'julia-site-v10';
 
 // Synchronisierte Neural App Shell Assets
 const ASSETS = [
     "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
+    "745596f4-2947-4d89-955f-f4148e07d22a/lyrics.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/songs.json",
     "artwork/autumns_whisper.webp",
     "artwork/bite_of_the_night.webp",
@@ -36,6 +37,7 @@ const ASSETS = [
     "artwork/upon_a_winding_trail.webp",
     "artwork/whiteout.webp",
     "artwork/winterstorm.webp",
+    "datenschutz.html",
     "images/Guitar-in-Dolomites.webp",
     "images/Hero.webp",
     "images/Hero_square.webp",
@@ -60,6 +62,7 @@ const ASSETS = [
     "images/original/Stage_6.png",
     "images/original/Stage_7.png",
     "images/original/Stage_8.png",
+    "impressum.html",
     "index.html",
     "js/DiaryService.js",
     "js/Main.js",
@@ -68,7 +71,9 @@ const ASSETS = [
     "js/SongCollection.js",
     "js/SongService.js",
     "js/lucide.js",
-    "js/tailwindcss.js"
+    "js/tailwindcss.js",
+    "legal_notice.html",
+    "privacy_policy.html"
 ];
 
 // Installation: Assets in den Cache laden
