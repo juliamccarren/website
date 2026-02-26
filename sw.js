@@ -1,4 +1,4 @@
-const STATIC_CACHE = 'julia-site-v12';
+const STATIC_CACHE = 'julia-site-v13';
 
 // Synchronisierte Neural App Shell Assets
 const ASSETS = [
