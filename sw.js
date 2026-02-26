@@ -1,6 +1,4 @@
-const STATIC_CACHE = 'julia-site-v13';
-
-// Synchronisierte Neural App Shell Assets
+const STATIC_CACHE = 'julia-site-v14';
 const ASSETS = [
     "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
@@ -76,43 +74,38 @@ const ASSETS = [
     "js/tailwindcss.js",
     "legal_notice.html",
     "manifest.json",
-    "privacy_policy.html"
+    "privacy_policy.html",
+    "version.json"
 ];
 
-// Installation: Assets in den Cache laden
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(STATIC_CACHE).then(cache => {
-            console.log('SYSTEM: Neural App Shell synchronizing...');
+            console.log('SYSTEM: Neural App Shell v14 syncing...');
             return cache.addAll(ASSETS);
         })
     );
 });
 
-// Aktivierung: Alte Caches aufräumen
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(
-                keys.filter(key => key !== STATIC_CACHE && key.startsWith('julia-site-'))
+                keys.filter(key => key !== STATIC_CACHE && key.startsWith('julia-site-v'))
                     .map(key => caches.delete(key))
             );
         })
     );
 });
 
-// Nachrichten-Listener: Sofort aktivieren bei Update
 self.addEventListener('message', (event) => {
     if (event.data === 'SKIP_WAITING') {
         self.skipWaiting();
     }
 });
 
-// Fetch-Interception: Cache-First Strategie
 self.addEventListener('fetch', event => {
-    // Musik-Streaming (R2) ignorieren (wird durch SongService/Main.js geregelt)
     if (event.request.url.includes('music.juliamccarren.com')) return;
-
     event.respondWith(
         caches.match(event.request).then(response => {
             return response || fetch(event.request);

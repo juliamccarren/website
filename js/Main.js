@@ -297,6 +297,24 @@ function updateOnlineStatus() {
     }
 }
 
+async function updateFooterVersion() {
+    try {
+        const response = await fetch('../version.json');
+        if (!response.ok) throw new Error('Version check failed');
+        
+        const data = await response.json();
+
+        // 1. Versionsnummer setzen
+        document.getElementById('version-number').textContent = data.version;
+        
+        // 2. Hash setzen (der technische Fingerabdruck)
+        document.getElementById('build-hash').textContent = data.hash;
+        
+    } catch (error) {
+        console.log("SYSTEM: Using local cache version info.");
+    }
+}
+
 // Update your initialization
 window.addEventListener('DOMContentLoaded', async () => {
     // ERST HIER, wenn alle Skripte geladen sind, erstellen wir die Objekte
@@ -314,6 +332,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // Einmaliger Check beim Start
     updateOnlineStatus();
+
+    // Version update
+    updateFooterVersion();
 
     // 1. MOBILE VIEWPORT HEIGHT FIX
     // Prevents the address bar from cutting off the player on mobile browsers

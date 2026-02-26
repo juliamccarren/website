@@ -30,6 +30,21 @@
             color: #fff;
         }
 
+        .neural-footer {
+            padding: 20px;
+            background: transparent;
+            border-top: 1px solid rgba(217, 70, 239, 0.1); /* Hauchdünne Fuchsia-Linie */
+            color: rgba(217, 70, 239, 0.5); /* Dezentes Leuchten */
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        #core-info span {
+            color: #d946ef; /* Die Werte selbst leuchten etwas stärker */
+        }        
+
         #hero-content p {
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
             animation: text-breathing 4s ease-in-out infinite;
@@ -901,7 +916,7 @@
 
         <!-- Footer -->
         <footer class="py-16 border-t border-neutral-900 text-center">
-            <!-- YouTube Link -->
+            <!-- YouTube Link 
             <div class="flex justify-center gap-12 mb-8 text-neutral-300">
                 <a href="https://www.youtube.com/@JuliaMcCarren/releases" 
                 target="_blank" 
@@ -910,14 +925,15 @@
                 </a>
             </div>
 
-            <!-- Spotify Link -->
+            -- Spotify Link --
             <div class="flex justify-center gap-12 mb-14 text-neutral-300">
                 <a href="https://open.spotify.com/artist/1iEWsTM4vgUGVXOlky4Ujk" 
                 target="_blank" 
                 class="hover:text-[#1DB954] transition-colors uppercase font-black text-3xl tracking-[0.1em]">
                 Spotify
                 </a>
-            </div>     
+            </div>  
+            -->   
 
             <div class="flex justify-center gap-8 mb-6 text-fuchsia-500">
                 <a href="../legal_notice.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Legal Notice</a>
@@ -928,6 +944,11 @@
                 <a href="../impressum.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Impressum</a>
                 <a href="../datenschutz.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Datenschutz</a>
             </div>
+
+            <div id="core-info">
+                CORE_V<span id="version-number">...</span> 
+                [<span id="build-hash">...</span>] 
+            </div>            
 
             <section class="max-w-2xl mx-auto mt-10 text-center">
                 <p class="text-xs md:text-m text-neutral-400 font-bold tracking-[0.3em] uppercase pb-6">© 2026 Julia McCarren</p> 
