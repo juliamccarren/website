@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "29" 
+VERSION = "30" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -152,6 +152,12 @@ self.addEventListener('fetch', event => {{
             return response || fetch(event.request);
         }})
     );
+}});
+
+self.addEventListener('message', (event) => {{
+    if (event.data === 'SKIP_WAITING') {{
+        self.skipWaiting();
+    }}
 }});
 """
     with open(OUTPUT_SW, "w", encoding="utf-8") as f:
