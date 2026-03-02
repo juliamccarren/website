@@ -5,7 +5,7 @@ import uuid
 
 # --- KONFIGURATION ---
 
-VERSION = "27" 
+VERSION = "28" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -27,6 +27,7 @@ EXTRA_FILES = [
 
 # Pfade, die bereits eine Unterstruktur haben (werden entsprechend übernommen)
 NESTED_FILES = [
+    "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html", # Einstiegspunkt für App
     "745596f4-2947-4d89-955f-f4148e07d22a/songs.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/diary.json",
     "745596f4-2947-4d89-955f-f4148e07d22a/lyrics.html",
