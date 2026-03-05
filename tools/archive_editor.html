@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neural Archive Editor | Julia McCarren</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    
+<!---    <script src="https://cdnjs.cloudflare.com/ajax/libs/coi-serviceworker/0.1.7/coi-serviceworker.min.js" crossorigin="anonymous"></script>-->
+    
+    <script src="../js/tailwindcss.js"></script>
+    <script src="../js/lucide.js"></script>
+    
+    <script src="../js/ffmpeg.min.js"></script>
+
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -18,12 +24,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .glass-panel {
-            background: rgba(15, 15, 15, 0.7);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(217, 70, 239, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
         .input-field {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -33,17 +33,11 @@
             outline: none;
             border-color: #d946ef;
             background: rgba(217, 70, 239, 0.05);
-            box-shadow: 0 0 15px rgba(217, 70, 239, 0.1);
         }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
-
         .active-song-card {
             border-color: #d946ef;
             background: rgba(217, 70, 239, 0.12);
         }
-
         .artwork-container {
             position: relative;
             aspect-ratio: 1 / 1;
@@ -52,11 +46,21 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col overflow-hidden">
 
-    <!-- Header -->
+    <div id="render-overlay" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[100] hidden flex flex-col items-center justify-center text-center">
+        <div class="w-24 h-24 border-4 border-fuchsia-500/20 border-t-fuchsia-500 rounded-full animate-spin mb-8"></div>
+        <h3 class="text-2xl font-black uppercase tracking-tighter hero-text-mccarren animate-pulse">Encoding Neural Stream</h3>
+        <p id="render-status" class="text-[10px] font-bold uppercase tracking-[0.5em] text-white/40 mt-4">Optimizing Visuals...</p>
+        <div class="w-64 h-1 bg-white/10 rounded-full mt-8 overflow-hidden">
+            <div id="render-progress" class="h-full bg-fuchsia-500 w-0 transition-all duration-300"></div>
+        </div>
+    </div>
+
     <header class="border-b border-white/10 py-4 bg-black/80 backdrop-blur-md z-50">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center gap-4">
@@ -82,7 +86,6 @@
 
     <main class="flex-grow flex flex-col lg:flex-row h-[calc(100vh-73px)]">
         
-        <!-- Sidebar: Song List -->
         <div class="w-full lg:w-80 border-r border-white/5 flex flex-col bg-neutral-950/50">
             <div class="p-6 border-b border-white/5 space-y-4">
                 <div class="relative">
@@ -93,324 +96,241 @@
                     <i data-lucide="plus-circle" size="14"></i> Add Song
                 </button>
             </div>
-
-            <div id="song-list" class="flex-grow overflow-y-auto p-4 space-y-2">
-                <div class="py-20 text-center text-white/10 uppercase font-black text-[10px] tracking-widest">
-                    No JSON loaded
-                </div>
-            </div>
+            <div id="song-list" class="flex-grow overflow-y-auto p-4 space-y-2"></div>
         </div>
 
-        <!-- Content Area -->
         <div class="flex-grow relative overflow-hidden bg-black">
-            
-            <!-- Empty State -->
             <div id="empty-pane" class="absolute inset-0 flex flex-col items-center justify-center text-center p-12 opacity-20">
                 <i data-lucide="layers" size="64" class="mb-6 text-fuchsia-500"></i>
                 <h2 class="text-2xl font-black uppercase tracking-tighter mb-2">Neural Buffer Empty</h2>
-                <p class="max-w-xs text-[10px] font-bold uppercase tracking-[0.3em] leading-relaxed">Select a song from the list or upload a songs.json file.</p>
             </div>
 
-            <!-- View Pane (Display Only) -->
             <div id="view-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
                 <div class="max-w-5xl mx-auto">
-                    <div class="flex flex-wrap gap-2 mb-6" id="view-tags"></div>
+                    <div id="view-tags" class="flex flex-wrap gap-2 mb-6"></div>
                     <h2 id="view-title" class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-10 hero-text-mccarren leading-none"></h2>
                     
-                    <div class="flex gap-4 mb-16">
-                        <button onclick="enterEditMode()" class="px-8 py-3 rounded-full bg-white text-black font-black uppercase tracking-widest text-[11px] flex items-center gap-2 hover:scale-105 transition-transform">
+                    <div class="flex flex-wrap gap-4 mb-16">
+                        <button onclick="enterEditMode()" class="px-8 py-3 rounded-full bg-white text-black font-black uppercase tracking-widest text-[11px] flex items-center gap-2">
                             <i data-lucide="edit-3" size="16"></i> Edit
                         </button>
-                        <button onclick="deleteCurrentSong()" class="px-8 py-3 rounded-full border border-red-500/30 text-red-500 font-black uppercase tracking-widest text-[11px] flex items-center gap-2 hover:bg-red-500/5 transition-all">
-                            <i data-lucide="trash-2" size="16"></i> Delete
-                        </button>
+                        
+                        <div class="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
+                            <input type="file" id="audio-source" class="hidden" accept="audio/*">
+                            <button onclick="document.getElementById('audio-source').click()" class="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white/60">
+                                <i data-lucide="music" size="14" class="inline mr-2"></i> Audio Select
+                            </button>
+                            <button onclick="renderMP4()" class="px-6 py-2 rounded-full bg-fuchsia-600 text-white font-black uppercase tracking-widest text-[10px] flex items-center gap-2 hover:bg-fuchsia-500 transition-all">
+                                <i data-lucide="zap" size="14"></i> Generate MP4
+                            </button>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
-                        <!-- Column 1: Identity & Context -->
-                        <div class="md:col-span-4 space-y-10">
-                            <div>
-                                <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-4">Visual Data</h4>
-                                <div class="artwork-container group relative">
-                                    <div id="artwork-loading" class="absolute inset-0 flex items-center justify-center bg-white/5">
-                                        <div class="w-6 h-6 border-2 border-fuchsia-500/20 border-t-fuchsia-500 rounded-full animate-spin"></div>
-                                    </div>
-                                    <div id="artwork-error" class="absolute inset-0 flex flex-col items-center justify-center text-white/10 hidden">
-                                        <i data-lucide="image-off" size="32" class="mb-2"></i>
-                                        <span class="text-[8px] font-black uppercase tracking-widest">No Artwork Found</span>
-                                    </div>
-                                    <img id="view-artwork" src="" alt="Song Artwork" class="w-full h-full object-cover opacity-0 transition-opacity duration-700" onload="onArtworkLoad()" onerror="onArtworkError()">
-                                    
-                                    <!-- ID Overlay -->
-                                    <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                                        <p class="text-[8px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">Source Path</p>
-                                        <p id="view-artwork-path" class="text-[9px] font-mono text-fuchsia-400 truncate"></p>
-                                    </div>
+                        <div class="md:col-span-4">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-4">Visual Data</h4>
+                            <div class="artwork-container group">
+                                <img id="view-artwork" src="" crossorigin="anonymous" class="w-full h-full object-cover transition-opacity duration-700">
+                                <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 opacity-0 group-hover:opacity-100 transition-all">
+                                    <p id="view-artwork-path" class="text-[9px] font-mono text-fuchsia-400 truncate"></p>
                                 </div>
                             </div>
-
-                            <div>
-                                <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-4">Internal ID</h4>
-                                <p id="view-id" class="font-mono text-fuchsia-400 text-sm"></p>
-                                
-                                <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mt-10 mb-4">Background</h4>
-                                <p id="view-background" class="text-neutral-400 text-sm leading-relaxed italic"></p>
-                            </div>
+                            <p id="view-id" class="font-mono text-fuchsia-400 text-sm mt-6"></p>
+                            <p id="view-background" class="text-neutral-400 text-sm leading-relaxed italic mt-4"></p>
                         </div>
-
-                        <!-- Column 2: Content -->
                         <div class="md:col-span-8">
-                            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500/50 mb-6 flex items-center gap-3">
-                                <span class="w-8 h-[1px] bg-fuchsia-500/30"></span>
-                                Linguistic Data Stream
-                            </h4>
-                            <div class="bg-white/5 rounded-[2rem] p-10 border border-white/5 relative overflow-hidden">
-                                <div class="absolute top-0 right-0 p-6 opacity-10">
-                                    <i data-lucide="quote" size="48" class="text-fuchsia-500"></i>
-                                </div>
-                                <pre id="view-lyrics" class="whitespace-pre-wrap font-sans text-neutral-300 leading-relaxed text-lg italic relative z-10"></pre>
+                            <div class="bg-white/5 rounded-[2rem] p-10 border border-white/5">
+                                <pre id="view-lyrics" class="whitespace-pre-wrap font-sans text-neutral-300 leading-relaxed text-lg italic"></pre>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Edit Pane (Editing) -->
             <div id="edit-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
                 <div class="max-w-4xl mx-auto">
                     <div class="flex items-center justify-between mb-12">
                         <h2 class="text-2xl font-black uppercase tracking-tighter">Editing <span class="hero-text-mccarren">Mode</span></h2>
                         <div class="flex gap-3">
-                            <button onclick="exitEditMode(true)" class="px-6 py-2 rounded-full border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Cancel</button>
-                            <button onclick="exitEditMode(false)" class="px-8 py-2 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-fuchsia-500 transition-colors shadow-lg shadow-fuchsia-500/20">Save & View</button>
+                            <button onclick="exitEditMode(true)" class="px-6 py-2 rounded-full border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest">Cancel</button>
+                            <button onclick="exitEditMode(false)" class="px-8 py-2 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold uppercase tracking-widest">Save</button>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-6">
-                            <div>
-                                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Internal ID (Linked to Artwork)</label>
-                                <input type="text" id="edit-id" class="w-full p-4 rounded-xl input-field font-mono text-sm" placeholder="e.g., song_01">
-                                <p class="text-[9px] text-white/30 mt-2 italic font-mono uppercase tracking-wider">Artwork path: /artwork/[ID].webp</p>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Title</label>
-                                <input type="text" id="edit-title" class="w-full p-4 rounded-xl input-field font-bold text-lg">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Tags (comma separated)</label>
-                                <input type="text" id="edit-tags" class="w-full p-4 rounded-xl input-field text-sm" placeholder="Love, Electronic...">
-                            </div>
+                            <input type="text" id="edit-id" class="w-full p-4 rounded-xl input-field font-mono text-sm" placeholder="ID">
+                            <input type="text" id="edit-title" class="w-full p-4 rounded-xl input-field font-bold" placeholder="Title">
+                            <input type="text" id="edit-tags" class="w-full p-4 rounded-xl input-field text-sm" placeholder="Tags">
                         </div>
-                        <div>
-                            <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-2">Background / Context</label>
-                            <textarea id="edit-background" class="w-full p-4 rounded-xl input-field text-sm h-[252px] resize-none leading-relaxed"></textarea>
-                        </div>
+                        <textarea id="edit-background" class="w-full p-4 rounded-xl input-field text-sm h-full" placeholder="Background"></textarea>
                     </div>
-
-                    <div>
-                        <label class="block text-[10px] font-black uppercase tracking-[0.4em] text-fuchsia-500 mb-4 flex items-center gap-2">
-                            <i data-lucide="align-left" size="14"></i> Lyrics (Linguistic Data Stream)
-                        </label>
-                        <textarea id="edit-lyrics" class="w-full p-8 rounded-3xl input-field font-mono text-sm h-96 resize-y leading-relaxed" placeholder="[Verse 1]..."></textarea>
-                    </div>
+                    <textarea id="edit-lyrics" class="w-full p-8 rounded-3xl input-field font-mono text-sm h-96 mt-8" placeholder="Lyrics"></textarea>
                 </div>
             </div>
-
         </div>
     </main>
 
     <script>
         let songs = [];
         let currentIdx = -1;
-        let isEditMode = false;
+        const { createFFmpeg, fetchFile } = FFmpeg;
+        const ffmpeg = createFFmpeg({ 
+            log: true,
+            progress: ({ ratio }) => document.getElementById('render-progress').style.width = `${ratio * 100}%`
+        });
 
-        const jsonInput = document.getElementById('json-input');
-        const songList = document.getElementById('song-list');
-        const searchInput = document.getElementById('song-search');
-        
-        const emptyPane = document.getElementById('empty-pane');
-        const viewPane = document.getElementById('view-pane');
-        const editPane = document.getElementById('edit-pane');
+        // --- RENDER MP4 LOGIC ---
+        async function renderMP4() {
+            const song = songs[currentIdx];
+            const audioFile = document.getElementById('audio-source').files[0];
+            const imgElement = document.getElementById('view-artwork');
+            
+            if (!audioFile) return alert("Select audio first!");
 
-        const artworkImg = document.getElementById('view-artwork');
-        const artworkLoading = document.getElementById('artwork-loading');
-        const artworkError = document.getElementById('artwork-error');
-        const artworkPathDisplay = document.getElementById('view-artwork-path');
+            const overlay = document.getElementById('render-overlay');
+            overlay.classList.remove('hidden');
+            document.getElementById('render-status').textContent = "Optimizing Visual Data...";
 
-        // --- IMPORT ---
-        jsonInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+            try {
+                if (!ffmpeg.isLoaded()) await ffmpeg.load();
+
+                // 1. Bild via Canvas optimieren (RAM sparen & Maße fixen)
+                const canvas = document.createElement('canvas');
+                const MAX_DIM = 720; // 720p für maximale Stabilität im Browser, zuerst: 1280
+                const scale = Math.min(1, MAX_DIM / Math.max(imgElement.naturalWidth, imgElement.naturalHeight));
+                canvas.width = Math.floor((imgElement.naturalWidth * scale) / 2) * 2;
+                canvas.height = Math.floor((imgElement.naturalHeight * scale) / 2) * 2;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+                
+                const imgBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.85));
+                const imgData = new Uint8Array(await imgBlob.arrayBuffer());
+
+                // 2. In virtuelles FS schreiben
+                ffmpeg.FS('writeFile', 'input.jpg', imgData);
+                ffmpeg.FS('writeFile', 'audio.mp3', await fetchFile(audioFile));
+
+                document.getElementById('render-status').textContent = "Muxing Video (H.264)...";
+
+                // 3. Encoding
+                await ffmpeg.run(
+                    '-loop', '1', 
+                    '-i', 'input.jpg', 
+                    '-i', 'audio.mp3', 
+                    '-c:v', 'libx264', 
+                    '-preset', 'ultrafast', // Maximale Geschwindigkeit
+                    '-tune', 'stillimage',  // Optimiert für Standbilder
+                    '-crf', '28',           // Erhöht die Kompression (spart Zeit)
+                    '-c:a', 'copy',         // WICHTIG: Audio wird NICHT neu kodiert, nur kopiert (spart massiv Zeit!)
+                    '-pix_fmt', 'yuv420p', 
+                    '-shortest', 
+                    '-threads', '0',        // Nutzt alle verfügbaren Browser-Threads
+                    'output.mp4'
+                );
+
+                const data = ffmpeg.FS('readFile', 'output.mp4');
+                const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${song.id}_ContentID.mp4`;
+                a.click();
+
+            } catch (err) {
+                console.error(err);
+                alert("Error: " + err.message);
+            } finally {
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // --- BASIC FUNCTIONS ---
+        document.getElementById('json-input').addEventListener('change', (e) => {
             const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    songs = JSON.parse(event.target.result);
-                    renderList();
-                    if (songs.length > 0) selectSong(0);
-                } catch (err) { 
-                    alert("Invalid JSON format. Please check the structure."); 
-                }
+            reader.onload = (ev) => {
+                songs = JSON.parse(ev.target.result);
+                renderList();
+                if(songs.length) selectSong(0);
             };
-            reader.readAsText(file);
+            reader.readAsText(e.target.files[0]);
         });
 
         function renderList() {
-            const filter = searchInput.value.toLowerCase();
-            songList.innerHTML = '';
+            const list = document.getElementById('song-list');
+            list.innerHTML = '';
+            songs.forEach((s, i) => {
+                const d = document.createElement('div');
+                d.className = `p-4 rounded-2xl cursor-pointer border border-white/5 ${i === currentIdx ? 'active-song-card' : 'bg-white/5'}`;
+                d.onclick = () => selectSong(i);
+                d.innerHTML = `<div class="text-[9px] font-black uppercase text-fuchsia-500/60">${s.id}</div><div class="text-xs font-black uppercase">${s.title}</div>`;
+                list.appendChild(d);
+            });
+            lucide.createIcons();
+        }
+
+        function selectSong(i) {
+            currentIdx = i;
+            const s = songs[i];
+            document.getElementById('view-pane').classList.remove('hidden');
+            document.getElementById('empty-pane').classList.add('hidden');
+            document.getElementById('view-title').textContent = s.title;
+            document.getElementById('view-id').textContent = s.id;
+            document.getElementById('view-lyrics').textContent = s.lyrics;
+            document.getElementById('view-background').textContent = s.background;
             
-            const totalSongs = songs.length;
-            
-            songs.forEach((song, idx) => {
-                const displayNum = totalSongs - idx;
-                
-                if (song.title.toLowerCase().includes(filter) || song.id.toLowerCase().includes(filter)) {
-                    const card = document.createElement('div');
-                    card.className = `p-4 rounded-2xl cursor-pointer transition-all border border-white/5 hover:bg-white/5 flex items-start gap-4 ${idx === currentIdx ? 'active-song-card' : 'bg-white/5'}`;
-                    card.onclick = () => selectSong(idx);
-                    card.innerHTML = `
-                        <div class="text-[10px] font-black text-white/10 pt-1 w-6 text-right">${displayNum}</div>
-                        <div class="flex flex-col gap-1 flex-1 overflow-hidden">
-                            <div class="text-[9px] font-black uppercase tracking-widest text-fuchsia-500/60 truncate">${song.id}</div>
-                            <div class="text-xs font-black uppercase tracking-tight text-white/90 truncate">${song.title}</div>
-                        </div>
-                    `;
-                    songList.appendChild(card);
+            // Pfad-Logik
+            const artPath = `../artwork/${s.id}.webp`;
+            const defaultPath = `../artwork/default.webp`;
+            const viewArtwork = document.getElementById('view-artwork');
+
+            // Fallback-Logik: Wenn das Bild nicht gefunden wird
+            viewArtwork.onerror = function() {
+                if (this.src.indexOf('default.webp') === -1) {
+                    this.src = defaultPath;
+                    document.getElementById('view-artwork-path').textContent = defaultPath;
                 }
-            });
-            if (window.lucide) lucide.createIcons();
-        }
-
-        searchInput.addEventListener('input', renderList);
-
-        // --- NAVIGATION & VIEWS ---
-        function selectSong(idx) {
-            if (isEditMode) {
-                if(!confirm("Discard unsaved changes?")) return;
-                isEditMode = false;
-            }
-            currentIdx = idx;
-            renderView();
-            renderList();
-        }
-
-        function renderView() {
-            const song = songs[currentIdx];
-            if (!song) {
-                viewPane.classList.add('hidden');
-                editPane.classList.add('hidden');
-                emptyPane.classList.remove('hidden');
-                return;
-            }
-
-            emptyPane.classList.add('hidden');
-            editPane.classList.add('hidden');
-            viewPane.classList.remove('hidden');
-
-            document.getElementById('view-title').textContent = song.title;
-            document.getElementById('view-id').textContent = song.id;
-            document.getElementById('view-background').textContent = song.background;
-            document.getElementById('view-lyrics').textContent = song.lyrics;
-
-            // Artwork Logic
-            const artPath = `/artwork/${song.id}.webp`;
-            artworkPathDisplay.textContent = artPath;
-            
-            artworkImg.classList.add('opacity-0');
-            artworkError.classList.add('hidden');
-            artworkLoading.classList.remove('hidden');
-            
-            // Trigger load
-            artworkImg.src = artPath;
-
-            const tagsCont = document.getElementById('view-tags');
-            tagsCont.innerHTML = '';
-            (song.tags || []).forEach(tag => {
-                const s = document.createElement('span');
-                s.className = "px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/30 text-fuchsia-500 text-[9px] font-black uppercase tracking-widest";
-                s.textContent = tag;
-                tagsCont.appendChild(s);
-            });
-            if (window.lucide) lucide.createIcons();
-        }
-
-        // --- ARTWORK HANDLERS ---
-        function onArtworkLoad() {
-            artworkLoading.classList.add('hidden');
-            artworkImg.classList.remove('opacity-0');
-        }
-
-        function onArtworkError() {
-            artworkLoading.classList.add('hidden');
-            artworkError.classList.remove('hidden');
-        }
-
-        // --- EDIT MODE ---
-        function enterEditMode() {
-            const song = songs[currentIdx];
-            isEditMode = true;
-            viewPane.classList.add('hidden');
-            editPane.classList.remove('hidden');
-
-            document.getElementById('edit-id').value = song.id || '';
-            document.getElementById('edit-title').value = song.title || '';
-            document.getElementById('edit-tags').value = (song.tags || []).join(', ');
-            document.getElementById('edit-background').value = song.background || '';
-            document.getElementById('edit-lyrics').value = song.lyrics || '';
-        }
-
-        function exitEditMode(cancel = false) {
-            if (!cancel) {
-                const song = songs[currentIdx];
-                song.id = document.getElementById('edit-id').value;
-                song.title = document.getElementById('edit-title').value;
-                song.background = document.getElementById('edit-background').value;
-                song.lyrics = document.getElementById('edit-lyrics').value;
-                const tagStr = document.getElementById('edit-tags').value;
-                song.tags = tagStr.split(',').map(t => t.trim()).filter(t => t !== '');
-            }
-            isEditMode = false;
-            renderView();
-            renderList();
-        }
-
-        // --- ACTIONS ---
-        function addNewSong() {
-            const newSong = {
-                id: "new_fragment_" + Math.random().toString(36).substr(2, 5),
-                title: "Untitled Fragment",
-                background: "Archive record initiated...",
-                tags: ["Draft"],
-                lyrics: "[Verse 1]\n..."
             };
-            songs.unshift(newSong);
-            currentIdx = 0;
+
+            viewArtwork.src = artPath;
+            document.getElementById('view-artwork-path').textContent = artPath;
+            
             renderList();
-            enterEditMode();
         }
 
-        function deleteCurrentSong() {
-            if (currentIdx === -1) return;
-            if (confirm("Are you sure you want to purge this record from the neural archive?")) {
-                songs.splice(currentIdx, 1);
-                currentIdx = songs.length > 0 ? 0 : -1;
-                isEditMode = false;
-                renderList();
-                renderView();
+        function enterEditMode() {
+            const s = songs[currentIdx];
+            document.getElementById('view-pane').classList.add('hidden');
+            document.getElementById('edit-pane').classList.remove('hidden');
+            document.getElementById('edit-id').value = s.id;
+            document.getElementById('edit-title').value = s.title;
+            document.getElementById('edit-lyrics').value = s.lyrics;
+            document.getElementById('edit-background').value = s.background;
+        }
+
+        function exitEditMode(cancel) {
+            if(!cancel) {
+                const s = songs[currentIdx];
+                s.id = document.getElementById('edit-id').value;
+                s.title = document.getElementById('edit-title').value;
+                s.lyrics = document.getElementById('edit-lyrics').value;
+                s.background = document.getElementById('edit-background').value;
             }
+            document.getElementById('edit-pane').classList.add('hidden');
+            selectSong(currentIdx);
         }
 
-        // --- EXPORT ---
         function exportJson() {
-            if (isEditMode) exitEditMode(false);
-            const dataStr = JSON.stringify(songs, null, 2);
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'songs.json';
-            link.click();
-            URL.revokeObjectURL(url);
+            const blob = new Blob([JSON.stringify(songs, null, 2)], {type:'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'songs.json';
+            a.click();
+        }
+
+        function addNewSong() {
+            songs.unshift({id:'new_song', title:'Untitled', lyrics:'', background:'', tags:[]});
+            selectSong(0);
+            enterEditMode();
         }
 
         window.onload = () => lucide.createIcons();
