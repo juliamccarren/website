@@ -152,6 +152,9 @@
                     <div class="flex items-center justify-between mb-12">
                         <h2 class="text-2xl font-black uppercase tracking-tighter">Editing <span class="hero-text-mccarren">Mode</span></h2>
                         <div class="flex gap-3">
+                            <button onclick="deleteSong()" class="px-6 py-2 rounded-full border border-red-500/50 text-red-500 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/10 transition-all mr-auto">
+                                Delete
+                            </button>
                             <button onclick="exitEditMode(true)" class="px-6 py-2 rounded-full border border-white/10 text-white/50 text-[10px] font-bold uppercase tracking-widest">Cancel</button>
                             <button onclick="exitEditMode(false)" class="px-8 py-2 rounded-full bg-fuchsia-600 text-white text-[10px] font-bold uppercase tracking-widest">Save</button>
                         </div>
@@ -255,15 +258,31 @@
             reader.readAsText(e.target.files[0]);
         });
 
-        function renderList() {
+        function renderList(filter = '') {
             const list = document.getElementById('song-list');
             list.innerHTML = '';
+            
+            const totalSongs = songs.length;
+            const searchTerm = filter.toLowerCase();
+
             songs.forEach((s, i) => {
-                const d = document.createElement('div');
-                d.className = `p-4 rounded-2xl cursor-pointer border border-white/5 ${i === currentIdx ? 'active-song-card' : 'bg-white/5'}`;
-                d.onclick = () => selectSong(i);
-                d.innerHTML = `<div class="text-[9px] font-black uppercase text-fuchsia-500/60">${s.id}</div><div class="text-xs font-black uppercase">${s.title}</div>`;
-                list.appendChild(d);
+                // Suche in Titel und ID
+                if (s.title.toLowerCase().includes(searchTerm) || s.id.toLowerCase().includes(searchTerm)) {
+                    const d = document.createElement('div');
+                    const displayIndex = totalSongs - i;
+                    
+                    d.className = `p-4 rounded-2xl cursor-pointer border border-white/5 ${i === currentIdx ? 'active-song-card' : 'bg-white/5'}`;
+                    d.onclick = () => selectSong(i);
+                    
+                    d.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="text-[12px] font-black uppercase text-fuchsia-500/60">${s.id}</div>
+                            <div class="text-[12px] font-mono text-white/60">#${displayIndex.toString().padStart(2, '0')}</div>
+                        </div>
+                        <div class="text-xs font-black uppercase mt-1">${s.title}</div>
+                    `;
+                    list.appendChild(d);
+                }
             });
             lucide.createIcons();
         }
@@ -277,6 +296,19 @@
             document.getElementById('view-id').textContent = s.id;
             document.getElementById('view-lyrics').textContent = s.lyrics;
             document.getElementById('view-background').textContent = s.background;
+
+            // Tags
+            const tagsContainer = document.getElementById('view-tags');
+            tagsContainer.innerHTML = ''; // Container leeren
+            
+            if (s.tags && Array.isArray(s.tags)) {
+                s.tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = "px-3 py-1 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 text-[9px] font-bold uppercase tracking-widest";
+                    span.textContent = tag;
+                    tagsContainer.appendChild(span);
+                });
+            }            
             
             // Pfad-Logik
             const artPath = `../artwork/${s.id}.webp`;
@@ -305,18 +337,41 @@
             document.getElementById('edit-title').value = s.title;
             document.getElementById('edit-lyrics').value = s.lyrics;
             document.getElementById('edit-background').value = s.background;
+            document.getElementById('edit-tags').value = s.tags ? s.tags.join(', ') : '';
         }
 
         function exitEditMode(cancel) {
-            if(!cancel) {
+            if (cancel) {
+                // Wenn es ein neu erstellter Song war, der abgebrochen wurde: Löschen
+                if (songs[currentIdx] && songs[currentIdx].isNew) {
+                    songs.splice(currentIdx, 1);
+                    currentIdx = -1;
+                    document.getElementById('edit-pane').classList.add('hidden');
+                    document.getElementById('empty-pane').classList.remove('hidden');
+                    renderList();
+                    return; // Funktion hier beenden
+                }
+            } else {
+                // Beim Speichern: Markierung entfernen und Daten übernehmen
                 const s = songs[currentIdx];
+                delete s.isNew; // Markierung dauerhaft entfernen
+                
                 s.id = document.getElementById('edit-id').value;
                 s.title = document.getElementById('edit-title').value;
                 s.lyrics = document.getElementById('edit-lyrics').value;
                 s.background = document.getElementById('edit-background').value;
+                
+                const tagsInput = document.getElementById('edit-tags').value;
+                s.tags = tagsInput.split(',').map(t => t.trim()).filter(t => t !== "");
             }
+
             document.getElementById('edit-pane').classList.add('hidden');
-            selectSong(currentIdx);
+            if (currentIdx !== -1) {
+                selectSong(currentIdx);
+            } else {
+                document.getElementById('view-pane').classList.add('hidden');
+                document.getElementById('empty-pane').classList.remove('hidden');
+            }
         }
 
         function exportJson() {
@@ -328,12 +383,53 @@
         }
 
         function addNewSong() {
-            songs.unshift({id:'new_song', title:'Untitled', lyrics:'', background:'', tags:[]});
+            const newSong = {
+                id: 'new_song_' + Date.now(), // Eindeutige temporäre ID
+                title: 'Untitled',
+                background: '',
+                tags: [],
+                lyrics: '',
+                isNew: true // Temporäre Markierung
+            };
+            
+            songs.unshift(newSong); // Fügt den Song oben in die Liste ein
             selectSong(0);
+            renderList(); // Liste aktualisieren, um die neue Nummerierung zu zeigen
             enterEditMode();
         }
 
+        function deleteSong() {
+            if (currentIdx === -1) return;
+            
+            const song = songs[currentIdx];
+            const confirmDelete = confirm(`Möchtest du "${song.title}" unwiderruflich aus dem Archiv löschen?`);
+            
+            if (confirmDelete) {
+                songs.splice(currentIdx, 1); // Entfernt den Song aus dem Array
+                
+                // WICHTIG: Editor und View-Pane sofort ausblenden
+                document.getElementById('edit-pane').classList.add('hidden');
+                document.getElementById('view-pane').classList.add('hidden');
+                
+                // Ansicht neu bewerten
+                if (songs.length > 0) {
+                    // Springe zum ersten Song in der Liste (Index 0)
+                    selectSong(0); 
+                } else {
+                    // Archiv ist komplett leer
+                    currentIdx = -1;
+                    document.getElementById('empty-pane').classList.remove('hidden');
+                }
+                
+                renderList(); // Sidebar aktualisieren
+            }
+        }     
+
         window.onload = () => lucide.createIcons();
+
+        document.getElementById('song-search').addEventListener('input', (e) => {
+            renderList(e.target.value);
+        });        
     </script>
 </body>
 </html>
