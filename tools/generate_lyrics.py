@@ -3,8 +3,8 @@ import os
 
 def generate_lyrics_page():
     base_path = os.path.dirname(os.path.abspath(__file__))
-    json_path = os.path.join(base_path, 'songs.json')
-    output_path = os.path.join(base_path, 'lyrics.html')
+    json_path = os.path.join(base_path, '../745596f4-2947-4d89-955f-f4148e07d22a/songs.json')
+    output_path = os.path.join(base_path, '../745596f4-2947-4d89-955f-f4148e07d22a/lyrics.html')
 
     if not os.path.exists(json_path):
         print(f"FEHLER: 'songs.json' nicht gefunden.")

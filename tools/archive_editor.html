@@ -108,7 +108,12 @@
             <div id="view-pane" class="absolute inset-0 overflow-y-auto p-8 md:p-16 hidden">
                 <div class="max-w-5xl mx-auto">
                     <div id="view-tags" class="flex flex-wrap gap-2 mb-6"></div>
+
                     <h2 id="view-title" class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-10 hero-text-mccarren leading-none"></h2>
+
+                    <div id="view-status" class="mb-6 flex items-center gap-2">
+                        <div id="status-badge" class="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border"></div>
+                    </div>                    
                     
                     <div class="flex flex-wrap gap-4 mb-16">
                         <button onclick="enterEditMode()" class="px-8 py-3 rounded-full bg-white text-black font-black uppercase tracking-widest text-[11px] flex items-center gap-2">
@@ -164,6 +169,11 @@
                             <input type="text" id="edit-id" class="w-full p-4 rounded-xl input-field font-mono text-sm" placeholder="ID">
                             <input type="text" id="edit-title" class="w-full p-4 rounded-xl input-field font-bold" placeholder="Title">
                             <input type="text" id="edit-tags" class="w-full p-4 rounded-xl input-field text-sm" placeholder="Tags">
+
+                            <div class="flex items-center gap-3 p-4 rounded-xl input-field">
+                                <input type="checkbox" id="edit-content-id" class="w-4 h-4 accent-fuchsia-600">
+                                <label for="edit-content-id" class="text-[10px] font-bold uppercase tracking-widest text-white/60 cursor-pointer">Content ID Check Passed</label>
+                            </div>                            
                         </div>
                         <textarea id="edit-background" class="w-full p-4 rounded-xl input-field text-sm h-full" placeholder="Background"></textarea>
                     </div>
@@ -236,7 +246,7 @@
                 const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `${song.id}_ContentID.mp4`;
+                a.download = `${song.title} Content ID.mp4`;
                 a.click();
 
             } catch (err) {
@@ -247,17 +257,32 @@
             }
         }
 
-        // --- BASIC FUNCTIONS ---
+        // Import songs
         document.getElementById('json-input').addEventListener('change', (e) => {
             const reader = new FileReader();
             reader.onload = (ev) => {
-                songs = JSON.parse(ev.target.result);
+                const rawData = JSON.parse(ev.target.result);
+                
+                // Jedes Song-Objekt wird neu strukturiert, um die Reihenfolge zu garantieren
+                songs = rawData.map(s => {
+                    return {
+                        id: s.id || '',
+                        title: s.title || '',
+                        background: s.background || '',
+                        tags: s.tags || [],
+                        // Falls das Feld fehlt (undefined), wird es hier hinter 'tags' ergänzt:
+                        content_id_check: s.content_id_check !== undefined ? s.content_id_check : false,
+                        lyrics: s.lyrics || ''
+                    };
+                });
+
                 renderList();
                 if(songs.length) selectSong(0);
             };
             reader.readAsText(e.target.files[0]);
         });
 
+        // Display song list
         function renderList(filter = '') {
             const list = document.getElementById('song-list');
             list.innerHTML = '';
@@ -308,6 +333,16 @@
                     span.textContent = tag;
                     tagsContainer.appendChild(span);
                 });
+            }  
+                    
+            // Status Badge Logik
+            const statusBadge = document.getElementById('status-badge');
+            if (s.content_id_check) {
+                statusBadge.textContent = "Content ID: Clear";
+                statusBadge.className = "px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border border-green-500/50 bg-green-500/10 text-green-400";
+            } else {
+                statusBadge.textContent = "Content ID: Pending";
+                statusBadge.className = "px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border border-yellow-500/50 bg-yellow-500/10 text-yellow-400";
             }            
             
             // Pfad-Logik
@@ -338,6 +373,7 @@
             document.getElementById('edit-lyrics').value = s.lyrics;
             document.getElementById('edit-background').value = s.background;
             document.getElementById('edit-tags').value = s.tags ? s.tags.join(', ') : '';
+            document.getElementById('edit-content-id').checked = !!s.content_id_check;
         }
 
         function exitEditMode(cancel) {
@@ -363,6 +399,8 @@
                 
                 const tagsInput = document.getElementById('edit-tags').value;
                 s.tags = tagsInput.split(',').map(t => t.trim()).filter(t => t !== "");
+
+                s.content_id_check = document.getElementById('edit-content-id').checked;
             }
 
             document.getElementById('edit-pane').classList.add('hidden');
@@ -388,6 +426,7 @@
                 title: 'Untitled',
                 background: '',
                 tags: [],
+                content_id_check: false, // Default auf false
                 lyrics: '',
                 isNew: true // Temporäre Markierung
             };
