@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "43" 
+VERSION = "44" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -26,7 +26,10 @@ EXTRA_FILES = [
 ]
 
 # Der spezielle Entry-Point (Switch), der im Root bleiben muss
-ENTRY_POINT_FILE = "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html"
+ROOT_FILES = [
+    "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html",
+    "js/VersionCore.js"
+]
 
 # Pfade, die in den Versionsordner kopiert werden
 NESTED_FILES = [
@@ -100,8 +103,9 @@ def deploy_assets(asset_list):
     sw_assets = []
     
     # 1. Den Entry-Point (Switch) ohne vXX-Präfix zum SW hinzufügen
-    if os.path.exists(ENTRY_POINT_FILE):
-        sw_assets.append(ENTRY_POINT_FILE)
+    for asset in ROOT_FILES:
+        if os.path.exists(asset):
+            sw_assets.append(asset)
     
     # 2. Alle anderen Assets in den Versionsordner schieben
     for asset in asset_list:
