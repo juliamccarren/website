@@ -16,58 +16,89 @@ let scrollPosition = 0;
 
 /**
  * Global bridge for the "Reshuffle" button
+ * Erweitert: Setzt jetzt auch die Suche zurück.
  */
 async function loadAndDisplayArchiveSongs() {
-    const limit = drumPicker.value; // Get value directly from class
+    // 1. Suchfeld im UI finden und leeren
+    const searchInput = document.querySelector('input[oninput^="handleArchiveSearch"]');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+
+    // 2. Bestehende Highlights im Grid entfernen (optional, da update() neu rendert)
+    // Aber sicher ist sicher für die Optik:
+    if (archiveCollection && archiveCollection.container) {
+        const cards = Array.from(archiveCollection.container.children);
+        const highlightClasses = ['ring-2', 'ring-fuchsia-500', 'bg-neutral-900/60'];
+        cards.forEach(card => card.classList.remove(...highlightClasses));
+    }
+
+    // 3. Neue Songs laden und anzeigen (bestehende Logik)
+    const limit = drumPicker.value;
     const randomSongs = await songService.getRandom(limit);
     archiveCollection.update(randomSongs);
 }
 
 /**
  * Führt ein manuelles Update durch, indem es die VersionCore im Root prüft
- * und zur Switch-Seite (ebenfalls im Root) navigiert.
+ * und zur Switch-Seite (Memory-Cache-Buster) navigiert.
  */
 async function triggerManualUpdate(event) {
     if (event) event.preventDefault();
     
-    // Visuelles Feedback: Status-Text im Menü kurz ändern
+    // Visuelles Feedback im Menü
     const updateLink = event.currentTarget;
     const originalText = updateLink.innerHTML;
     updateLink.innerHTML = '<span>Checking...</span> <i data-lucide="loader" class="animate-spin" size="12"></i>';
     if (window.lucide) lucide.createIcons();
 
     try {
-        // Pfad-Logik: Wir sind in /vXX/subfolder/index.html
-        // Wir müssen 2 Ebenen hoch, um zum Root zu gelangen (../../)
-        const rootPath = "../../";
-        const response = await fetch(`${rootPath}js/VersionCore.js?t=${Date.now()}`);
+        /**
+         * PFAD-LOGIK FÜR LOKAL & LIVE:
+         * Wir nutzen "../../", um aus /v49/subfolder/ auszubrechen und zum Projekt-Root zu gelangen.
+         * Das ist sicherer als window.location.origin, da origin lokale Unterordner ignoriert.
+         */
+        const relativeRoot = "../../";
+        const versionUrl = `${relativeRoot}js/VersionCore.js?t=${Date.now()}`;
         
-        if (!response.ok) throw new Error("Root VersionCore not found");
+        // Fetch mit Cache-Bust, um die echte Datei vom Server/Disk zu erzwingen
+        const response = await fetch(versionUrl, {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+        });
+        
+        if (!response.ok) throw new Error("Root VersionCore nicht gefunden");
         
         const scriptText = await response.text();
         
-        // Extrahiere die Nummer aus: static info = {"number": "45", ...}
+        // Extrahiere die Nummer (z.B. "50") aus der statischen Klasse
         const match = scriptText.match(/"number":\s*"(\d+)"/);
         
         if (match && match[1]) {
             const newVersion = match[1];
-            // Die GUID-Seite liegt im Root
-            const switchPage = "804b0424-9932-4e10-9874-0d2980fe87a6.html";
-            const targetUrl = `${rootPath}${switchPage}`;
             
-            console.log(`SYSTEM: Version ${newVersion} detected. Breaking out to Root...`);
+            /**
+             * REDIRECT ZUR SWITCH-SEITE:
+             * Die Datei liegt im GUID-Ordner im Projekt-Root. 
+             * Wir nutzen wieder den relativen Pfad "../../", um sicherzustellen, 
+             * dass wir nicht bei "Cannot GET /..." landen.
+             */
+            const switchPath = "745596f4-2947-4d89-955f-f4148e07d22a/804b0424-9932-4e10-9874-0d2980fe87a6.html";
+            const targetUrl = relativeRoot + switchPath;
             
-            // Redirect zur Switch-Seite im Root
+            console.log(`SYSTEM: Root version ${newVersion} detected. Redirecting to Switcher...`);
+            
+            // Redirect ausführen
             window.location.href = targetUrl;
         } else {
-            throw new Error("Invalid VersionCore format");
+            throw new Error("VersionCore Format ungültig");
         }
     } catch (error) {
         console.error("Manual Update failed:", error);
         updateLink.innerHTML = '<span>Update Error</span> <i data-lucide="alert-circle" size="12"></i>';
         if (window.lucide) lucide.createIcons();
         
-        // Nach 3 Sekunden zurück zum Original
+        // Reset nach Fehlermeldung
         setTimeout(() => {
             updateLink.innerHTML = originalText;
             if (window.lucide) lucide.createIcons();
@@ -122,8 +153,8 @@ function handleArchiveSearch(query) {
 
     const term = query.toLowerCase();
     const matchIndex = archiveCollection.songs.findIndex(song => 
-        song.title.toLowerCase().includes(term) || 
-        song.background.toLowerCase().includes(term)
+        song.title.toLowerCase().includes(term) //|| 
+       // song.background.toLowerCase().includes(term)
     );
     
     if (matchIndex !== -1 && cards[matchIndex]) {

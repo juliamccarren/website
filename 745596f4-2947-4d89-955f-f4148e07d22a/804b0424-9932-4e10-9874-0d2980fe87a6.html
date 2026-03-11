@@ -2,79 +2,58 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
-    <!-- Lade die zentrale VersionCore.js aus dem Hauptverzeichnis (Root) -->
-    <script src="../js/VersionCore.js"></script>
     <script>
-        /**
-         * Diese Seite fungiert als "Memory-Cache-Buster".
-         * Durch das Auslesen der VersionCore und den anschließenden Redirect 
-         * in einen neuen Pfad (/vXX/...) wird der Browser gezwungen, 
-         * seinen Arbeitsspeicher für die App-Shell zu leeren.
-         */
         (function() {
-            try {
-                // Prüfen, ob die Klasse VersionCore geladen wurde
-                if (typeof VersionCore !== 'undefined' && VersionCore.info) {
-                    const version = VersionCore.info.number;
-                    const subPath = "745596f4-2947-4d89-955f-f4148e07d22a/index.html";
-                    
-                    // Wir konstruieren die URL explizit mit dem Origin, 
-                    // um sicherzustellen, dass der "linke Teil" (Domain/Protokoll) vorhanden ist.
-                    const origin = window.location.origin;
-                    const target = `${origin}/v${version}/${subPath}`;
-                    
-                    console.log(`SYSTEM: Switching to version ${version}...`);
-                    console.log(`DEBUG: Target URL is ${target}`);
-                    
-                    // location.replace wird verwendet, damit die Switch-Seite 
-                    // nicht in der Browser-Historie (Zurück-Button) auftaucht.
-                    window.location.replace(target);
-                } else {
-                    document.body.innerHTML = "<h1>Fehler</h1><p>Versionsinformationen konnten nicht geladen werden. Bitte prüfen Sie, ob js/VersionCore.js existiert.</p>";
+            /**
+             * Wir laden die VersionCore.js relativ zu dieser Datei.
+             * Da diese Datei in einem GUID-Unterordner liegt, müssen wir
+             * eine Ebene höher gehen (../), um den 'js'-Ordner zu finden.
+             */
+            const script = document.createElement('script');
+            script.src = '../js/VersionCore.js?t=' + Date.now();
+            
+            script.onload = function() {
+                try {
+                    if (typeof VersionCore !== 'undefined' && VersionCore.info) {
+                        const version = VersionCore.info.number;
+                        
+                        // Hier liegt das Geheimnis für lokale Server:
+                        // Wir navigieren RELATIV von dieser Datei aus.
+                        // 1. "../" verlässt den GUID-Ordner
+                        // 2. "vXX/..." geht in den neuen Versionsordner
+                        const subPath = "745596f4-2947-4d89-955f-f4148e07d22a/index.html";
+                        const targetUrl = `../v${version}/${subPath}`;
+                        
+                        console.log("Redirecting to:", targetUrl);
+                        window.location.href = targetUrl;
+                    } else {
+                        throw new Error("VersionCore info nicht gefunden");
+                    }
+                } catch (e) {
+                    showError("Versionsfehler: " + e.message);
                 }
-            } catch (e) {
-                console.error("Redirect failed:", e);
-                document.body.innerHTML = "<h1>Systemfehler</h1><p>Die automatische Weiterleitung ist fehlgeschlagen.</p>";
+            };
+            
+            script.onerror = function() {
+                showError("js/VersionCore.js konnte nicht geladen werden.");
+            };
+            
+            document.head.appendChild(script);
+
+            function showError(msg) {
+                const status = document.getElementById('status');
+                if (status) status.innerText = msg;
+                console.error(msg);
             }
         })();
     </script>
     <style>
-        body {
-            background: #000;
-            color: #333;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        .loader {
-            text-align: center;
-        }
-        .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #222;
-            border-radius: 50%;
-            margin: 0 4px;
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
+        body { background: #000; color: #555; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #status { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-    <div class="loader">
-        <div class="dot" style="animation-delay: 0s"></div>
-        <div class="dot" style="animation-delay: 0.2s"></div>
-        <div class="dot" style="animation-delay: 0.4s"></div>
-    </div>
+    <div id="status">Synchronisiere Version...</div>
 </body>
 </html>
