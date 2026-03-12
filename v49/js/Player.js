@@ -182,38 +182,57 @@ class NeuralPlayer {
         if (this.durationEl) {
             this.durationEl.textContent = this.formatTime(this.audio.duration);
         }
+
+        this.updatePlaybackPosition();
     }
 
     /**
      * Updates the OS-level player (Lock screen / Media controls)
      */
-    updateMediaSession(song) {
+    async updateMediaSession(song) {
         if ('mediaSession' in navigator) {
+            // 1. Prüfen, ob das spezifische Artwork existiert
+            const specificArtworkUrl = `../artwork/${song.id}.webp`;
+            const fallbackUrl = '../images/Hero_square.webp';
+            
+            let finalArtworkUrl = fallbackUrl;
+
+            try {
+                const response = await fetch(specificArtworkUrl, { method: 'HEAD' });
+                if (response.ok) {
+                    finalArtworkUrl = specificArtworkUrl;
+                }
+            } catch (e) {
+                console.log("Artwork nicht gefunden, nutze Hero-Fallback");
+            }
+
+            // 2. Metadaten mit dem validierten Bild setzen
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: song.title,
                 artist: 'Julia McCarren',
                 album: 'Neural Fusion Sound',
                 artwork: [
-                    // Priorität 1: Spezifisches Cover aus dem Artwork-Verzeichnis basierend auf der Song-ID
                     { 
-                        src: `../artwork/${song.id}.webp`, 
-                        sizes: '512x512', 
-                        type: 'image/webp',
-                        onerror: (e) => { e.target.src = '../images/Hero_square.webp'; }
-                    },
-                    // Priorität 2: Das Hero-Image als Fallback, falls das erste Bild nicht gefunden wird
-                    { 
-                        src: '../images/Hero_square.webp', 
+                        src: finalArtworkUrl, 
                         sizes: '512x512', 
                         type: 'image/webp' 
                     }
                 ]
             });
 
+            // Handler für Steuerung
             navigator.mediaSession.setActionHandler('play', () => this.play());
             navigator.mediaSession.setActionHandler('pause', () => this.pause());
             navigator.mediaSession.setActionHandler('previoustrack', () => this.previous());
             navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
+            
+            // Wichtig für das Auto: Seek-Support
+            navigator.mediaSession.setActionHandler('seekto', (details) => {
+                if (details.seekTime) {
+                    this.audio.currentTime = details.seekTime;
+                    this.updatePlaybackPosition();
+                }
+            });
         }
     }
 
@@ -223,14 +242,19 @@ class NeuralPlayer {
     updatePlaybackPosition() {
         if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
             if (this.audio.duration && !isNaN(this.audio.duration)) {
-                navigator.mediaSession.setPositionState({
-                    duration: this.audio.duration,
-                    playbackRate: this.audio.playbackRate,
-                    position: this.audio.currentTime
-                });
+                try {
+                    navigator.mediaSession.setPositionState({
+                        duration: Math.floor(this.audio.duration),
+                        playbackRate: this.audio.playbackRate,
+                        position: Math.floor(this.audio.currentTime)
+                    });
+                } catch (e) {
+                    // Falls die duration noch nicht final berechnet wurde
+                    console.warn("MediaSession Position Error:", e);
+                }
             }
         }
-    }    
+    }  
 
     /**
      * UI Feedback for Start/Stop
