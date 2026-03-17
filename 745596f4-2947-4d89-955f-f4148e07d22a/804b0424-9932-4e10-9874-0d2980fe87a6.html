@@ -28,15 +28,15 @@
                         console.log("Redirecting to:", targetUrl);
                         window.location.href = targetUrl;
                     } else {
-                        throw new Error("VersionCore info nicht gefunden");
+                        throw new Error("VersionCore info not found");
                     }
                 } catch (e) {
-                    showError("Versionsfehler: " + e.message);
+                    showError("Version error: " + e.message);
                 }
             };
             
             script.onerror = function() {
-                showError("js/VersionCore.js konnte nicht geladen werden.");
+                showError("js/VersionCore.js could not be loaded.");
             };
             
             document.head.appendChild(script);
@@ -54,6 +54,6 @@
     </style>
 </head>
 <body>
-    <div id="status">Synchronisiere Version...</div>
+    <div id="status">Synchronize version...</div>
 </body>
 </html>
