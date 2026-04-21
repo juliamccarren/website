@@ -5,7 +5,6 @@ let archiveCollection;
 let featureCollection;
 let podcastCollection;
 let player;
-let director;
 let drumPicker;
 let diaryService;
 let cacheName = 'julia-music-v1'; // Einheitlicher Cache-Name für die gesamte App
@@ -17,46 +16,28 @@ let scrollPosition = 0;
 // These bridge the gap between HTML onclick attributes and the class instances
 
 /**
- * Lädt eine neue Zufallsauswahl an Songs für das Archiv,
- * rendert das Grid neu und synchronisiert die Playlist im Director.
+ * Global bridge for the "Reshuffle" button
+ * Erweitert: Setzt jetzt auch die Suche zurück.
  */
 async function loadAndDisplayArchiveSongs() {
-    // 1. Suchfeld im UI finden und leeren, um Konsistenz zu wahren
+    // 1. Suchfeld im UI finden und leeren
     const searchInput = document.querySelector('input[oninput^="handleArchiveSearch"]');
     if (searchInput) {
         searchInput.value = '';
     }
 
-    // 2. Bestehende Highlights (Suchergebnisse) im Grid entfernen
+    // 2. Bestehende Highlights im Grid entfernen (optional, da update() neu rendert)
+    // Aber sicher ist sicher für die Optik:
     if (archiveCollection && archiveCollection.container) {
         const cards = Array.from(archiveCollection.container.children);
         const highlightClasses = ['ring-2', 'ring-fuchsia-500', 'bg-neutral-900/60'];
         cards.forEach(card => card.classList.remove(...highlightClasses));
     }
 
-    try {
-        // 3. Neue Songs basierend auf dem Picker-Limit vom Service holen
-        const limit = drumPicker.value;
-        const randomSongs = await songService.getRandom(limit);
-
-        // 4. Die SongCollection mit den neuen Daten füttern (löst das Rendering aus)
-        archiveCollection.update(randomSongs);
-
-        /**
-         * 5. DIREKTOR-SYNCHRONISATION
-         * Falls das Archiv die aktuell aktive Collection im Director ist,
-         * müssen wir die interne Playlist des Directors aktualisieren,
-         * damit die "Next"-Logik die neuen Songs kennt.
-         */
-        if (director && director.activeCollection === archiveCollection) {
-            director.playlist = randomSongs;
-            console.log("SYSTEM: Director playlist synchronized with new Archive selection.");
-        }
-
-        console.log(`SYSTEM: ${randomSongs.length} new neural patterns loaded into archive.`);
-    } catch (error) {
-        console.error("SYSTEM: Failed to reshuffle archive:", error);
-    }
+    // 3. Neue Songs laden und anzeigen (bestehende Logik)
+    const limit = drumPicker.value;
+    const randomSongs = await songService.getRandom(limit);
+    archiveCollection.update(randomSongs);
 }
 
 /**
@@ -462,30 +443,18 @@ function skipToStart() { player.audio.currentTime = 0; }
 function skipToEnd() { if(player.audio.duration) player.audio.currentTime = player.audio.duration - 0.5; }
 
 function handleRepeatToggle() {
-    if (director.activeCollection) {
-        director.activeCollection.config.repeat = !director.activeCollection.config.repeat;
-        if (director.activeCollection.config.repeat){
-            director.activeCollection.config.autoplay = false
-        }
-        player.syncUI(); // Aktualisiert die Button-Farben
-    }
+    player.isRepeating = !player.isRepeating;
+    player.syncUI();
 }
 
 function handleModerationToggle() {
-    if (director.activeCollection) {
-        director.activeCollection.config.moderation = !director.activeCollection.config.moderation;
-        player.syncUI();
-    }
+    player.isModerationActive = !player.isModerationActive;
+    player.syncUI();
 }
 
 function handleAutoplayToggle() {
-    if (director.activeCollection) {
-        director.activeCollection.config.autoplay = !director.activeCollection.config.autoplay;
-        if (director.activeCollection.config.autoplay){
-            director.activeCollection.config.repeat = false
-        }
-        player.syncUI();
-    }
+    player.isAutoplay = !player.isAutoplay;
+    player.syncUI();
 }
 
 // Global helper for Caching (used by SongCollection and NeuralPlayer)
@@ -556,32 +525,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // ERST HIER, wenn alle Skripte geladen sind, erstellen wir die Objekte
     songService = new SongService();
-    director = new NeuralDirector(songService);
-    player = new NeuralPlayer(director);
+    archiveCollection = new SongCollection('song-grid');
+    featureCollection = new SongCollection('feature-song-grid');
+    podcastCollection = new SongCollection('podcast-grid');
+    player = new NeuralPlayer();
     drumPicker = new PickerDrum('picker-drum', 'archive-count-input');
     diaryService = new DiaryService('diary-grid', 'diary-modal');
-
-    // Collections initialisieren mit ihren spezifischen Regeln
-    archiveCollection = new SongCollection('song-grid', { 
-        repeat: false,
-        moderation: false, 
-        autoplay: true, 
-        allowServices: false 
-    });
-    
-    featureCollection = new SongCollection('feature-song-grid', { 
-        repeat: true,
-        moderation: false, 
-        autoplay: false, 
-        allowServices: false 
-    });
-    
-    podcastCollection = new SongCollection('podcast-grid', { 
-        repeat: false,
-        moderation: false, 
-        autoplay: true, 
-        allowServices: false 
-    });    
 
     // Update player UI
     player.syncUI();
@@ -609,7 +558,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     // 2. SYSTEM INITIALIZATION
     try {
             const allSongs = await songService.getAll();
-            drumPicker.init(allSongs.length, allSongs.length);
+            drumPicker.init(allSongs.length, 6);
 
             // Sauberer Aufruf der modularen Funktionen
             await loadAndDisplayPodcasts(); 
@@ -795,7 +744,7 @@ function showUpdateBanner(registration) {
     const banner = document.createElement('div');
     banner.id = 'update-banner';
     banner.innerHTML = `
-        <span>Activate cache for new version</span>
+        <span>Update</span>
         <i data-lucide="refresh-cw" style="width:14px; height:14px;"></i>
     `;
     document.body.appendChild(banner);
