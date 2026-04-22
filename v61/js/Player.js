@@ -158,7 +158,7 @@ class NeuralPlayer {
     }
 
     toggle() {
-        if (this.audio.paused) this.play();
+        if (this.audio.paused) this.playCurrent();
         else this.pause();
     }
 

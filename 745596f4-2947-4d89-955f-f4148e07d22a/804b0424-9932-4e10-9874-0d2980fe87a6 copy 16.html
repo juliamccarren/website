@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        (function() {
+            /**
+             * Wir laden die VersionCore.js relativ zu dieser Datei.
+             * Da diese Datei in einem GUID-Unterordner liegt, müssen wir
+             * eine Ebene höher gehen (../), um den 'js'-Ordner zu finden.
+             */
+            const script = document.createElement('script');
+            script.src = '../js/VersionCore.js?t=' + Date.now();
+            
+            script.onload = function() {
+                try {
+                    if (typeof VersionCore !== 'undefined' && VersionCore.info) {
+                        const version = VersionCore.info.number;
+                        
+                        // Hier liegt das Geheimnis für lokale Server:
+                        // Wir navigieren RELATIV von dieser Datei aus.
+                        // 1. "../" verlässt den GUID-Ordner
+                        // 2. "vXX/..." geht in den neuen Versionsordner
+                        const subPath = "745596f4-2947-4d89-955f-f4148e07d22a/index.html";
+                        const targetUrl = `../v${version}/${subPath}`;
+                        
+                        console.log("Redirecting to:", targetUrl);
+                        window.location.href = targetUrl;
+                    } else {
+                        throw new Error("VersionCore info not found");
+                    }
+                } catch (e) {
+                    showError("Version error: " + e.message);
+                }
+            };
+            
+            script.onerror = function() {
+                showError("js/VersionCore.js could not be loaded.");
+            };
+            
+            document.head.appendChild(script);
+
+            function showError(msg) {
+                const status = document.getElementById('status');
+                if (status) status.innerText = msg;
+                console.error(msg);
+            }
+        })();
+    </script>
+    <style>
+        body { background: #000; color: #555; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #status { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div id="status">Synchronize version...</div>
+</body>
+</html>

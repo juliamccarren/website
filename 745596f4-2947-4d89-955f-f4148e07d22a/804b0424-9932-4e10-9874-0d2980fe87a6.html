@@ -1,59 +1,119 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Redirecting...</title>
+    <title>Neural Redirect</title>
     <script>
-        (function() {
-            /**
-             * Wir laden die VersionCore.js relativ zu dieser Datei.
-             * Da diese Datei in einem GUID-Unterordner liegt, müssen wir
-             * eine Ebene höher gehen (../), um den 'js'-Ordner zu finden.
-             */
-            const script = document.createElement('script');
-            script.src = '../js/VersionCore.js?t=' + Date.now();
+        (async function() {
+            // Configuration for the dual-cache strategy
+            const CORE_CACHE_NAME = 'julia-static-core';
+            const versionPath = '../js/VersionCore.js';
+            const targetSubPath = "745596f4-2947-4d89-955f-f4148e07d22a/index.html";
             
-            script.onload = function() {
+            function updateStatus(msg, isError = false) {
+                const status = document.getElementById('status');
+                if (status) {
+                    status.innerText = msg;
+                    if (isError) status.style.color = '#ef4444'; // Red for errors
+                }
+                if (isError) console.error(msg);
+                else console.log(msg);
+            }
+
+            async function getVersionAndRedirect() {
+                let scriptText = null;
+
                 try {
-                    if (typeof VersionCore !== 'undefined' && VersionCore.info) {
-                        const version = VersionCore.info.number;
+                    // STEP 1: Online Check (Cache-Bust to get the latest version from server)
+                    const response = await fetch(versionPath + '?t=' + Date.now(), {
+                        cache: 'no-store'
+                    });
+                    if (response.ok) {
+                        scriptText = await response.text();
+                        updateStatus("SYSTEM: Remote version detected.");
                         
-                        // Hier liegt das Geheimnis für lokale Server:
-                        // Wir navigieren RELATIV von dieser Datei aus.
-                        // 1. "../" verlässt den GUID-Ordner
-                        // 2. "vXX/..." geht in den neuen Versionsordner
-                        const subPath = "745596f4-2947-4d89-955f-f4148e07d22a/index.html";
-                        const targetUrl = `../v${version}/${subPath}`;
-                        
-                        console.log("Redirecting to:", targetUrl);
-                        window.location.href = targetUrl;
-                    } else {
-                        throw new Error("VersionCore info not found");
+                        // Mirror the fresh version into the persistent Core Cache
+                        const cache = await caches.open(CORE_CACHE_NAME);
+                        cache.put(versionPath, new Response(scriptText));
                     }
                 } catch (e) {
-                    showError("Version error: " + e.message);
+                    updateStatus("SYSTEM: Network offline, checking local core cache...");
                 }
-            };
-            
-            script.onerror = function() {
-                showError("js/VersionCore.js could not be loaded.");
-            };
-            
-            document.head.appendChild(script);
 
-            function showError(msg) {
-                const status = document.getElementById('status');
-                if (status) status.innerText = msg;
-                console.error(msg);
+                // STEP 2: Offline Fallback (Static Core Cache)
+                if (!scriptText) {
+                    try {
+                        const cache = await caches.open(CORE_CACHE_NAME);
+                        const cachedResponse = await cache.match(versionPath);
+                        if (cachedResponse) {
+                            scriptText = await cachedResponse.text();
+                            updateStatus("SYSTEM: Version loaded from persistent cache.");
+                        }
+                    } catch (e) {
+                        updateStatus("SYSTEM: Cache access failed.", true);
+                    }
+                }
+
+                // STEP 3: Evaluation and Redirect
+                if (scriptText) {
+                    // Extract version number via regex from the file content
+                    const match = scriptText.match(/"number":\s*"(\d+)"/);
+                    if (match && match[1]) {
+                        const version = match[1];
+                        const targetUrl = `../v${version}/${targetSubPath}`;
+                        updateStatus(`SYSTEM: Synchronizing with Node v${version}...`);
+                        
+                        // Brief delay for visual feedback before redirect
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 500);
+                    } else {
+                        updateStatus("SYSTEM ERROR: Invalid VersionCore format.", true);
+                    }
+                } else {
+                    updateStatus("SYSTEM ERROR: Offline. No cached version data found.", true);
+                }
+            }
+
+            // Logic execution
+            if ('caches' in window) {
+                getVersionAndRedirect();
+            } else {
+                // Legacy fallback for browsers without Cache API support
+                const script = document.createElement('script');
+                script.src = versionPath + '?t=' + Date.now();
+                script.onload = () => {
+                    if (typeof VersionCore !== 'undefined') {
+                        window.location.href = `../v${VersionCore.info.number}/${targetSubPath}`;
+                    }
+                };
+                script.onerror = () => updateStatus("CRITICAL: Offline and no cache support.", true);
+                document.head.appendChild(script);
             }
         })();
     </script>
     <style>
-        body { background: #000; color: #555; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        #status { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+        body { 
+            background: #000; 
+            color: #525252; 
+            font-family: 'Inter', system-ui, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden;
+        }
+        #status { 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.3em; 
+            font-weight: 900;
+            transition: color 0.3s ease;
+        }
     </style>
 </head>
 <body>
-    <div id="status">Synchronize version...</div>
+    <div id="status">Establishing Neural Link...</div>
 </body>
 </html>

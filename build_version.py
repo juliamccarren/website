@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "61" 
+VERSION = "62" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -31,6 +31,11 @@ ROOT_FILES = [
     "js/VersionCore.js"
 ]
 
+# Dateien für den statischen Cache
+STATIC_CORE_FILES = [
+    "js/VersionCore.js"
+]
+
 # Pfade, die in den Versionsordner kopiert werden
 NESTED_FILES = [
     "745596f4-2947-4d89-955f-f4148e07d22a/songs.json",
@@ -41,6 +46,7 @@ NESTED_FILES = [
 
 OUTPUT_SW = "sw.js"
 CACHE_NAME = f"julia-site-v{VERSION}"
+STATIC_CORE_CACHE_NAME = f"julia-static-core"
 
 def prepare_target_directory():
     """Löscht das Zielverzeichnis und alte Versions-Flags für einen sauberen Build."""
@@ -127,14 +133,16 @@ def generate_service_worker(sw_assets):
     formatted_assets = json.dumps(sw_assets, indent=4)
     
     sw_content = f"""const STATIC_CACHE = '{CACHE_NAME}';
+const STATIC_CORE_CACHE = '{STATIC_CORE_CACHE_NAME}';    
 const ASSETS = {formatted_assets};
+const STATIC_CORE_ASSETS = {json.dumps(STATIC_CORE_FILES, indent=4)};
 
 self.addEventListener('install', event => {{
     event.waitUntil(
-        caches.open(STATIC_CACHE).then(cache => {{
-            console.log('SYSTEM: Syncing Build v{VERSION}...');
-            return cache.addAll(ASSETS);
-        }})
+        Promise.all([
+                    caches.open(STATIC_CACHE).then(cache => cache.addAll(ASSETS)),
+                    caches.open(STATIC_CORE_CACHE).then(cache => cache.addAll(STATIC_CORE_ASSETS))
+                ])
     );
 }});
 
@@ -150,10 +158,11 @@ self.addEventListener('activate', event => {{
 }});
 
 self.addEventListener('fetch', event => {{
-    if (event.request.url.includes('music.juliamccarren.com')) return;
     event.respondWith(
         caches.match(event.request).then(response => {{
-            return response || fetch(event.request);
+            if (response) return response;
+            
+            return fetch(event.request);
         }})
     );
 }});
