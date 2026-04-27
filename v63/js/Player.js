@@ -84,10 +84,18 @@ class NeuralPlayer {
      * Starts playback and updates visual states
      */
     play() {
-        this.audio.play().then(() => {
-            this.isPlaying = true;
-            this.updatePlayStateUI(true);
-        }).catch(err => console.error("Playback failed:", err));
+        try {
+                await this.audio.play();
+                this.isPlaying = true;
+                this.updatePlayStateUI(true);
+                
+                // NEU: Screen Wake Lock anfordern
+                if ('wakeLock' in navigator) {
+                    this.wakeLock = await navigator.wakeLock.request('screen');
+                }
+            } catch (err) {
+                console.error("Playback failed:", err);
+            }
     }
 
     /**
@@ -109,44 +117,64 @@ class NeuralPlayer {
     
     /**
      * Führt ein vom Director geliefertes Snippet aus.
-     * Jetzt mit automatischem Skip, falls das Intro fehlt.
+     * Optimiert für unterbrechungsfreie Wiedergabe und Funkloch-Resilienz.
      */
     async execute(snippet) {
-        // 1. UI Update (Modal öffnen, MediaSession)
+        // 1. UI & Metadaten Update
         if (snippet.updateUI && snippet.uiData) {
             showSongModal(snippet.uiData); 
             this.updateMediaSession(snippet.uiData);
         }
 
-        // 2. CORS & Source Vorbereitung
+        // 2. Sicherheits-Watchdog: Falls das Laden/Abspielen länger als 8 Sek. dauert,
+        // erzwingen wir einen Skip zum nächsten Track, um den Radio-Loop nicht zu unterbrechen.
+        if (this.watchdog) clearTimeout(this.watchdog);
+        this.watchdog = setTimeout(() => {
+            if (this.isPlaying && this.audio.paused) {
+                console.warn("SYSTEM: Watchdog triggered - Audio stuck in loading state. Skipping...");
+                this.next();
+            }
+        }, 8000);
+
+        // 3. Vorbereitung der Audio-Quelle
         this.audio.crossOrigin = "anonymous";
+        
+        // WICHTIG: Falls du den Service Worker wie besprochen aktualisiert hast,
+        // wird diese URL nun direkt vom Cache abgefangen, wenn die Datei lokal liegt.
         this.audio.src = snippet.audioUrl;
 
         try {
-            // 3. Versuch das Audio abzuspielen
+            // 4. Wiedergabe starten
             await this.audio.play();
+            
+            // Erfolg: Watchdog löschen
+            clearTimeout(this.watchdog);
+            
             this.isPlaying = true;
             this.updatePlayStateUI(true);
+            console.log(`SYSTEM: Playing ${snippet.audioUrl.split('/').pop()}`);
             
         } catch (err) {
-            // 4. FALLBACK-LOGIK
-            // Wenn es ein Intro war (erkennt man am Pfad oder Director-Status)
+            clearTimeout(this.watchdog);
+            
+            // 5. FEHLER-MANAGEMENT / FALLBACK
+            // Falls ein Intro fehlt oder nicht geladen werden kann:
             if (snippet.audioUrl.includes('_intro.mp3')) {
                 console.warn("SYSTEM: Intro missing or blocked. Skipping to main song...", snippet.audioUrl);
                 
-                // Wir sagen dem Director, dass die Intro-Phase beendet ist, 
-                // auch wenn sie gar nicht richtig angefangen hat.
+                // Wir markieren die Intro-Phase als beendet und fordern sofort den Song an
                 this.director.isIntroPhase = true; 
-                
-                // Sofort das nächste Snippet (den Hauptsong) anfordern
-                this.playNext();
+                this.playNext(); 
             } else {
-                // Wenn der Hauptsong selbst fehlt, ist es ein kritischer Fehler
+                // Wenn der Hauptsong selbst im Funkloch nicht geladen werden kann (und nicht im Cache ist)
                 console.error("SYSTEM: Main audio link severed:", err);
                 this.handleError(err);
+                
+                // Nach 2 Sekunden versuchen wir, den nächsten Song im Radio-Modus zu spielen
+                setTimeout(() => this.next(), 2000);
             }
         }
-    } 
+    }
 
     /**
      * Pauses playback and resets visual states
@@ -193,7 +221,13 @@ class NeuralPlayer {
         console.log("SYSTEM: Track ended. Querying Director...");
 
         if (this.director.hasNext()) {
-            this.playNext(); // Ruft die neue playNext() auf (siehe unten)
+            // Kleiner Delay (200ms), um dem Browser Zeit zum "Atmen" zu geben
+            setTimeout(() => {
+                this.playNext().catch(err => {
+                    console.warn("SYSTEM: Autoplay failed, skipping to next...", err);
+                    this.next(); // Harter Skip zum nächsten Lied
+                });
+            }, 200);
         } else {
             this.pause();
             console.log("SYSTEM: Program finished.");

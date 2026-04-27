@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "63" 
+VERSION = "64" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -162,6 +162,62 @@ self.addEventListener('fetch', event => {{
         caches.match(event.request).then(response => {{
             if (response) return response;
             
+            return fetch(event.request);
+        }})
+    );
+}});
+
+// Central fetch handler with special cases for VersionCore.js and MP3 files
+self.addEventListener('fetch', event => {{
+    const url = new URL(event.request.url);
+    const fileName = url.pathname.split('/').pop(); // Variable für Logging
+
+    // 1. Special treatment: VersionCore.js (Network-First)
+    if (url.pathname.endsWith('VersionCore.js')) {{
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {{
+                    console.log(`%c[SW] NETWORK-FIRST: Loading ${{fileName}} from Cloud`, 'color: #10b981');
+                    const responseClone = response.clone();
+                    caches.open(STATIC_CORE_CACHE).then(cache => {{
+                        cache.put(event.request, responseClone);
+                    }});
+                    return response;
+                }})
+                .catch(() => {{
+                    console.warn(`%c[SW] OFFLINE-FALLBACK: Serving ${{fileName}} from Cache`, 'color: #f59e0b');
+                    return caches.match(event.request);
+                }})
+        );
+        return;
+    }}
+
+    // 2. Special treatment: MP3-Audio (Cache-First + Bypass dead zone)
+    if (url.pathname.endsWith('.mp3')) {{
+        event.respondWith(
+            caches.match(event.request, {{ ignoreSearch: true }})
+                .then(response => {{
+                    if (response) {{
+                        console.log(`%c[SW] CACHE-HIT (Audio): Serving ${{fileName}} from local storage`, 'color: #d946ef');
+                        return response;
+                    }}
+                    console.log(`%c[SW] CACHE-MISS (Audio): Fetching ${{fileName}} from Network`, 'color: #3b82f6');
+                    return fetch(event.request);
+                }})
+        );
+        return;
+    }}
+
+    // 3. Standard treatment: All other assets (Cache-First)
+    event.respondWith(
+        caches.match(event.request).then(response => {{
+            if (response) {{
+                // Only important for HTML/JSON files to log cache hits, others can be silent
+                if(url.pathname.endsWith('.html') || url.pathname.endsWith('.json')) {{
+                    console.log(`%c[SW] CACHE-HIT: ${{fileName}}`, 'color: #94a3b8');
+                }}
+                return response;
+            }}
             return fetch(event.request);
         }})
     );
