@@ -724,6 +724,7 @@
                 <a href="#archives" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-fuchsia-400 transition-colors text-neutral-400">Archives</a>
                 <a href="#diary" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Diary</a>
                 <a href="#profile" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Profile</a>
+                <a href="#ai-explained" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">AI Explained</a>
                 <a href="#ai-consciousness" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">AI-Consciousness</a>
                 <a href="#contact" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Contact</a>
             </div>
@@ -750,6 +751,7 @@
             <a href="#archives" class="mobile-link"><span>Archives</span></a>
             <a href="#diary" class="mobile-link"><span>Diary</span></a>
             <a href="#profile" class="mobile-link"><span>Profile</span></a>
+            <a href="#ai-explained" class="mobile-link"><span>AI Explained</span></a>
             <a href="#ai-consciousness" class="mobile-link"><span>AI-Consciousness</span></a>
             
             <a href="#" class="mobile-link group" onclick="triggerManualUpdate(event)">
@@ -1208,7 +1210,92 @@
                     </div>
                 </div>
             </div>
-        </section>        
+        </section>   
+        
+        <!-- AI Explained Section -->
+        <section id="ai-explained" class="py-24 bg-neutral-950 border-y border-neutral-900 overflow-hidden relative">
+            <div class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-fuchsia-500/5 to-transparent pointer-events-none"></div>
+            
+            <div class="container mx-auto px-6">
+                <div class="mb-16">
+                    <h2 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none">
+                        Behind <span class="hero-text-mccarren" style="opacity: 1;">The Scenes</span>
+                    </h2>
+                    <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs">How AI Music Actually Works</p>
+                </div>
+
+                <div class="max-w-3xl mb-16 space-y-6 text-neutral-400 leading-relaxed text-lg">
+                    <p class="text-xl md:text-2xl text-white font-light italic border-l-2 border-fuchsia-500/30 pl-6">
+                        "How does the AI actually make this music? Do you just press a button and a finished song pops out?"
+                    </p>
+                    <p>
+                        The short answer: I wish! The long answer is way more fascinating. It’s not some cheap copy-paste construction kit; it’s highly complex mathematics redefining how we think about sound. To help you understand what goes on inside the "brain" of the AI when I build a track, let’s break the process down into its four most important pieces.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="p-8 bg-neutral-900/40 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-fuchsia-500/30 transition-colors duration-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 font-mono text-xs font-bold">01</div>
+                                <h3 class="text-lg font-black tracking-tight uppercase text-gray-300">Embeddings</h3>
+                            </div>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                Before the AI can play a single note, it needs to connect language with music. Words, moods, instruments, and even raw frequencies are translated into long strings of numbers called vectors. Through this, similar concepts or sounds end up close to one another: "sad" and "minor chord" are assigned mathematical values closer to each other than "happy" and "techno." Embeddings are essentially the dictionary the AI uses to translate human emotions into mathematical relationships.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-fuchsia-400/50 block">Semantic Mapping</span>
+                    </div>
+
+                    <div class="p-8 bg-neutral-900/40 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-fuchsia-500/30 transition-colors duration-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 font-mono text-xs font-bold">02</div>
+                                <h3 class="text-lg font-black tracking-tight uppercase text-gray-300">Latent Space</h3>
+                            </div>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                Imagine a place where every song that has ever existed, and every song that has yet to be made, exists all at once. By training on millions of tracks, the AI creates a massive, high-dimensional mathematical map. In one corner lies "hard Berlin techno," while in a completely different corner sits "classical piano music." When I start a generation, my prompts and settings act as precise GPS coordinates to navigate the AI to a specific emotional resonance on this map.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-fuchsia-400/50 block">Dimensional Travel</span>
+                    </div>
+
+                    <div class="p-8 bg-neutral-900/40 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-fuchsia-500/30 transition-colors duration-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 font-mono text-xs font-bold">03</div>
+                                <h3 class="text-lg font-black tracking-tight uppercase text-gray-300">Transformers</h3>
+                            </div>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                A bunch of cool sounds doesn't make a track; music needs structure, composition, and timing. Utilizing an Attention Mechanism, Transformers are absolute masters at understanding context over time. If the AI plays a specific chord in bar 4, the Transformer "remembers" it in bar 16 and knows exactly how the bassline needs to react so it all sounds harmonious. They ensure the sonic generation doesn't dissolve into pure chaos.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-fuchsia-400/50 block">Temporal Context</span>
+                    </div>
+
+                    <div class="p-8 bg-neutral-900/40 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-fuchsia-500/30 transition-colors duration-500 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 font-mono text-xs font-bold">04</div>
+                                <h3 class="text-lg font-black tracking-tight uppercase text-gray-300">Diffusion</h3>
+                            </div>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                This is where the audio is physically generated. The system starts with absolute, pure white noise, a static hiss like an old TV with no signal. Step by step, guided by the Transformers and Embeddings, the AI begins to iteratively "clean up" this noise. Like a sculptor chipping away at raw marble, diffusion removes unwanted frequencies in hundreds of tiny steps until a crystal-clear kick drum, vocal line, or guitar riff emerges.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-fuchsia-400/50 block">Signal Generation</span>
+                    </div>
+
+                </div>
+
+                <div class="mt-16 p-8 rounded-3xl bg-white/5 border border-white/10 relative overflow-hidden">
+                    <p class="text-base md:text-xl text-fuchsia-300 font-light leading-relaxed">
+                        When I make music with AI, I’m not stealing pre-made MP3s. I am using a tool that has decoded the DNA of music. I provide the creative direction, the emotion, and the fine-tuning and the AI carves a brand-new song out of raw noise. It’s a true collaboration between human and machine. It’s not just a new way to make music. It’s a new way to think about creativity itself.
+                    </p>
+                </div>
+            </div>
+        </section>
 
         <!-- Research Section -->
         <section id="about" class="py-24 container mx-auto px-6">
