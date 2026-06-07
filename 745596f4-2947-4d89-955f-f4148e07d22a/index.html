@@ -270,9 +270,17 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: inline-block;
+            display: block;
             opacity: 0.7;
         }
+
+        .hero-text-mccarren-frame {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            opacity: 0.7;
+        }        
 
         /* --- MOBILE TOUCH PROTOCOL --- */
         .touch-target {
@@ -787,20 +795,20 @@
             <div class="w-full flex flex-col justify-between h-auto px-8 md:px-24 max-w-[1400px] mx-auto mt-24 md:mt-60">
                 
                 <!-- Erste Zeile: "Julia" schiebt sich konsequent nach links -->
-                <div class="w-full text-left">
-                    <h1 class="text-4xl md:text-[6vw] font-light tracking-[0.25em] uppercase leading-none text-white/80">
-                        Julia
-                    </h1>
-                </div>
+<div class="w-full text-left">
+    <h1 class="text-[clamp(2.5rem,10vw,7rem)] font-light tracking-[0.25em] uppercase leading-none text-white/80">
+        Julia
+    </h1>
+</div>
                             
                 <!-- Dritte Zeile: "McCarren" schiebt sich konsequent nach rechts -->
                 <!-- Durch den identischen Padding-Wert des Hauptcontainers (px-8 / md:px-24) ist der Abstand zum Rand links und rechts exakt gleich groß -->
-                <div class="w-full text-right">
-                    <h1 class="text-6xl md:text-[8vw] font-bold tracking-[0.07em] uppercase leading-none hero-text-mccarren" 
-                            style="opacity: 0.80; -webkit-text-stroke: 0.01em rgba(128, 128, 128, 0.6);">
-                            McCarren
-                    </h1>
-                </div>
+<div class="w-full text-right">
+    <h1 class="text-[clamp(3.2rem,13vw,11rem)] font-bold tracking-[0.05em] uppercase leading-none hero-text-mccarren-frame" 
+            style="opacity: 0.80; -webkit-text-stroke: 0.01em rgba(220, 220, 220, 1.0);">
+            McCarren
+    </h1>
+</div>
 
                 <!-- Mittlere Zeile: Der Untertitel bleibt elegant in der Mitte ruhen -->
                 <p class="my-10 md:my-14 text-xl md:text-3xl font-extralight tracking-[0.5em] uppercase text-white/70 text-center w-full">

@@ -270,9 +270,17 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: inline-block;
+            display: block;
             opacity: 0.7;
         }
+
+        .hero-text-mccarren-frame {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            opacity: 0.7;
+        }        
 
         /* --- MOBILE TOUCH PROTOCOL --- */
         .touch-target {
@@ -784,14 +792,30 @@
              class="w-full h-full object-cover object-top landscape:object-[center_25%] contrast-[1.1] brightness-[0.7]">
         
         <div id="hero-content" class="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center will-change-transform">
-            <div class="flex flex-col items-center">
-                <h1 class="text-7xl md:text-[12vw] font-black tracking-tighter leading-[0.8] hero-text-julia mb-2">Julia</h1>
-                <h1 class="text-7xl md:text-[12vw] font-black tracking-tighter leading-[0.8] hero-text-mccarren">McCarren</h1>
-            </div>
-            
-            <p class="mt-12 text-2xl md:text-3xl font-extralight tracking-[0.5em] uppercase text-white-100/70">
-                Neural Fusion Sound
-            </p>
+            <div class="w-full flex flex-col justify-between h-auto px-8 md:px-24 max-w-[1400px] mx-auto mt-24 md:mt-60">
+                
+                <!-- Erste Zeile: "Julia" schiebt sich konsequent nach links -->
+<div class="w-full text-left">
+    <h1 class="text-[clamp(2.5rem,10vw,7rem)] font-light tracking-[0.25em] uppercase leading-none text-white/80">
+        Julia
+    </h1>
+</div>
+                            
+                <!-- Dritte Zeile: "McCarren" schiebt sich konsequent nach rechts -->
+                <!-- Durch den identischen Padding-Wert des Hauptcontainers (px-8 / md:px-24) ist der Abstand zum Rand links und rechts exakt gleich groß -->
+<div class="w-full text-right">
+    <h1 class="text-[clamp(3.2rem,13vw,11rem)] font-bold tracking-[0.05em] uppercase leading-none hero-text-mccarren-frame" 
+            style="opacity: 0.80; -webkit-text-stroke: 0.01em rgba(220, 220, 220, 1.0);">
+            McCarren
+    </h1>
+</div>
+
+                <!-- Mittlere Zeile: Der Untertitel bleibt elegant in der Mitte ruhen -->
+                <p class="my-10 md:my-14 text-xl md:text-3xl font-extralight tracking-[0.5em] uppercase text-white/70 text-center w-full">
+                    Neural Fusion Sound
+                </p>    
+                
+            </div>      
             
             <div class="mt-16 text-sm md:text-lg flex flex-col md:flex-row gap-6">
                 <a href="#archives" class="fusion-fading-button text-neutral-100 px-20 md:px-60 py-5 font-light uppercase tracking-[0.6em] leading-loose flex items-center justify-center gap-3 group transition-all duration-1000">
@@ -1028,9 +1052,9 @@
                 </div>
 
                 <!-- Interactive Controls for Song Limit and Reshuffle -->
-                <div class="w-full md:w-fit mb-12 sticky top-4 z-40 transition-all duration-300">
-                    <div class="flex flex-col md:flex-row items-center gap-4 bg-black/70 backdrop-blur-xl p-4 md:p-2 rounded-3xl md:rounded-full border border-white/10 shadow-2xl">
-                        <div class="flex items-center bg-black/60 rounded-full px-4 border border-white/10 gap-2">
+                <div class="w-full sticky top-28 md:top-32 z-40 mb-12">
+                    <div class="w-full md:w-max flex flex-col md:flex-row items-center gap-4 bg-black/80 backdrop-blur-2xl p-4 md:p-2 rounded-3xl md:rounded-full border border-white/10 shadow-2xl transition-all duration-300">
+                        <div class="flex items-center bg-black/60 rounded-full px-4 border border-white/10 gap-2 w-full md:w-auto justify-between md:justify-start">
                             <button onclick="changeLimit(-10)" class="touch-target text-fuchsia-500/30 hover:text-fuchsia-400 transition-colors p-2 text-[10px] font-black">
                                 -10
                             </button>
@@ -1062,8 +1086,7 @@
                             </button>
                         </div>                        
 
-                        <!-- Sorting Buttons Container -->
-                        <div class="flex items-center gap-2 bg-black/60 rounded-full px-3 border border-white/10">
+                        <div class="flex items-center gap-2 bg-black/60 rounded-full px-3 border border-white/10 w-full md:w-auto justify-center py-1 md:py-0">
                             <button onclick="sortArchiveSongs('asc')" class="touch-target text-neutral-400 hover:text-fuchsia-400 transition-colors p-2" title="Sort A-Z">
                                 <i data-lucide="arrow-down-az" size="18"></i>
                             </button>                            
@@ -1072,8 +1095,7 @@
                             </button>
                         </div>  
                         
-                        <!-- NEU: Search Field -->
-                        <div class="flex items-center bg-black/60 rounded-full px-4 border border-white/10 gap-2 flex-1 min-w-[200px] self-stretch">
+                        <div class="flex items-center bg-black/60 rounded-full px-4 border border-white/10 gap-2 flex-1 min-w-[200px] self-stretch w-full md:w-auto">
                             <i data-lucide="search" size="14" class="text-neutral-400"></i>
                             <input type="text" 
                                 placeholder="Search..." 
@@ -1085,7 +1107,7 @@
                     </div>                
                 </div>
 
-                <!-- Interactive Controls for caching -->
+                 <!-- Interactive Controls for caching -->
                 <div class="w-full md:w-fit mb-12">
                     <div class="flex flex-col md:flex-row items-center gap-4 bg-neutral-900/30 p-3 md:p-1.5 rounded-3xl md:rounded-full border border-white/5 backdrop-blur-xl">
                         

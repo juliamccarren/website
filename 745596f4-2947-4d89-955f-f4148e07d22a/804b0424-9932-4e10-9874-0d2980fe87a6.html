@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neural Redirect</title>
     <script>
         (async function() {
@@ -103,12 +104,25 @@
             height: 100vh; 
             margin: 0; 
             overflow: hidden;
+            padding: 0 2rem; 
+            box-sizing: border-box;
         }
+
         #status { 
-            font-size: 10px; 
+            /* 1. Nutze reines vw (z. B. 4vw für Desktop). Wenn du es auf 8vw stellst, MUSS es jetzt riesig werden */
+            font-size: 2vw; 
             text-transform: uppercase; 
-            letter-spacing: 0.3em; 
+            letter-spacing: 0.25em; 
             font-weight: 900;
+            text-align: center; 
+            
+            /* 2. ZWINGEND: Eine feste oder sehr kleine Line-Height, damit die Zeilen nicht auseinanderfliegen */
+            line-height: 1.2; 
+            
+            /* 3. WICHTIG: Das bricht die Blockade auf dem Desktop auf */
+            max-width: none; 
+            width: 100vw; 
+            
             transition: color 0.3s ease;
         }
     </style>
