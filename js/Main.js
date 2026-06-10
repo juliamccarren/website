@@ -496,25 +496,6 @@ function updateOnlineStatus() {
     }
 }
 
-function updateFooterVersion() {
-    try {
-        // Direkter Zugriff auf die statische Klasse
-        const info = VersionCore.info;
-
-        const versionMenuEl = document.getElementById('version-number-menu');
-        const versionFooterEl = document.getElementById('version-number-footer');
-        const hashEl = document.getElementById('build-hash');
-
-        if (versionMenuEl) versionMenuEl.textContent = info.number;
-        if (versionFooterEl) versionFooterEl.textContent = info.number;
-        if (hashEl) hashEl.textContent = info.hash;
-
-        console.log(`> SYSTEM: ${VersionCore.display} geladen.`);
-    } catch (e) {
-        console.warn("> SYSTEM: VersionCore noch nicht initialisiert.");
-    }
-}
-
 // Update your initialization
 window.addEventListener('DOMContentLoaded', async () => {
 
@@ -618,15 +599,51 @@ window.addEventListener('DOMContentLoaded', async () => {
 // }
 
 // --- UI UTILS ---
-const navbar = document.getElementById('navbar');
-const navTitle = document.getElementById('nav-title');
-const heroContent = document.getElementById('hero-content');
-const heroImage = document.getElementById('hero-image');
+
+
+// window.addEventListener('scroll', () => {
+//     const scrollY = window.scrollY;
+//     const triggerPoint = 450;
+//     const badge = document.getElementById('neural-status-badge'); // Neu hinzugefügt
+
+//     if (scrollY < window.innerHeight) {
+//         heroContent.style.transform = `translateY(${scrollY * -0.55}px)`;
+//         heroImage.style.transform = `scale(${1 + (scrollY * 0.00015)})`;
+//     }
+
+//     if (scrollY > triggerPoint) {
+//         navbar.classList.add('glass-nav', 'py-4'); 
+//         navbar.classList.remove('py-10');
+//         navTitle.classList.add('nav-visible'); 
+//         navTitle.classList.remove('nav-hidden');
+        
+//         // Badge sichtbar machen
+//         if (badge) {
+//             badge.classList.add('nav-visible');
+//             badge.classList.remove('nav-hidden');
+//         }
+//     } else {
+//         navbar.classList.remove('glass-nav', 'py-4'); 
+//         navbar.classList.add('py-10');
+//         navTitle.classList.remove('nav-visible'); 
+//         navTitle.classList.add('nav-hidden');
+
+//         // Badge verstecken
+//         if (badge) {
+//             badge.classList.remove('nav-visible');
+//             badge.classList.add('nav-hidden');
+//         }
+//     }
+// });
 
 window.addEventListener('scroll', () => {
+    const navTitle = document.getElementById('nav-title');
+    const navbar = document.getElementById('navbar');
+    const heroContent = document.getElementById('hero-content');
+    const heroImage = document.getElementById('hero-image'); 
+
     const scrollY = window.scrollY;
-    const triggerPoint = 450;
-    const badge = document.getElementById('neural-status-badge'); // Neu hinzugefügt
+    const triggerPoint = 450; // Reagiert angenehm früh beim Scrollen
 
     if (scrollY < window.innerHeight) {
         heroContent.style.transform = `translateY(${scrollY * -0.55}px)`;
@@ -634,28 +651,16 @@ window.addEventListener('scroll', () => {
     }
 
     if (scrollY > triggerPoint) {
-        navbar.classList.add('glass-nav', 'py-4'); 
-        navbar.classList.remove('py-10');
+        navbar.classList.add('glass-nav'); 
+        // navbar.classList.remove('py-10');
         navTitle.classList.add('nav-visible'); 
         navTitle.classList.remove('nav-hidden');
-        
-        // Badge sichtbar machen
-        if (badge) {
-            badge.classList.add('nav-visible');
-            badge.classList.remove('nav-hidden');
-        }
     } else {
-        navbar.classList.remove('glass-nav', 'py-4'); 
-        navbar.classList.add('py-10');
+        navbar.classList.remove('glass-nav'); 
+        // navbar.classList.add('py-10');
         navTitle.classList.remove('nav-visible'); 
         navTitle.classList.add('nav-hidden');
-
-        // Badge verstecken
-        if (badge) {
-            badge.classList.remove('nav-visible');
-            badge.classList.add('nav-hidden');
-        }
-    }
+    }   
 });
 
 // Beispiel für die Toggle-Logik

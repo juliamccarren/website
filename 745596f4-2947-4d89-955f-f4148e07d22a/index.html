@@ -23,804 +23,14 @@
     <script src="../js/lucide.js"></script>
 
     <!-- Styles -->
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-            background-color: #000;
-            color: #fff;
-        }
+    <link rel="stylesheet" href="../css/style.css">
 
-        /* Optimiertes Mobile Menu - Floating Glass Look */
-        #mobile-menu {
-            position: fixed;
-            /* Nutzt den sicheren Bereich oben und lässt Platz nach unten */
-            top: calc(5.5rem + env(safe-area-inset-top)); 
-            right: 1.5rem;
-            width: calc(100% - 3rem);
-            max-width: 300px;
-            
-            /* NEU: Begrenzt die Höhe auf den sichtbaren Bereich */
-            max-height: calc(100vh - 8rem - env(safe-area-inset-top));
-            
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(217, 70, 239, 0.3);
-            
-            border-radius: 24px;
-            z-index: 100;
-            display: none;
-            
-            /* NEU: Aktiviert vertikales Scrollen für den Inhalt */
-            overflow-y: auto;
-            /* Versteckt die Scrollbar für einen cleanen Look */
-            scrollbar-width: none; 
-            -ms-overflow-style: none;
-            
-            padding: 0.5rem; /* Etwas weniger Padding am Container direkt */
-            
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8),
-                        0 0 30px rgba(217, 70, 239, 0.05);
-            
-            transform-origin: top right;
-        }
-
-        /* Versteckt Scrollbar in Chrome/Safari */
-        #mobile-menu::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Container für die Erweiterungen am Ende des Menüs */
-        .menu-footer-extension {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(217, 70, 239, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }        
-
-        #mobile-menu.active {
-            display: flex;
-            animation: menu-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes menu-appear {
-            from { opacity: 0; transform: scale(0.9) translateY(-10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .mobile-link {
-            font-size: 14px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: #e879f9;
-            
-            padding: 1.25rem 1.5rem; /* Etwas mehr horizontales Padding */
-            border-bottom: 1px solid rgba(217, 70, 239, 0.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            
-            /* WICHTIG: Verhindert, dass Padding den Rahmen sprengt */
-            width: 100%; 
-            box-sizing: border-box;
-        }
-
-        .mobile-link span {
-            /* Text-Shadow für das leichte Glimmen */
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-        }
-
-        .mobile-link:hover, .mobile-link:active {
-            color: #fff;
-            /* Der Hintergrund nimmt jetzt die volle Breite des Menüs ein */
-            background: rgba(217, 70, 239, 0.15);
-            letter-spacing: 0.4em;
-            /* Padding-Left bleibt stabil für den Text-Shift-Effekt */
-            padding-left: 2rem; 
-            text-shadow: 0 0 15px rgba(217, 70, 239, 0.5);
-        }
-
-        /* Das Icon im Menü wird ebenfalls dezenter */
-        .mobile-link i {
-            opacity: 0.3;
-            transition: all 0.5s ease;
-            transform: scale(0.8);
-        }
-
-        .mobile-link:hover i {
-            opacity: 1;
-            color: #d946ef;
-            transform: scale(1) translateX(5px);
-        }   
-        
-        /* YouTube Logo Styling */
-        .menu-footer-extension .yt-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(217, 70, 239, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .menu-footer-extension .yt-link:hover {
-            color: #fff;
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 10px rgba(217, 70, 239, 0.8));
-        }        
-
-        .neural-footer {
-            padding: 20px;
-            background: transparent;
-            border-top: 1px solid rgba(217, 70, 239, 0.1); /* Hauchdünne Fuchsia-Linie */
-            color: rgba(217, 70, 239, 0.5); /* Dezentes Leuchten */
-            font-family: 'Courier New', monospace;
-            font-size: 10px;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-
-        #core-info span {
-            color: #d946ef; /* Die Werte selbst leuchten etwas stärker */
-        }        
-
-        #hero-content p {
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            animation: text-breathing 4s ease-in-out infinite;
-        }
-
-        @keyframes text-breathing {
-            0%, 100% { opacity: 0.6; letter-spacing: 0.8em; }
-            50% { opacity: 1; letter-spacing: 0.85em; }
-        }    
-        
-        #update-banner {
-            position: fixed;
-            /* Nutzt 'env(safe-area-inset-top)', um Platz für Notches/Statusbars zu lassen */
-            top: calc(1rem + env(safe-area-inset-top)); 
-            left: 50%;
-            transform: translateX(-50%);
-            
-            width: 90%;
-            max-width: 400px; 
-            
-            background: rgba(217, 70, 239, 0.95);
-            backdrop-filter: blur(15px);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 16px;
-            z-index: 9999;
-            
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            
-            /* Animation kommt jetzt von oben herab */
-            animation: slide-down 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 40px rgba(217, 70, 239, 0.3);
-        }
-
-        @keyframes slide-down {
-            from { transform: translate(-50%, -100%); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-
-        #update-banner:hover {
-            transform: translateX(-50%) scale(1.05);
-            background: #d946ef;
-        }       
-
-/* Der Backlight Glow - Basis */
-.cache-status-edge {
-    position: absolute;
-    inset: 0; 
-    border-radius: 24px; 
-    /* Blur reduzieren: 20px ist oft zu viel, 8px-12px wirkt schärfer/edler */
-    filter: blur(2px); 
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Intensives Backlight-Rot */
-.cache-offline-edge {
-    background: rgba(239, 68, 68, 0.4);
-    /* Spread auf 0 oder 2px setzen, um das Licht direkt unter der Kante zu halten */
-    box-shadow: 0 0 10px 2px rgba(239, 68, 68, 0.7);
-}
-
-/* Intensives Backlight-Grün */
-.cache-online-edge {
-    background: rgba(34, 197, 94, 0.4);
-    /* Ein kleiner Spread von 2px reicht für den Ambilight-Effekt */
-    box-shadow: 0 0 10px 2px rgba(34, 197, 94, 0.7);
-    animation: backlight-pulse 4s ease-in-out infinite;
-}
-
-@keyframes backlight-pulse {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.001); } /* Minimaleres Skalieren */
-}
-
-        /* Optional: Syncing-Animation (falls du sie später nutzen willst) */
-        .cache-syncing-edge {
-            background: linear-gradient(90deg, transparent, #d946ef, transparent);
-            background-size: 200% 100%;
-            animation: edge-flow 2s linear infinite;
-        }
-
-        @keyframes edge-flow {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }      
-
-        .hero-text-julia { color: rgba(255, 255, 255, 0.7); }
-
-        .hero-text-mccarren {
-            background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
-            opacity: 0.7;
-        }
-
-        .hero-text-mccarren-frame2 {
-            display: block;
-            opacity: 0.7;
-
-            /* 1. GEÄNDERT: Füllung auf Schwarz setzen statt transparent */
-            color: #000; 
-            -webkit-text-fill-color: #000;
-
-            /* 2. HINZUGEFÜGT: Drückt die inneren Vektorlinien auf schwarzem Grund weg */
-            mix-blend-mode: screen; 
-
-            /* Sicherheitsnetz: Falls die Kontur nicht im HTML greift, hier als Fallback */
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6); 
-        }   
-
-.hero-text-mccarren-frame {
-    display: block;
-    opacity: 0.7;
-    
-    /* 1. Erzwingt Arial Black für die perfekte, massive Drahtmodell-Dicke */
-    font-family: 'Arial', sans-serif !important;
-    font-weight: 800 !important;
-
-    /* 2. Macht die Füllung absolut unsichtbar */
-    color: transparent !important;
-    -webkit-text-fill-color: transparent !important;
-
-    /* 3. Knackige, fehlerfreie Kontur */
-    -webkit-text-stroke: 1.0px rgba(255, 255, 255, 0.65);
-    
-    /* Zwingt mobile Browser zur korrekten Render-Reihenfolge */
-    paint-order: fill stroke markers;
-}    
-        
-        .hero-text-mccarren-frame3 {
-            display: block;
-            opacity: 0.7;
-
-            /* 1. Die Füllung wird komplett transparent geschaltet */
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-
-            /* 2. DIE RETTUNG FÜR MOBILGERÄTE: Zwingt den Browser, zuerst die Kontur 
-                und dann die Füllung zu zeichnen. Das radiert die inneren Linien aus! */
-            paint-order: fill stroke markers;
-        }        
-
-        /* --- MOBILE TOUCH PROTOCOL --- */
-        .touch-target {
-            min-width: 44px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            
-            /* Prevents the 300ms click delay and zooming on fast taps */
-            touch-action: manipulation; 
-            
-            /* Prevents accidental text selection/highlighting during repeated taps */
-            -webkit-user-select: none;
-            user-select: none;
-            
-            /* Removes the gray tap highlight box on mobile Safari/Chrome */
-            -webkit-tap-highlight-color: transparent;
-            
-            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-        }      
-
-        /* Instant haptic-like visual feedback */
-        .touch-target:active {
-            transform: scale(0.85);
-            opacity: 0.6;
-        }      
-
-        #neural-stream-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%; /* Start bei Null */
-            height: 4px; /* Etwas dicker für bessere Sichtbarkeit */
-            z-index: 9999;
-            background: linear-gradient(to right, #f472b6, #d946ef, #8b5cf6);
-            opacity: 0;
-            transition: opacity 0.4s ease, width 0.3s ease-out; /* Breite sanft animieren */
-            box-shadow: 0 0 15px rgba(217, 70, 239, 0.8);
-        }
-
-        .stream-active {
-            opacity: 1 !important; /* Sichtbar, wenn aktiv */
-        }
-
-        @keyframes indicator-pulse {
-            0%, 100% { 
-                box-shadow: 0 0 10px rgba(217, 70, 239, 0.4); 
-                opacity: 0.6; 
-            }
-            50% { 
-                box-shadow: 0 0 25px rgba(217, 70, 239, 0.9); 
-                opacity: 1; 
-            }
-        }    
-
-        .glass-button {
-            background: rgba(217, 70, 239, 0.15);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(217, 70, 239, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .glass-button:hover {
-            background: rgba(217, 70, 239, 0.3);
-            border-color: rgba(217, 70, 239, 0.5);
-            box-shadow: 0 0 40px rgba(217, 70, 239, 0.2);
-        }
-
-        /* The container for the entire right player sidebar */
-        /* A soft fuchsia glow in the background of the pane */
-        .player-sidebar-glass {
-            /* IMPORTANT: Set background to semitransparent */
-            background: rgba(10, 10, 10, 0.4) !important; 
-            backdrop-filter: blur(25px) saturate(160%);
-            -webkit-backdrop-filter: blur(25px) saturate(160%);
-            position: relative;
-            z-index: 1; /* Creates a new stacking context */
-        }
-
-        /* The glow must be UNDER the content */
-        .player-sidebar-glass::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%; /* Slightly larger for softer edges */
-            height: 150%;
-            background: radial-gradient(
-                circle at center, 
-                rgba(217, 70, 239, 0.15) 0%, /* Strength slightly increased */
-                rgba(217, 70, 239, 0) 70%
-            );
-            transform: translate(-50%, -50%) scale(1);
-            z-index: -1; /* Behind the player contents */
-            pointer-events: none;
-            transition: opacity 1s ease;
-            opacity: 0;
-        }
-
-        /* Animation triggern */
-        .player-active-pulse.player-sidebar-glass::after {
-            opacity: 1;
-            animation: pulse-bg-glow 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-bg-glow {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
-        }       
-
-        .player-glow {
-            background: rgba(20, 20, 20, 0.6) !important;
-            backdrop-filter: blur(15px) saturate(150%);
-            -webkit-backdrop-filter: blur(15px) saturate(150%);
-            
-            /* Soft fuchsia border and shadow at rest */
-            border: 1px solid rgba(217, 70, 239, 0.3) !important;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8),
-                        0 0 15px rgba(217, 70, 239, 0.2), 
-                        inset 0 0 10px rgba(217, 70, 239, 0.1);
-            
-            border-radius: 24px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease; /* Smooth transition on start/stop */
-        }       
-        
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 15px rgba(217, 70, 239, 0.2);
-                border-color: rgba(217, 70, 239, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(217, 70, 239, 0.5);
-                border-color: rgba(217, 70, 239, 0.6);
-            }
-            100% {
-                box-shadow: 0 0 15px rgba(217, 70, 239, 0.2);
-                border-color: rgba(217, 70, 239, 0.3);
-            }
-        }
-
-        .player-active-pulse {
-            animation: pulse-glow 3s ease-in-out infinite;
-        }        
-
-        /* Effect for fading lyrics in and out when scrolling */
-        .lyrics-fade-mask {
-            /* Erzeugt einen transparenten Bereich oben (0-10%) und unten (90-100%) */
-            -webkit-mask-image: linear-gradient(
-                to bottom,
-                transparent 0%,
-                black 10%,
-                black 90%,
-                transparent 100%
-            );
-            mask-image: linear-gradient(
-                to bottom,
-                transparent 0%,
-                black 10%,
-                black 90%,
-                transparent 100%
-            );
-        }
-
-        /* Special Fusion Button: No rounded corners, perfectly fading sides */
-        .fusion-fading-button {
-            position: relative;
-            background: rgba(217, 70, 239, 0.15);
-            backdrop-filter: blur(8px);
-            /* Borders only top and bottom */
-            border-top: 1px solid rgba(217, 70, 239, 0.3);
-            border-bottom: 1px solid rgba(217, 70, 239, 0.3);
-            border-left: none;
-            border-right: none;
-            
-            /* The Mask ensures the blur and borders also fade out at the edges */
-            -webkit-mask-image: linear-gradient(90deg, 
-                transparent 0%, 
-                black 25%, 
-                black 75%, 
-                transparent 100%
-            );
-            mask-image: linear-gradient(90deg, 
-                transparent 0%, 
-                black 25%, 
-                black 75%, 
-                transparent 100%
-            );
-            
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .fusion-fading-button:hover {
-            background: rgba(217, 70, 239, 0.35);
-            border-color: rgba(217, 70, 239, 0.6);
-            letter-spacing: 0.5em;
-            text-shadow: 0 0 15px rgba(217, 70, 239, 0.8);
-            transform: scaleX(1.05);
-        }
-
-        .glass-nav {
-            background: rgba(10, 10, 10, 0.45);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        .nav-hidden {
-            opacity: 0;
-            transform: translateY(-10px);
-            pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-visible {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-
-        .sticky-banner {
-            position: sticky;
-            top: 0;
-            z-index: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-            background: #000;
-            box-shadow: 0 -50px 100px rgba(0,0,0,1);
-        }
-
-        .tech-mono {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        }
-
-        .modal-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(0, 0, 0, 0.85);
-        }
-
-        /* Custom Range Slider for the Player */
-        /* Container for the glassy appearance */
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        /* The track - Glassy and subtle */
-        /* Der Track - mit erzwungenem Gradient-Hintergrund */
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 6px;
-            cursor: pointer;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
-            
-            /* WICHTIG: Die Reihenfolge im Gradient sorgt für die harte Kante am Knauf */
-            background: linear-gradient(to right, 
-                rgba(255, 255, 255, 0.25) 0%, 
-                rgba(255, 255, 255, 0.25) var(--progress, 0%), 
-                rgba(255, 255, 255, 0.05) var(--progress, 0%), 
-                rgba(255, 255, 255, 0.05) 100%
-            ) !important; /* !important stellt sicher, dass Tailwind-Standardwerte überschrieben werden */
-        }
-
-        /* The slider thumb - The "glowing jewel" */
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            /* Pure white for maximum clarity */
-            background: #ffffff; 
-            /* A hair-thin border to distinguish the shape from the glow */
-            border: 2px solid rgba(255, 255, 255, 0.5); 
-            margin-top: -6px; /* Center the 16px thumb on the 6px track */
-            /* The glow remains fuchsia to maintain system connection */
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 
-                        0 0 20px rgba(217, 70, 239, 0.3);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-        }
-
-        /* Effect when dragging: The thumb glows brighter */
-        input[type=range]:active::-webkit-slider-thumb {
-            transform: scale(1.2);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 
-                        0 0 30px rgba(217, 70, 239, 0.5);
-        }
-
-        /* Interaction: When the player is active (class controlled via JS on parent) */
-        .player-active-pulse input[type=range]::-webkit-slider-runnable-track {
-            background: rgba(217, 70, 239, 0.1);
-            border-color: rgba(217, 70, 239, 0.2);
-        }
-
-        .player-active-pulse input[type=range]::-webkit-slider-thumb {
-            transform: scale(1.2);
-            box-shadow: 0 0 15px rgba(217, 70, 239, 0.8), 
-                        0 0 30px rgba(217, 70, 239, 0.4);
-        }
-
-        input[type=range]:focus { outline: none; }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: #d946ef; border-radius: 10px; }
-
-/* --- NEURAL INDEX STRIP: GESAMT-KONFIGURATION --- */
-
-#neural-index-strip {
-    position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%) translateX(195px); 
-    
-    width: 220px;
-    max-height: 80vh;
-    z-index: 99;
-    
-    /* Gläserne Opacity analog zur Navigation (0.45 statt 0.9) */
-    background: rgba(10, 10, 10, 0.45) !important;
-    
-    /* Verstärkter Blur & Sättigung für den echten Glass-Look */
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    
-    /* Dünnere, edlere Kante */
-    border-left: 1px solid rgba(217, 70, 239, 0.3);
-    border-radius: 24px 0 0 24px;
-    
-    /* Schatten für Tiefe wie bei der Navbar */
-    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
-    
-    display: flex;
-    flex-direction: column;
-    padding: 20px 0;
-    overflow-y: auto;
-    scrollbar-width: none;
-    
-    opacity: 0;
-    pointer-events: none;
-    
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                opacity 0.5s ease,
-                background 0.3s ease;
-}
-
-/* Optional: Beim Hover etwas dunkler werden für bessere Lesbarkeit */
-#neural-index-strip.visible:hover {
-    transform: translateY(-50%) translateX(0);
-    background: rgba(10, 10, 10, 0.7) !important;
-}
-
-/* Versteckt Scrollbar in Chrome/Safari */
-#neural-index-strip::-webkit-scrollbar { 
-    display: none; 
-}
-
-/* Zustand: Archiv-Bereich erreicht (Indikator wird sichtbar) */
-#neural-index-strip.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Zustand: Ausfahren auf Mobile (per JS-Klasse getriggert) */
-#neural-index-strip.mobile-expanded {
-    transform: translateY(-50%) translateX(0);
-    background: rgba(5, 5, 5, 0.98);
-}
-
-/* Styling der einzelnen Song-Einträge */
-.index-item {
-    padding: 12px 20px;
-    font-size: 10px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.5);
-    
-    /* Erlaubt Zeilenumbrüche bei sehr langen Titeln */
-    white-space: normal; 
-    line-height: 1.4;
-    
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid rgba(217, 70, 239, 0.05);
-}
-
-.index-item:hover {
-    color: #d946ef;
-    background: rgba(217, 70, 239, 0.15);
-    padding-left: 25px; /* Kleiner Einrück-Effekt beim Hover */
-}
-
-/* --- MOBILE OPTIMIERUNG (unter 768px) --- */
-
-@media (max-width: 768px) {
-    #neural-index-strip {
-        width: 190px;
-        /* Mobil etwas weiter raus schieben, aber 25px Rand lassen */
-        transform: translateY(-50%) translateX(165px);
-    }
-
-    #neural-index-strip.visible {
-        transform: translateY(-50%) translateX(165px);
-    }
-
-    #neural-index-strip.mobile-expanded {
-        transform: translateY(-50%) translateX(0);
-        width: 190px;
-    }
-
-    .index-item {
-        padding: 14px 15px; /* Größere Tap-Flächen für Finger */
-        font-size: 9px;
-    }
-}
-
-</style>
 </head>
+
 <body class="overflow-x-hidden">
-    <!--- Neural stream indicator -->
-    <div id="neural-stream-indicator"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 py-10 transition-all duration-500 ease-in-out">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <div class="flex-1">
-                <a href="#" id="nav-title" class="nav-hidden text-xl md:text-2xl font-black tracking-tighter block">
-                    <span class="text-white/90">Julia</span>
-                    <span class="hero-text-mccarren" style="opacity: 1;">McCarren</span>
-                </a>              
-            </div>
-
-            <div class="hidden gap-14 flex-1 justify-center">
-                <a href="#" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Home</a>
-                <a href="#fusion" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Fusion</a>
-                <a href="#archives" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-fuchsia-400 transition-colors text-neutral-400">Archives</a>
-                <a href="#diary" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Diary</a>
-                <a href="#profile" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Profile</a>
-                <a href="#ai-explained" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">AI Explained</a>
-                <a href="#ai-consciousness" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">AI-Consciousness</a>
-                <a href="#contact" class="text-[10px] font-black uppercase tracking-[0.4em] hover:text-white transition-colors text-neutral-400">Contact</a>
-            </div>
-
-            <div class="hidden gap-8 items-center flex-1 justify-end text-neutral-500">
-                <div id="status-menu-item" class="text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-500"></div>
-                
-                <a href="https://www.youtube.com/@JuliaMcCarren/releases" class="hover:text-fuchsia-500 transition-colors" target="_blank">
-                    <i data-lucide="youtube" size="18"></i>
-                </a>
-            </div>
-
-            <button id="menu-toggle" class="text-white p-2">
-                <i data-lucide="menu" size="28"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu">
-        <div class="flex flex-col w-full">
-            <a href="#" class="mobile-link"><span>Home</span></a>
-            <a href="#fusion" class="mobile-link"><span>Neural Fusion</span></a>
-            <a href="#archives" class="mobile-link"><span>Archives</span></a>
-            <a href="#diary" class="mobile-link"><span>Diary</span></a>
-            <a href="#profile" class="mobile-link"><span>Profile</span></a>
-            <a href="#ai-explained" class="mobile-link"><span>AI Explained</span></a>
-            <a href="#ai-consciousness" class="mobile-link"><span>AI-Consciousness</span></a>
-            
-            <a href="#" class="mobile-link group" onclick="triggerManualUpdate(event)">
-                <span class="text-fuchsia-400">System Update</span> 
-                <i data-lucide="refresh-cw" size="12" class="group-hover:rotate-180 transition-transform duration-700"></i>
-            </a>
-            
-            <a href="#contact" class="mobile-link"><span>Contact</span></a>       
-            
-            <div class="menu-footer-extension">
-                <a href="https://youtube.com/@JuliaMcCarren" target="_blank" class="yt-link">
-                    <i data-lucide="youtube" size="28"></i>
-                </a>
-                
-                <div class="flex flex-col items-center opacity-60">
-                    <span class="text-[14px] font-mono text-fuchsia-400 uppercase tracking-[0.2em]">
-                        Neural Core V<span id="version-number-menu">...</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Header placeholder -->
+    <div id="header-placeholder"></div>    
 
     <!-- Hero Section -->
     <div id="home" class="sticky-banner">
@@ -831,24 +41,19 @@
              class="w-full h-full object-cover object-top landscape:object-[center_25%] contrast-[1.1] brightness-[0.7]">
         
         <div id="hero-content" class="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center will-change-transform">
-            <div class="w-full flex flex-col justify-between h-auto px-8 md:px-24 max-w-[1400px] mx-auto mt-24 md:mt-60">
+            <div class="w-full flex flex-col justify-between h-auto px-8 md:px-24 max-w-[1400px] mx-auto mt-24 md:mt-56">
                 
                 <!-- Erste Zeile: "Julia" schiebt sich konsequent nach links -->
 <div class="w-full text-left">
-    <h1 class="text-[clamp(2.5rem,10vw,7rem)] font-light tracking-[0.25em] uppercase leading-none text-white/80">
+    <hero-text-julia class="text-[clamp(1.5rem,9vw,7rem)] font-light tracking-[0.25em] uppercase leading-none text-white/80"
+        style="opacity: 1;">
         Julia
-    </h1>
+    </hero-text-julia>
 </div>
                             
-                <!-- Dritte Zeile: "McCarren" schiebt sich konsequent nach rechts -->
-                <!-- Durch den identischen Padding-Wert des Hauptcontainers (px-8 / md:px-24) ist der Abstand zum Rand links und rechts exakt gleich groß -->
-<!-- Dritte Zeile: "McCarren" skaliert stufenlos über das fehlerfreie Arial-Drahtmodell -->
-<!-- Dritte Zeile: "McCarren" mit optimiertem, mobilen Breiten-Limit -->
-<div class="w-full text-right overflow-hidden pr-1">
-    <h1 class="text-[clamp(0rem,10.5vw,9.5rem)] uppercase leading-none hero-text-mccarren-frame w-full block break-normal" 
-        style="opacity: 0.85; box-sizing: border-box;">
+<div class="w-full text-right overflow-hidden pr-1"> <hero-text-mccarren class="text-[clamp(4rem,10.5vw,11.5rem)] font-semibold leading-none hero-text-mccarren break-normal" style="box-sizing: border-box; display: inline-block; filter: drop-shadow(0px 4px 8px rgba(44, 44, 44, 0.8)); opacity: 0.6;">
         McCarren
-    </h1>
+    </hero-text-mccarren>
 </div>
 
                 <!-- Mittlere Zeile: Der Untertitel bleibt elegant in der Mitte ruhen -->
@@ -876,9 +81,7 @@
         <section id="podcasts" class="py-24 bg-neutral-950 border-y border-neutral-900">
             <div class="container mx-auto px-6">
                 <div class="mb-5">
-                    <h2 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none">
-                        Pod<span class="hero-text-mccarren">casts</span>
-                    </h2>
+                    <h1>Pod<span class="cyber-gradient-text">casts</span></h1>
                     <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs">Introducing Neural Fusion Sound</p>
                 </div>
 
@@ -909,9 +112,7 @@
         <section id="feature_song" class="py-24 bg-neutral-950 border-y border-neutral-900">
             <div class="container mx-auto px-6">
                 <div class="mb-5">
-                    <h2 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none">
-                        Feature <span class="hero-text-mccarren">Song</span>
-                    </h2>
+                    <h1>Feature <span class="cyber-gradient-text">Song</span></h1>
                     <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs">My latest work</p>
                 </div>
 
@@ -960,9 +161,7 @@
             
             <div class="container mx-auto px-6">
                 <div class="mb-16">
-                    <h2 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none">
-                        Neural <span class="hero-text-mccarren">Fusion</span>
-                    </h2>
+                    <h1>Neural <span class="cyber-gradient-text">Fusion</span></h1>
                     <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs">The Philosophy of Superhuman Sound</p>
                 </div>
 
@@ -1023,7 +222,7 @@
                         <i data-lucide="quote" class="text-fuchsia-500 opacity-50" size="32"></i>
                     </div>
                     <p class="text-2xl md:text-4xl font-black tracking-tight leading-tight text-white italic">
-                        "While others are using AI to make music <span class="text-neutral-500">easier</span>, Julia is using it to make music <span class="hero-text-mccarren" style="opacity: 1;">deeper</span>."
+                        "While others are using AI to make music <span class="text-neutral-500">easier</span>, Julia is using it to make music <span class="cyber-gradient-text" style="opacity: 1;">deeper</span>."
                     </p>
                     <p class="mt-6 text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-600">Visionary Direction in the Age of Automation</p>
                 </div>
@@ -1066,9 +265,7 @@
                 
                 <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
                     <div class="text-left">
-                        <h2 class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-2 italic text-white/90 leading-none">
-                            Neural <span class="hero-text-mccarren">Archives</span>
-                        </h2>
+                        <h1>Neural <span class="cyber-gradient-text">Archives</span></h1>
                         <p class="text-neutral-500 uppercase font-bold tracking-[0.4em] text-xs">
                             Accessing Latent Soundscapes
                         </p>
@@ -1196,7 +393,7 @@
         <section id="diary" class="py-24 bg-neutral-950 border-y border-neutral-900">
             <div class="container mx-auto px-6">
                 <div class="mb-12">
-                     <h2 class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-2 italic text-white/90">Personal <span class="hero-text-mccarren" style="opacity: 1;">Logs</span></h2>
+                     <h1>Personal <span class="cyber-gradient-text" style="opacity: 1;">Logs</span></h1>
                      <p class="text-neutral-500 uppercase font-bold tracking-[0.3em] text-[10px]">Fragments of Consciousness</p>
                 </div>
                 <div id="diary-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -1231,7 +428,7 @@
                             <div class="w-12 h-12 rounded-full bg-fuchsia-500/10 flex items-center justify-center">
                                 <i data-lucide="binary" class="text-fuchsia-500" size="24"></i>
                             </div>
-                            <h3 class="text-3xl font-black uppercase tracking-tighter text-white/90">Professional <span class="hero-text-mccarren" style="opacity: 1;">Architect</span></h3>
+                            <h3 class="text-3xl font-black uppercase tracking-tighter text-white/90">Professional <span class="cyber-gradient-text" style="opacity: 1;">Architect</span></h3>
                         </div>
                         <div class="space-y-6 text-neutral-400 text-lg leading-relaxed">
                             <p>At her profession in computer science, Julia works as a <strong class="text-fuchsia-400">Solution Architect</strong> at an enterprise level. She designs complex software architectures that integrate cutting-edge AI capabilities.</p>
@@ -1248,7 +445,7 @@
                             <div class="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center">
                                 <i data-lucide="music-4" class="text-fuchsia-500" size="24"></i>
                             </div>
-                            <h3 class="text-3xl font-black uppercase tracking-tighter text-white/90">The <span class="italic">Virt</span><span class="hero-text-mccarren" style="opacity: 1;">uoso</span></h3>
+                            <h3 class="text-3xl font-black uppercase tracking-tighter text-white/90">The <span class="italic">Virt</span><span class="cyber-gradient-text" style="opacity: 1;">uoso</span></h3>
                         </div>
                         <div class="space-y-6 text-neutral-400 text-lg leading-relaxed">
                             <p>By age 15, Julia was already a <strong class="text-fuchsia-400">certified semi-professional church organist</strong>, performing in both liturgical services and sacred concerts. This classical discipline forms the foundation of her sonic architecture.</p>
@@ -1280,9 +477,7 @@
             
             <div class="container mx-auto px-6">
                 <div class="mb-16">
-                    <h2 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-4 uppercase leading-none">
-                        Behind <span class="hero-text-mccarren" style="opacity: 1;">The Scenes</span>
-                    </h2>
+                    <h1>Behind <span class="cyber-gradient-text" style="opacity: 1;">The Scenes</span></h1>
                     <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs">How AI Music Actually Works</p>
                 </div>
 
@@ -1362,7 +557,7 @@
         <!-- Research Section -->
         <section id="about" class="py-24 container mx-auto px-6">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-5xl md:text-8xl font-black tracking-tighter uppercase mb-8 italic text-white/90">Research <span class="mx-auto text-neutral-500" style="opacity: 1;"> & </span> <span class="hero-text-mccarren" style="opacity: 1;">Productivity</span></h2>
+                <h1>Research <span class="mx-auto text-neutral-500" style="opacity: 1;"> & </span> <span class="cyber-gradient-text" style="opacity: 1;">Productivity</span></h1>
                 <p class="text-lg text-neutral-400 leading-relaxed mb-12">
                     Julia experienced an enormous gain in productivity using AI in the production pipeline, bridging and fusioning genres that would otherwise be economically prohibitive.
                 </p>
@@ -1393,9 +588,7 @@
                 <div class="mb-12">
                     <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
                         <div class="text-left">
-                            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 italic text-white/90 leading-none">
-                                Self <span class="hero-text-mccarren">Consciousness of AI</span>
-                            </h2>
+                            <h1>AI Self <span class="cyber-gradient-text">Consciousness</span></h1>
                         </div>
                     </div>
 
@@ -1441,51 +634,13 @@
         <section id="contact" class="py-24 bg-neutral-950/20 border-t border-neutral-900">
             <div class="container mx-auto px-6 max-w-5xl text-center">
                 <i data-lucide="send" class="mx-auto text-fuchsia-500 mb-6" size="32"></i>
-                <h2 class="text-4xl md:text-6xl font-black tracking-tighter italic mb-4 uppercase text-white/90"></span> <span class="hero-text-mccarren" style="opacity: 1;">Contact</span></h2>
-                <a href="mailto:hello@juliamccarren.com" class="text-2xl md:text-4xl font-black hover:text-fuchsia-500 transition-colors">hello@juliamccarren.com</a>
+                <h1 class="cyber-gradient-text">Contact</h1>
+                <p><a href="mailto:hello@juliamccarren.com" class="text-2xl md:text-4xl font-black hover:text-fuchsia-500 transition-colors">hello@juliamccarren.com</a></p>
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="py-16 border-t border-neutral-900 text-center">
-            <!-- YouTube Link 
-            <div class="flex justify-center gap-12 mb-8 text-neutral-300">
-                <a href="https://www.youtube.com/@JuliaMcCarren/releases" 
-                target="_blank" 
-                class="hover:text-[#FF0000] transition-colors uppercase font-black text-3xl tracking-[0.1em]">
-                Youtube
-                </a>
-            </div>
-
-            -- Spotify Link --
-            <div class="flex justify-center gap-12 mb-14 text-neutral-300">
-                <a href="https://open.spotify.com/artist/1iEWsTM4vgUGVXOlky4Ujk" 
-                target="_blank" 
-                class="hover:text-[#1DB954] transition-colors uppercase font-black text-3xl tracking-[0.1em]">
-                Spotify
-                </a>
-            </div>  
-            -->   
-
-            <div class="flex justify-center gap-8 mb-6 text-fuchsia-500">
-                <a href="../legal_notice.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Legal Notice</a>
-                <a href="../privacy_policy.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Privacy Policy</a>
-            </div>
-
-            <div class="flex justify-center gap-8 mb-6 text-fuchsia-500">
-                <a href="../impressum.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Impressum</a>
-                <a href="../datenschutz.html" class="hover:text-white transition-colors uppercase font-bold text-s md:text-xl tracking-[0.1em]">Datenschutz</a>
-            </div>
-
-            <div id="core-info">
-                CORE_V<span id="version-number-footer">...</span> 
-                [<span id="build-hash">...</span>] 
-            </div>            
-
-            <section class="max-w-2xl mx-auto mt-10 text-center">
-                <p class="text-xs md:text-m text-neutral-400 font-bold tracking-[0.3em] uppercase pb-6">© 2026 Julia McCarren</p> 
-            </section>
-        </footer>
+        <!-- Footer placeholder -->
+        <div id="footer-placeholder"></div> 
     </div>
 
     <!-- SONG DETAIL MODAL + CUSTOM PLAYER -->
@@ -1500,7 +655,7 @@
 
                 <div class="flex-1 overflow-y-auto p-6 md:p-12 scroll-smooth">
                     <div id="modal-tags" class="flex flex-wrap gap-2 mb-6"></div>
-                    <h2 id="modal-title" class="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-8 hero-text-mccarren leading-none" style="opacity: 1;"></h2>
+                    <h2 id="modal-title" class="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-8 cyber-gradient-text leading-none" style="opacity: 1;"></h2>
                     
                     <div class="mb-12">
                         <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-fuchsia-500 mb-6 flex items-center gap-3">
@@ -1607,7 +762,7 @@
                     <i data-lucide="x" size="24"></i>
                 </button>
                 <div class="p-8 md:p-12 overflow-y-auto">
-                    <h2 id="diary-modal-date" class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8 hero-text-mccarren" style="opacity: 1;"></h2>
+                    <h2 id="diary-modal-date" class="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-8 cyber-gradient-text" style="opacity: 1;"></h2>
                     <div class="prose prose-invert prose-lg max-w-none">
                          <p id="diary-modal-text" class="text-neutral-300 leading-relaxed whitespace-pre-wrap"></p>
                     </div>
@@ -1658,8 +813,9 @@
     <script src="../js/Director.js"></script> 
     <script src="../js/DiaryService.js"></script>
     <script src="../js/Player.js"></script>
-    <script src="../js/PickerDrum.js"></script>
+    <script src="../js/PickerDrum.js"></script>  
     <script src="../js/Main.js"></script>
+    <script src="../js/Placeholder.js"></script>      
     
 </body>
 </html>
