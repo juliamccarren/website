@@ -5,14 +5,17 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "85" 
+VERSION = "86" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
 DIRECTORIES_TO_SCAN = [
     "js",
     "images",
-    "artwork"
+    "artwork",
+    "essays",
+    "placeholder",
+    "css"
 ]
 
 # Root-Dateien (landen im vXX Ordner für Versionierung)
