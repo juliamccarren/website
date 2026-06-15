@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "88" 
+VERSION = "89" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -156,16 +156,6 @@ self.addEventListener('activate', event => {{
                 keys.filter(key => key !== STATIC_CACHE && key.startsWith('julia-site-v'))
                     .map(key => caches.delete(key))
             );
-        }})
-    );
-}});
-
-self.addEventListener('fetch', event => {{
-    event.respondWith(
-        caches.match(event.request).then(response => {{
-            if (response) return response;
-            
-            return fetch(event.request);
         }})
     );
 }});
