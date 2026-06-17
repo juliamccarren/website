@@ -11,8 +11,50 @@
         color: #fff;
     }
 
+
     /* Optimiertes Mobile Menu - Floating Glass Look */
     #mobile-menu {
+        /* 1. ERZWUNGEN: fixed orientiert sich direkt am Bildschirm, nicht an der Navbar */
+        position: fixed !important;
+        
+        /* 2. STATISCH: Nutzt einen festen Wert (5rem), damit es auf allen Seiten (index & ssm) */
+        /* immer exakt an der gleichen Position unter dem Header klebt, egal ob gescrollt wurde. */
+        top: calc(5rem + env(safe-area-inset-top)) !important; 
+        right: 1.5rem !important;
+        
+        /* 3. STABILITÄT: Verhindert Breitenverzerrungen auf Mobilgeräten */
+        width: calc(100% - 3rem) !important;
+        max-width: 300px !important;
+        
+        /* Begrenzt die maximale Höhe auf den sichtbaren Bereich */
+        max-height: calc(100vh - 8rem - env(safe-area-inset-top));
+        
+        background: rgba(5, 5, 5, 0.85);
+        backdrop-filter: blur(30px) saturate(180%);
+        -webkit-backdrop-filter: blur(30px) saturate(180%);
+        
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid rgba(217, 70, 239, 0.3);
+        
+        border-radius: 24px;
+        z-index: 100;
+        display: none;
+        
+        /* Aktiviert vertikales Scrollen im Menü selbst */
+        overflow-y: auto;
+        scrollbar-width: none; 
+        -ms-overflow-style: none;
+        
+        padding: 0.5rem;
+        
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8),
+                    0 0 30px rgba(217, 70, 239, 0.05);
+        
+        transform-origin: top right;
+    }
+
+    /* Optimiertes Mobile Menu - Floating Glass Look */
+    #mobile-menu-old {
         position: fixed;
         /* Nutzt den sicheren Bereich oben und lässt Platz nach unten */
         top: calc(5.5rem + env(safe-area-inset-top)); 
@@ -847,6 +889,11 @@ background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200
 background-repeat: no-repeat;
 background-position: center;
 background-size: contain;
+}
+
+strong {
+  font-weight: normal; /* Entfernt den standardmäßigen Fettdruck */
+  color: #d946ef;      /* Entspricht in etwa Fuchsia-400 */
 }
 
 
