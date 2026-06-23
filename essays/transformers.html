@@ -47,7 +47,7 @@
 
     <!-- Main Content Area -->
     <div class="content-wrapper pt-28 min-h-screen">
-        <main class="container mx-auto px-6 max-w-6xl py-10">
+        <main class="container mx-auto px-6 max-w-7xl py-10">
             
         <!-- Page Title -->    
         <div class="mb-16">
@@ -64,7 +64,25 @@
 
             <p>Boom! Just by adding 2 words the meaning of "Harry" changed. "Hogwarts" transformed the neutral person "Harry" into a young wizard "Harry Potter" visiting a magical school. Welcome to the magic of transformers.</p>
 
-            <p>If you remember the concept of embeddings, you might recall that each word is represented as a vector in a high-dimensional space. This is called the <strong>latent space</strong>. The latent space contains the semantics of the whole world. Every possible meaning is encoded in this space. This could be both words or sounds. The latent space of LLMs have 4096 dimension and above whilst the latent space of music only has 512 dimensions. This does not imply that one is superior to the other, though there are different opinions on this matter.</p>
+            <p>
+                If you remember the concept of embeddings, you might recall that each word is represented as a vector in a high-dimensional space. 
+                This is called the <strong>latent space</strong>. The latent space contains the semantics of the whole world. Every possible meaning is encoded in this space. 
+                This could be both words or sounds. The latent space of LLMs have 4096 dimension and above whilst the latent space of music only has 512 dimensions. 
+                This does not imply that one is superior to the other, though there are different opinions on this matter.
+            </p>
+
+            <p>We'll take a look under the hood of modern transformers.</p>
+
+            <!-- Image Container -->
+            <div class="relative rounded-3xl overflow-hidden border border-white/10 group mb-12">
+                <img src="../images/under_the_hood.webp" 
+                        alt="Julia looking under the hood" 
+                        >
+                <!-- <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div> -->
+                <div class="absolute bottom-6 left-8">
+                    <p class="text-[10px] font-black uppercase tracking-[0.5em] text-black/80">Julia looking under the hood</p>
+                </div>
+            </div>                 
 
             <!-- Chapter -->
             <h2><a href="#">Clarity Through Dimensions: 4D Transformer Arithmetic</a></h2>
@@ -154,6 +172,7 @@
             <div class="formula-block">
                 <div class="matrix-equation">
                     <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (N=3 × d=4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
@@ -167,6 +186,7 @@
                     </div>
                     <div class="operator">=</div>
                     <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Q (N=3 × d=4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">1.1</div><div class="cell">1.55</div><div class="cell">0.85</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.41</div><div class="cell">0.12</div><div class="cell">0.01</div><div class="cell">3.5</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.65</div><div class="cell">4.16</div><div class="cell">0.7</div><div class="cell">0.0</div>
@@ -184,6 +204,7 @@
             <div class="formula-block">
                 <div class="matrix-equation">
                     <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
@@ -197,6 +218,7 @@
                     </div>
                     <div class="operator">=</div>
                     <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="K (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">1.0</div><div class="cell">2.0</div><div class="cell">1.5</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.06</div><div class="cell">0.9</div><div class="cell">0.0</div><div class="cell">1.75</div>
                         <div class="row-label">Hogwarts</div><div class="cell">1.0</div><div class="cell">8.0</div><div class="cell">0.6</div><div class="cell">0.0</div>
@@ -239,16 +261,18 @@
             <div class="formula-block">
                 <div class="matrix-equation">
                     <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Q (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">1.1</div><div class="cell">1.55</div><div class="cell">0.85</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.41</div><div class="cell">0.12</div><div class="cell">0.01</div><div class="cell">3.5</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.65</div><div class="cell">4.16</div><div class="cell">0.7</div><div class="cell">0.0</div>
                     </div>
                     <div class="operator">·</div>
                     <div class="matrix matrix-x" data-dim="K^T (4 × 3)">
-                        <div class="cell">1.0</div><div class="cell">0.06</div><div class="cell">1.0</div>
-                        <div class="cell">2.0</div><div class="cell">0.9</div><div class="cell">8.0</div>
-                        <div class="cell">1.5</div><div class="cell">0.0</div><div class="cell">0.6</div>
-                        <div class="cell">0.0</div><div class="cell">1.75</div><div class="cell">0.0</div>
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
+                        <div class="row-label">Person</div><div class="cell">1.0</div><div class="cell">0.06</div><div class="cell">1.0</div>
+                        <div class="row-label">Magic</div><div class="cell">2.0</div><div class="cell">0.9</div><div class="cell">8.0</div>
+                        <div class="row-label">Royalty</div><div class="cell">1.5</div><div class="cell">0.0</div><div class="cell">0.6</div>
+                        <div class="row-label">Verb</div><div class="cell">0.0</div><div class="cell">1.75</div><div class="cell">0.0</div>
                     </div>
                     <div class="operator">=</div>
                     <div class="matrix matrix-att matrix-labeled-att" data-dim="Scores (N=3 × N=3)">
@@ -284,6 +308,7 @@
             <div class="formula-block">
                 <div class="matrix-equation">
                     <div class="matrix matrix-att matrix-labeled-att" data-dim="Normalized (3 × 3)">
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
                         <div class="row-label">Harry</div><div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
                         <div class="row-label">visits</div><div class="cell">0.0037</div><div class="cell">0.9885</div><div class="cell">0.0078</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.0000</div><div class="cell">0.0000</div><div class="cell">1.0000</div>
@@ -296,6 +321,7 @@
             <div class="formula-block">
                 <div class="matrix-equation">
                     <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
@@ -309,6 +335,7 @@
                     </div>
                     <div class="operator">=</div>
                     <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="V (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
                         <div class="row-label">Harry</div><div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
                         <div class="row-label">visits</div><div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
                         <div class="row-label">Hogwarts</div><div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
@@ -320,18 +347,22 @@
             <p>We compute the context vector for "Harry": Row 1 of the Softmax matrix $(1 \times 3)$ multiplied by the entire $V$ matrix $(3 \times 4)$. The result is a new 4D feature vector $(1 \times 4)$.</p>
             <div class="formula-block">
                 <div class="matrix-equation">
-                    <div class="matrix matrix-x" data-dim="Softmax (Harry Row)">
-                        <div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
+                    <div class="matrix matrix-att matrix-labeled-att" data-dim="Softmax (Harry Row)">
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
+                        <div class="row-label">Harry</div><div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
                     </div>
                     <div class="operator">·</div>
-                    <div class="matrix matrix-qkv" data-dim="V-Matrix (3 × 4)">
-                        <div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
-                        <div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
-                        <div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="V (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
                     </div>
+
                     <div class="operator">=</div>
-                    <div class="matrix matrix-qkv" data-dim="Context Vector">
-                        <div class="cell">0.1001</div><div class="cell">3.2001</div><div class="cell">0.1000</div><div class="cell">0.0000</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Context Vector">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">0.1001</div><div class="cell">3.2001</div><div class="cell">0.1000</div><div class="cell">0.0000</div>
                     </div>
                 </div>
                 <div class="calculation-box">
@@ -344,6 +375,9 @@
             </div>
 
             <h2>7. Final Residual Addition: Fusion of Identities</h2>
+
+            <p>We add the context vector to the original embedding of "Harry" to get the final contextualized embedding.</p>
+
             <div class="calculation-box" style="background: rgba(59, 130, 246, 0.05); border-left-color: var(--qkv-color);">
                 x_Harry_final = x_Harry_static + x_Harry_context<br>
                 x_Harry_final = [2.0, 1.0, 0.5, 0.0] + [0.1, 3.2, 0.1, 0.0]<br>
@@ -370,7 +404,23 @@
                         <td><strong>Uniqueness:</strong> The magic axis triumphs. Harry has absorbed the substance of Hogwarts but structurally remains a noun (verb axis stays strictly at 0.0).</td>
                     </tr>
                 </tbody>
-            </table>     
+            </table>    
+            
+            <p> 
+                This result is in the latent space very close to the embedding of "wizard" (a magical person). Thus the model can reason that Harry is also a wizard though the sentence never explicitly stated this.
+                This is the magic of the attention mechanism. It allows the model to infer relationships and properties that are not explicitly mentioned in the input, by leveraging the context provided by other tokens in the sequence.
+            </p>
+
+            <!-- Image Container -->
+            <div class="relative rounded-3xl overflow-hidden border border-white/10 group mb-12">
+                <img src="../images/witch.webp" 
+                        alt="Julia the witch" 
+                        >
+                <!-- <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div> -->
+                <div class="absolute bottom-6 left-8">
+                    <p class="text-[10px] font-black uppercase tracking-[0.5em] text-black/80">Julia the witch</p>
+                </div>
+            </div>              
         </article>
 
         </main>
