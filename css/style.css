@@ -941,3 +941,149 @@ strong {
     margin-bottom: 3rem;
 }
 
+/* --- MATHEMATICAL STYLES (HARDCODED REPAIR) --- */
+.axis-legend {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+}
+
+.formula-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    background: rgba(255, 255, 255, 0.01);
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    
+    /* Sanftes horizontales Scannen auf iOS erwingen */
+    -webkit-overflow-scrolling: touch; 
+}
+
+/* --- Maßgeschneiderte, ultra-flache horizontale Scrollbar für die Matrizen-Boxen --- */
+
+/* 1. Definiert die Höhe des horizontalen Scrollbalkens (von Standard ~12px auf edle 4px reduziert) */
+.formula-block::-webkit-scrollbar:horizontal {
+    height: 8px !important;
+}
+
+/* 2. Der Hintergrund der Scrollleiste (komplett unsichtbar/schwarz, damit es clean bleibt) */
+.formula-block::-webkit-scrollbar-track:horizontal {
+    background: rgba(0, 0, 0, 1) !important;
+    border-radius: 10px;
+}
+
+/* 3. Der bewegliche Knauf (Fuchsia-Leuchten, passend zu deiner CI, dezent abgedunkelt) */
+.formula-block::-webkit-scrollbar-thumb:horizontal {
+    background: rgba(217, 70, 239, 0.4) !important; /* Fuchsia mit 40% Opacity */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+/* 4. Interaktions-Effekt: Wenn man scrollt oder mit der Maus drübergeht, leuchtet er stärker auf */
+.formula-block::-webkit-scrollbar-thumb:horizontal:hover,
+.formula-block::-webkit-scrollbar-thumb:horizontal:active {
+    background: rgba(217, 70, 239, 0.9) !important;
+}
+
+/* Für Firefox (unterstützt leider keine genaue Pixelhöhe, aber die "thin"-Weiche) */
+/* .formula-block {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(217, 70, 239, 0.4) rgba(0, 0, 0, 1);
+} */
+
+.matrix-equation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: monospace;
+    font-size: 13px;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.matrix {
+    position: relative;
+    display: grid;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 8px 12px;
+    row-gap: 6px;
+    column-gap: 10px;
+    text-align: right;
+}
+
+.matrix::after {
+    content: attr(data-dim);
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #94a3b8;
+    white-space: nowrap;
+    font-family: sans-serif;
+}
+
+/* Farben direkt injiziert (Fuchsia) */
+.matrix-x { 
+    border-left: 2px solid #ec4899 !important; 
+    border-right: 2px solid #ec4899 !important; 
+    grid-template-columns: repeat(4, 50px); 
+}
+
+/* Farben direkt injiziert (Emerald) */
+.matrix-w { 
+    border-left: 2px solid #10b981 !important; 
+    border-right: 2px solid #10b981 !important; 
+    grid-template-columns: repeat(4, 50px); 
+}
+
+/* Farben direkt injiziert (Cyan / Blue) */
+.matrix-qkv { 
+    border-left: 2px solid #3b82f6 !important; 
+    border-right: 2px solid #3b82f6 !important; 
+    grid-template-columns: repeat(4, 50px); 
+}
+
+/* Farben direkt injiziert (Amber / Orange) */
+.matrix-att { 
+    border-left: 2px solid #f59e0b !important; 
+    border-right: 2px solid #f59e0b !important; 
+    grid-template-columns: repeat(3, 65px); 
+}
+
+.cell { color: #fff; font-weight: bold; }
+.row-label { color: #94a3b8; font-size: 12px; text-align: left; font-family: sans-serif; }
+.column-label { color: #94a3b8; font-size: 12px; text-align: right; font-family: sans-serif; }
+.matrix-labeled-4d { grid-template-columns: 65px repeat(4, 50px); text-align: right; }
+.matrix-labeled-att { grid-template-columns: 65px repeat(3, 65px); text-align: right; }
+.operator { color: #94a3b8; font-size: 24px; padding: 0 5px; }
+
+.calculation-box {
+    background: rgba(245, 158, 11, 0.05);
+    border-left: 4px solid #f59e0b;
+    padding: 15px;
+    margin: 20px 0;
+    font-family: monospace;
+    border-radius: 0 4px 4px 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.result-table th, .result-table td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    text-align: left;
+}
+.result-table th { background: rgba(255, 255, 255, 0.03); color: #fff; }
+.highlight { color: #f59e0b; font-weight: bold; }
