@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "92" 
+VERSION = "93" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
