@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer Arithmetik: 4D-Raum (Person, Magie, Royalität, Verb)</title>
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --text-color: #e2e8f0;
+            --muted-color: #94a3b8;
+            --x-color: #ec4899;
+            --w-color: #10b981;
+            --qkv-color: #3b82f6;
+            --attention-color: #f59e0b;
+            --border-rgba: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 { color: #fff; border-bottom: 1px solid var(--border-rgba); padding-bottom: 10px; margin-top: 40px; }
+        h3 { color: var(--muted-color); font-size: 1.1rem; margin-bottom: 20px; }
+        p { color: #cbd5e1; }
+        
+        .axis-legend {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-rgba);
+            margin-bottom: 30px;
+        }
+
+        .formula-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.01);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .matrix-equation {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: monospace;
+            font-size: 13px;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
+        .matrix {
+            position: relative;
+            display: grid;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid var(--muted-color);
+            border-right: 2px solid var(--muted-color);
+            padding: 8px 12px;
+            row-gap: 6px;
+            column-gap: 10px;
+            text-align: right;
+        }
+
+        .matrix::after {
+            content: attr(data-dim);
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: var(--muted-color);
+            white-space: nowrap;
+            font-family: sans-serif;
+        }
+
+        .matrix-x { border-color: var(--x-color); grid-template-columns: repeat(4, 50px); }
+        .matrix-w { border-color: var(--w-color); grid-template-columns: repeat(4, 50px); }
+        .matrix-qkv { border-color: var(--qkv-color); grid-template-columns: repeat(4, 50px); }
+        .matrix-att { border-color: var(--attention-color); grid-template-columns: repeat(3, 65px); }
+
+        .cell { color: #fff; font-weight: bold; }
+        .row-label { color: var(--muted-color); font-size: 12px; text-align: left; font-family: sans-serif; }
+        .matrix-labeled-4d { grid-template-columns: 65px repeat(4, 50px); text-align: right; }
+        .matrix-labeled-att { grid-template-columns: 65px repeat(3, 65px); text-align: right; }
+        .operator { color: var(--muted-color); font-size: 24px; padding: 0 5px; }
+
+        .calculation-box {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid var(--attention-color);
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            border-radius: 0 4px 4px 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .result-table th, .result-table td {
+            border: 1px solid var(--border-rgba);
+            padding: 12px;
+            text-align: left;
+        }
+        .result-table th { background: rgba(255, 255, 255, 0.03); color: #fff; }
+        .highlight { color: var(--attention-color); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Klarheit durch Dimensionen: 4D Transformer-Arithmetik</h1>
+    <p>Kontext des Satzes: <strong>„Harry besucht Hogwarts“</strong>. Satzlänge <strong>N = 3</strong> (Zeilen), Einbettungsdimension <strong>d = 4</strong> (Spalten).</p>
+    
+    <div class="axis-legend">
+        <strong>Geometrische Architektur des Raumes ($d=4$):</strong><br>
+        • Dimension 1 (Spalte 1): Person / Eigenname Semantik<br>
+        • Dimension 2 (Spalte 2): Magie / Fantasy Semantik<br>
+        • Dimension 3 (Spalte 3): Royalität / Adel Semantik<br>
+        • Dimension 4 (Spalte 4): Aktion / Verb Semantik
+    </div>
+
+    <h2>1. Generierung der Query-Matrix ($Q = X \cdot W_Q$)</h2>
+    <h3>Eingabe $X$ mal Gewichte $W_Q$. Beachte die asymmetrischen Formen: $(3 \times 4) \cdot (4 \times 4) = (3 \times 4)$.</h3>
+    <div class="formula-block">
+        <div class="matrix-equation">
+            <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (N=3 × d=4)">
+                <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+            </div>
+            <div class="operator">·</div>
+            <div class="matrix matrix-w" data-dim="W_Q (d=4 × d=4)">
+                <div class="cell">0.5</div><div class="cell">0.2</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                <div class="cell">0.1</div><div class="cell">1.0</div><div class="cell">0.1</div><div class="cell">0.0</div>
+                <div class="cell">0.0</div><div class="cell">0.3</div><div class="cell">1.5</div><div class="cell">0.0</div>
+                <div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">1.0</div>
+            </div>
+            <div class="operator">=</div>
+            <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Q (N=3 × d=4)">
+                <div class="row-label">Harry</div><div class="cell">1.1</div><div class="cell">1.55</div><div class="cell">0.85</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.41</div><div class="cell">0.12</div><div class="cell">0.01</div><div class="cell">3.5</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.65</div><div class="cell">4.16</div><div class="cell">0.7</div><div class="cell">0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>2. Generierung der Key-Matrix ($K = X \cdot W_K$)</h2>
+    <div class="formula-block">
+        <div class="matrix-equation">
+            <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (3 × 4)">
+                <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+            </div>
+            <div class="operator">·</div>
+            <div class="matrix matrix-w" data-dim="W_K (4 × 4)">
+                <div class="cell">0.4</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                <div class="cell">0.2</div><div class="cell">2.0</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                <div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">3.0</div><div class="cell">0.0</div>
+                <div class="cell">0.0</div><div class="cell">0.2</div><div class="cell">0.0</div><div class="cell">0.5</div>
+            </div>
+            <div class="operator">=</div>
+            <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="K (3 × 4)">
+                <div class="row-label">Harry</div><div class="cell">1.0</div><div class="cell">2.0</div><div class="cell">1.5</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.06</div><div class="cell">0.9</div><div class="cell">0.0</div><div class="cell">1.75</div>
+                <div class="row-label">Hogwarts</div><div class="cell">1.0</div><div class="cell">8.0</div><div class="cell">0.6</div><div class="cell">0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>3. Die Transformation in die Quadrat-Hölle: Attention-Scores ($Q \cdot K^T$)</h2>
+    <p>Hier wird der Unterschied zwischen $N$ und $d$ brutal sichtbar. Wir multiplizieren die Queries $(3 \times 4)$ mit den gekippten Keys $K^T$ $(4 \times 3)$. Die dimensionale Breite $d=4$ kürzt sich weg, und es entsteht eine reine, quadratische Satzlängen-Tabelle: <strong>$N \times N = 3 \times 3$</strong>.</p>
+    <div class="formula-block">
+        <div class="matrix-equation">
+            <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Q (3 × 4)">
+                <div class="row-label">Harry</div><div class="cell">1.1</div><div class="cell">1.55</div><div class="cell">0.85</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.41</div><div class="cell">0.12</div><div class="cell">0.01</div><div class="cell">3.5</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.65</div><div class="cell">4.16</div><div class="cell">0.7</div><div class="cell">0.0</div>
+            </div>
+            <div class="operator">·</div>
+            <div class="matrix matrix-x" data-dim="K^T (4 × 3)">
+                <div class="cell">1.0</div><div class="cell">0.06</div><div class="cell">1.0</div>
+                <div class="cell">2.0</div><div class="cell">0.9</div><div class="cell">8.0</div>
+                <div class="cell">1.5</div><div class="cell">0.0</div><div class="cell">0.6</div>
+                <div class="cell">0.0</div><div class="cell">1.75</div><div class="cell">0.0</div>
+            </div>
+            <div class="operator">=</div>
+            <div class="matrix matrix-att matrix-labeled-att" data-dim="Scores (N=3 × N=3)">
+                <div class="row-label">Harry</div><div class="cell">5.475</div><div class="cell">1.461</div><div class="cell">14.01</div>
+                <div class="row-label">besucht</div><div class="cell">0.665</div><div class="cell">6.257</div><div class="cell">1.378</div>
+                <div class="row-label">Hogwarts</div><div class="cell">10.02</div><div class="cell">3.783</div><div class="cell">34.35</div>
+            </div>
+        </div>
+        <div class="calculation-box">
+            <strong>Der 4D-Skalarprodukt-Nachweis für Harry -> Hogwarts:</strong><br>
+            (1.1 * 1.0) + (1.55 * 8.0) + (0.85 * 0.6) + (0.0 * 0.0) = 1.1 + 12.4 + 0.51 + 0 = <span class="highlight">14.01</span>
+        </div>
+    </div>
+
+    <h2>4. Normalisierung: Die Softmax-Matrix ($\text{Softmax}(Q \cdot K^T)$)</h2>
+    <div class="formula-block">
+        <div class="matrix-equation">
+            <div class="matrix matrix-att matrix-labeled-att" data-dim="Normalisiert (3 × 3)">
+                <div class="row-label">Harry</div><div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
+                <div class="row-label">besucht</div><div class="cell">0.0037</div><div class="cell">0.9885</div><div class="cell">0.0078</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.0000</div><div class="cell">0.0000</div><div class="cell">1.0000</div>
+            </div>
+        </div>
+        <p><em>Notiz für dein Essay: Jede Zeile addiert sich nun exakt zu 1.0 (100%). Harry fokussiert sich zu 99.98% auf Hogwarts. Das Verb „besucht“ fokussiert sich durch die neue 4. Dimension stabil zu 98.85% auf sich selbst, da seine Verb-Eigenschaft im Satz einzigartig ist.</em></p>
+    </div>
+
+    <h2>5. Generierung der Value-Matrix ($V = X \cdot W_V$)</h2>
+    <div class="formula-block">
+        <div class="matrix-equation">
+            <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (3 × 4)">
+                <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+            </div>
+            <div class="operator">·</div>
+            <div class="matrix matrix-w" data-dim="W_V (4 × 4)">
+                <div class="cell">0.2</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                <div class="cell">0.0</div><div class="cell">0.8</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                <div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                <div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.6</div>
+            </div>
+            <div class="operator">=</div>
+            <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="V (3 × 4)">
+                <div class="row-label">Harry</div><div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
+                <div class="row-label">besucht</div><div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>6. Das Ausmultiplizieren für den Kontext-Vektor ($\text{Softmax} \cdot V$)</h2>
+    <p>Wir berechnen den Kontext-Vektor für „Harry“: Zeile 1 der Softmax-Matrix $(1 \times 3)$ mal die gesamte $V$-Matrix $(3 \times 4)$. Das Ergebnis ist ein neuer 4D-Eigenschaftsvektor $(1 \times 4)$.</p>
+    <div class="formula-block">
+        <div class="matrix-equation">
+            <div class="matrix matrix-x" data-dim="Softmax (Harry-Zeile)">
+                <div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
+            </div>
+            <div class="operator">·</div>
+            <div class="matrix matrix-qkv" data-dim="V-Matrix (3 × 4)">
+                <div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
+                <div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
+                <div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
+            </div>
+            <div class="operator">=</div>
+            <div class="matrix matrix-qkv" data-dim="Kontext-Vektor">
+                <div class="cell">0.1001</div><div class="cell">3.2001</div><div class="cell">0.1000</div><div class="cell">0.0000</div>
+            </div>
+        </div>
+        <div class="calculation-box">
+            <strong>Exakter 4D-Rechenweg für den Kontext-Payload von Harry:</strong><br>
+            • Spalte 1 (Person):  (0.0002 * 0.4)  + (0.0000 * 0.02) + (0.9998 * 0.1) = <strong>0.1</strong><br>
+            • Spalte 2 (Magie):   (0.0002 * 0.8)  + (0.0000 * 0.08) + (0.9998 * 3.2) = <strong>3.2</strong><br>
+            • Spalte 3 (Adel):    (0.0002 * 0.25) + (0.0000 * 0.0)  + (0.9998 * 0.1) = <strong>0.1</strong><br>
+            • Spalte 4 (Verb):    (0.0002 * 0.0)  + (0.0000 * 2.1)  + (0.9998 * 0.0) = <strong>0.0</strong>
+        </div>
+    </div>
+
+    <h2>7. Finale Residual-Addition: Fusion der Identitäten</h2>
+    <div class="calculation-box" style="background: rgba(59, 130, 246, 0.05); border-left-color: var(--qkv-color);">
+        x_Harry_final = x_Harry_statisch + x_Harry_kontext<br>
+        x_Harry_final = [2.0, 1.0, 0.5, 0.0] + [0.1, 3.2, 0.1, 0.0]<br>
+        <strong>x_Harry_final = [2.1, 4.2, 0.6, 0.0]</strong>
+    </div>
+
+    <table class="result-table">
+        <thead>
+            <tr>
+                <th>Zustand von "Harry"</th>
+                <th>4D Vektor-Koordinaten [Person, Magie, Royalität, Verb]</th>
+                <th>Phänomenologie im Raum</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Eingangs-Embedding</strong></td>
+                <td><code>[2.0, 1.0, 0.5, 0.0]</code></td>
+                <td>Ein statisches Substantiv, das semantisch noch völlig ungebunden im Raum schwebt.</td>
+            </tr>
+            <tr>
+                <td><strong>Kontextualisiertes Ergebnis</strong></td>
+                <td><code class="highlight">[2.1, 4.2, 0.6, 0.0]</code></td>
+                <td><strong>Eindeutigkeit:</strong> Die Magie-Achse triumphiert. Harry hat sich die Substanz von Hogwarts einverleibt, bleibt aber strukturell ein Substantiv (Verb-Achse verbleibt hart auf 0.0).</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
