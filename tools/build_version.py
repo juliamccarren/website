@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "137" 
+VERSION = "140" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -185,21 +185,21 @@ self.addEventListener('fetch', event => {{
         return;
     }}
 
-    // 2. Special treatment: MP3-Audio (Cache-First + Bypass dead zone)
+    // 2. Special treatment: MP3-Audio (Cache-First mit Range-Support für mobiles Spulen)
     if (url.pathname.endsWith('.mp3')) {{
         event.respondWith(
             caches.match(event.request, {{ ignoreSearch: true }})
                 .then(response => {{
                     if (response) {{
                         console.log(`%c[SW] CACHE-HIT (Audio): Serving ${{fileName}} from local storage`, 'color: #d946ef');
-                        return response;
+                        return handleAudioRangeRequest(event.request, response);
                     }}
                     console.log(`%c[SW] CACHE-MISS (Audio): Fetching ${{fileName}} from Network`, 'color: #3b82f6');
                     return fetch(event.request);
                 }})
         );
         return;
-    }}
+    }}    
 
     // 3. Standard treatment: All other assets (Cache-First)
     event.respondWith(
@@ -215,6 +215,50 @@ self.addEventListener('fetch', event => {{
         }})
     );
 }});
+
+/**
+ * Schneidet für Range-Requests die passenden Bytes aus dem Cache-Objekt heraus
+ * und gibt Status 206 Partial Content zurück (wichtig für Android & iOS Seek).
+ */
+async function handleAudioRangeRequest(request, cachedResponse) {{
+    const rangeHeader = request.headers.get('range');
+
+    // Wenn der Browser ganz normal abspielt (ohne Spulen), die gecachte Datei wie gewohnt liefern
+    if (!rangeHeader) {{
+        return cachedResponse;
+    }}
+
+    try {{
+        const arrayBuffer = await cachedResponse.arrayBuffer();
+        const totalLength = arrayBuffer.byteLength;
+
+        // Byte-Range parsen, z.B. "bytes=1048576-"
+        const bytesMatch = rangeHeader.match(/bytes=(\d+)-(\d+)?/);
+        if (!bytesMatch) {{
+            return cachedResponse;
+        }}
+
+        const start = parseInt(bytesMatch[1], 10);
+        const end = bytesMatch[2] ? parseInt(bytesMatch[2], 10) : totalLength - 1;
+
+        // Teilbereich ausschneiden
+        const slicedBuffer = arrayBuffer.slice(start, end + 1);
+
+        return new Response(slicedBuffer, {{
+            status: 206,
+            statusText: 'Partial Content',
+            headers: {{
+                'Content-Type': cachedResponse.headers.get('Content-Type') || 'audio/mpeg',
+                'Content-Range': `bytes ${{start}}-${{end}}/${{totalLength}}`,
+                'Content-Length': slicedBuffer.byteLength,
+                'Accept-Ranges': 'bytes'
+            }}
+        }});
+    }} catch (err) {{
+        console.error('[SW] Range processing failed, fallback to full response', err);
+        return cachedResponse;
+    }}
+}}
 
 self.addEventListener('message', (event) => {{
     if (event.data === 'SKIP_WAITING') {{
