@@ -5,7 +5,7 @@ import uuid
 import glob
 
 # --- KONFIGURATION ---
-VERSION = "141" 
+VERSION = "142" 
 TARGET_DIR = f"v{VERSION}"
 BASE_DIR = "." 
 
@@ -233,7 +233,7 @@ async function handleAudioRangeRequest(request, cachedResponse) {{
         const totalLength = arrayBuffer.byteLength;
 
         // Byte-Range parsen, z.B. "bytes=1048576-"
-        const bytesMatch = rangeHeader.match(/bytes=(\d+)-(\d+)?/);
+        const bytesMatch = rangeHeader.match(/bytes=(\\d+)-(\\d+)?/);
         if (!bytesMatch) {{
             return cachedResponse;
         }}
