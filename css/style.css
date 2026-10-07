@@ -1216,12 +1216,26 @@ strong {
     transition: color 0.3s ease, opacity 0.3s ease;
 }
 
+/* Sanfter Übergang für die Chevron-Drehung */
 .strip-slide-handle svg,
 .strip-slide-handle i {
     width: 20px;
     height: 20px;
     stroke-width: 2.5;
     pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Drehung um 180 Grad, sobald ein Strip ausgeklappt ist (per Hover oder Klick) */
+#neural-filter-strip.mobile-expanded .strip-slide-handle svg,
+#neural-filter-strip.mobile-expanded .strip-slide-handle i,
+#neural-filter-strip.hover-expanded .strip-slide-handle svg,
+#neural-filter-strip.hover-expanded .strip-slide-handle i,
+#neural-index-strip.mobile-expanded .strip-slide-handle svg,
+#neural-index-strip.mobile-expanded .strip-slide-handle i,
+#neural-index-strip.hover-expanded .strip-slide-handle svg,
+#neural-index-strip.hover-expanded .strip-slide-handle i {
+    transform: rotate(180deg);
 }
 
 /* Linker Strip: Pfeil liegt ganz rechts an der Kante */
@@ -1350,28 +1364,16 @@ strong {
     box-shadow: 0 0 10px rgba(217, 70, 239, 0.3);
 }
 
-#song-grid {
-    scroll-margin-top: calc(12rem + env(safe-area-inset-top));
+#neural-filter-strip.mobile-expanded,
+#neural-filter-strip.hover-expanded,
+#neural-index-strip.mobile-expanded,
+#neural-index-strip.hover-expanded {
+    transform: translateY(-50%) translateX(0) !important;
+    background: rgba(5, 5, 5, 0.98) !important;
 }
 
-/* Ersetze die bisherigen Zeilen für :hover ab ca. Zeile 737 und 776 */
-@media (hover: hover) and (pointer: fine) {
-    #neural-filter-strip.visible:hover {
-        transform: translateY(-50%) translateX(0);
-        background: rgba(10, 10, 10, 0.75) !important;
-    }
-
-    #neural-index-strip.visible:hover {
-        transform: translateY(-50%) translateX(0);
-        background: rgba(10, 10, 10, 0.75) !important;
-    }
-
-    #neural-filter-strip.visible:hover .strip-slide-handle svg,
-    #neural-filter-strip.visible:hover .strip-slide-handle i,
-    #neural-index-strip.visible:hover .strip-slide-handle svg,
-    #neural-index-strip.visible:hover .strip-slide-handle i {
-        transform: rotate(180deg);
-    }
+#song-grid {
+    scroll-margin-top: calc(12rem + env(safe-area-inset-top));
 }
 
 /* Tags im Song-Modal / Player in leichtem Grau darstellen */

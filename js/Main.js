@@ -1047,15 +1047,22 @@ function updateNeuralIndexStrip(songs) {
 
     strip.innerHTML = '';
 
-    // 0. SLIDEOUT-PFEIL OBEN (Grid-Zeile 1)
+    // 0. SLIDEOUT-PFEIL OBEN
     const handle = document.createElement('div');
     handle.className = 'strip-slide-handle';
     handle.innerHTML = '<i data-lucide="chevron-left"></i>';
 
+    // Klick-Toggle: Fixiert den Strip (Ein-/Ausklappen per Klick)
     const toggleIndexStrip = (e) => {
         e.stopPropagation();
         e.preventDefault();
-        strip.classList.toggle('mobile-expanded');
+        // Wenn der Strip offen ist (egal ob Hover oder Mobile), beim Klick sofort komplett schließen
+        if (strip.classList.contains('mobile-expanded') || strip.classList.contains('hover-expanded')) {
+            strip.classList.remove('mobile-expanded', 'hover-expanded');
+        } else {
+            // Ansonsten öffnen und fixieren
+            strip.classList.add('mobile-expanded');
+        }
         if (window.navigator.vibrate) window.navigator.vibrate(5);
     };
 
@@ -1063,14 +1070,18 @@ function updateNeuralIndexStrip(songs) {
     handle.addEventListener('click', toggleIndexStrip);
     strip.appendChild(handle);
 
-    strip.addEventListener('touchend', (e) => {
+    // Desktop Hover-Verhalten (Öffnen bei Maus-Kontakt, Schließen beim Verlassen, außer per Klick fixiert)
+    strip.addEventListener('mouseenter', () => {
         if (!strip.classList.contains('mobile-expanded')) {
-            e.stopPropagation();
-            strip.classList.add('mobile-expanded');
+            strip.classList.add('hover-expanded');
         }
     });
 
-    // 1. SCROLLBARER CONTAINER FÜR DIE SONG-EINTRÄGE (Grid-Zeile 2)
+    strip.addEventListener('mouseleave', () => {
+        strip.classList.remove('hover-expanded');
+    });
+
+    // 1. SCROLLBARER CONTAINER FÜR DIE SONG-EINTRÄGE
     const scrollContainer = document.createElement('div');
     scrollContainer.className = 'index-scroll-container';
 
@@ -1087,9 +1098,9 @@ function updateNeuralIndexStrip(songs) {
                 cards[index].classList.add('ring-2', 'ring-fuchsia-500');
                 setTimeout(() => cards[index].classList.remove('ring-2', 'ring-fuchsia-500'), 2000);
             }
-            strip.classList.remove('mobile-expanded');
+            strip.classList.remove('mobile-expanded', 'hover-expanded');
         };
-        scrollContainer.appendChild(item); // WICHTIG: Kommt in den Scroll-Container!
+        scrollContainer.appendChild(item);
     });
 
     strip.appendChild(scrollContainer);
@@ -1315,15 +1326,41 @@ function initNeuralFilterStrip() {
     handle.className = 'strip-slide-handle';
     handle.innerHTML = '<i data-lucide="chevron-right"></i>';
 
+    // Klick-Toggle: Fixiert den Filter Strip
     const toggleFilterStrip = (e) => {
         e.stopPropagation();
         e.preventDefault();
-        strip.classList.toggle('mobile-expanded');
+        if (strip.classList.contains('mobile-expanded') || strip.classList.contains('hover-expanded')) {
+            strip.classList.remove('mobile-expanded', 'hover-expanded');
+        } else {
+            strip.classList.add('mobile-expanded');
+        }
         if (window.navigator.vibrate) window.navigator.vibrate(5);
     };
 
     handle.addEventListener('touchend', toggleFilterStrip);
     handle.addEventListener('click', toggleFilterStrip);
+
+    strip.appendChild(handle);
+
+    // NEU: Desktop Hover-Verhalten für den linken Strip
+    strip.addEventListener('mouseenter', () => {
+        if (!strip.classList.contains('mobile-expanded')) {
+            strip.classList.add('hover-expanded');
+        }
+    });
+
+    strip.addEventListener('mouseleave', () => {
+        strip.classList.remove('hover-expanded');
+    });
+
+    // Wenn geschlossen, öffnet ein Tippen auf den sichtbaren Reiter
+    strip.addEventListener('touchend', (e) => {
+        if (!strip.classList.contains('mobile-expanded')) {
+            e.stopPropagation();
+            strip.classList.add('mobile-expanded');
+        }
+    });
 
     strip.appendChild(handle);
 
