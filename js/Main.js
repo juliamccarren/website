@@ -1034,6 +1034,9 @@ function activateNewServiceWorker() {
 /**
  * Aktualisiert den Index Strip und fügt Mobile-Support hinzu
  */
+/**
+ * Aktualisiert den Index Strip und fügt Mobile-Support hinzu
+ */
 function updateNeuralIndexStrip(songs) {
     let strip = document.getElementById('neural-index-strip');
     if (!strip) {
@@ -1044,12 +1047,11 @@ function updateNeuralIndexStrip(songs) {
 
     strip.innerHTML = '';
 
-    // 0. SLIDEOUT-PFEIL OBEN
+    // 0. SLIDEOUT-PFEIL OBEN (Grid-Zeile 1)
     const handle = document.createElement('div');
     handle.className = 'strip-slide-handle';
     handle.innerHTML = '<i data-lucide="chevron-left"></i>';
 
-    // Ein- und Ausfahren sauber über Pointer/Touch/Click steuern
     const toggleIndexStrip = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -1059,10 +1061,8 @@ function updateNeuralIndexStrip(songs) {
 
     handle.addEventListener('touchend', toggleIndexStrip);
     handle.addEventListener('click', toggleIndexStrip);
-
     strip.appendChild(handle);
 
-    // Wenn der Streifen geschlossen ist, öffnet ein Tippen auf den sichtbaren Rand
     strip.addEventListener('touchend', (e) => {
         if (!strip.classList.contains('mobile-expanded')) {
             e.stopPropagation();
@@ -1070,7 +1070,10 @@ function updateNeuralIndexStrip(songs) {
         }
     });
 
-    // 1. SONG-EINTRÄGE
+    // 1. SCROLLBARER CONTAINER FÜR DIE SONG-EINTRÄGE (Grid-Zeile 2)
+    const scrollContainer = document.createElement('div');
+    scrollContainer.className = 'index-scroll-container';
+
     songs.forEach((song, index) => {
         const item = document.createElement('div');
         item.className = 'index-item';
@@ -1086,8 +1089,10 @@ function updateNeuralIndexStrip(songs) {
             }
             strip.classList.remove('mobile-expanded');
         };
-        strip.appendChild(item);
+        scrollContainer.appendChild(item); // WICHTIG: Kommt in den Scroll-Container!
     });
+
+    strip.appendChild(scrollContainer);
 
     if (window.lucide) {
         lucide.createIcons();
