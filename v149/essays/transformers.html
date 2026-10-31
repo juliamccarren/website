@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Julia">
+    <meta name="theme-color" content="#d946ef">
+
+    <link rel="apple-touch-icon" href="images/icons/app_icon_192.png">
+
+    <!-- SEO & Identity -->
+    <meta name="robots" content="index, follow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essays | Julia McCarren</title>
+
+    <!-- Preloads & Scripts -->
+    <script src="../js/tailwindcss.js"></script>
+    <script src="../js/lucide.js"></script>
+    <script src="../js/VersionCore.js"></script> 
+    <script src="../js/Placeholder.js"></script>
+    <script id="MathJax-script" async src="../js/tex-mml-chtml.js"></script>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],    /* Erkennt $...$ für Formeln im Fließtext */
+                displayMath: [['$$', '$$']], /* Erkennt $$...$$ für freistehende, große Formeln */
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'matrix' /* Ignoriert Bereiche wie deine Tabellenzellen, damit dort nichts kollidiert */
+            }
+        };
+    </script>    
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="overflow-x-hidden bg-black text-white">
+
+    <!-- Header placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content Area -->
+    <div class="content-wrapper pt-28 min-h-screen">
+        <main class="container mx-auto px-6 max-w-7xl py-10">
+            
+        <!-- Page Title -->    
+        <div class="mb-16">
+            <h1><span class="cyber-gradient-text">Transforming</span> Meanings</h1>
+            <p class="text-neutral-500 font-bold uppercase tracking-[0.4em] text-xs mb-0">How a machine interprets language</p>
+        </div>
+
+        <article class="border-b border-neutral-900 space-y-4">
+
+            <!-- Chapter -->
+            <p>Just one word: "Harry". You think WTF is Harry? OK, let's give a little more <strong>context</strong>.</p>
+
+            <p>"Harry visits Hogwarts."</p>
+
+            <p>Boom! Just by adding 2 words the meaning of "Harry" changed. "Hogwarts" transformed the neutral person "Harry" into a young wizard "Harry Potter" visiting a magical school. Welcome to the magic of transformers.</p>
+
+            <p>
+                If you remember the concept of embeddings, you might recall that each word is represented as a vector in a high-dimensional space. 
+                This is called the <strong>latent space</strong>. The latent space contains the semantics of the whole world. Every possible meaning is encoded in this space. 
+                This could be both words or sounds. The latent space of LLMs has 4096 dimension and above whilst the latent space of music only has 512 dimensions. 
+                This does not imply that one is superior to the other, though there are different opinions on this matter.
+            </p>
+
+            <p>We'll take a look under the hood of modern transformers.</p>
+
+            <!-- Image Container -->
+            <div class="relative rounded-3xl overflow-hidden border border-white/10 group mb-12">
+                <img src="../images/under_the_hood.webp" 
+                        alt="Julia looking under the hood" 
+                        >
+                <!-- <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div> -->
+                <div class="absolute bottom-6 left-8">
+                    <p class="text-[10px] font-black uppercase tracking-[0.5em] text-black/80">Julia looking under the hood</p>
+                </div>
+            </div>                 
+
+            <!-- Chapter -->
+            <h2><a href="#">Clarity Through Dimensions: 4D Transformer Arithmetic</a></h2>
+
+            <p>To understand how transformers work, let's dive into a simple example with a 4D latent space. We'll use the sentence "Harry visits Hogwarts" from the introduction as our example.</p>
+
+            <p>Sentence context: <strong>"Harry visits Hogwarts"</strong>. Sentence length <strong>N = 3</strong> (rows), embedding dimension <strong>d = 4</strong> (columns).</p>
+            
+            <p>To make this more concrete, let's visualize the process step by step. We'll start giving every of the 4 dimensions a specific role:</p>
+
+            <div class="axis-legend">
+                <strong>Geometric Architecture of the Space ($d=4$):</strong><br>
+                • Dimension 1: Person<br>
+                • Dimension 2: Magic<br>
+                • Dimension 3: Royalty<br>
+                • Dimension 4: Verb
+            </div>
+
+            <p>Now let's assign the values to each dimension of the embedding of "Harry". Harry is a person, so we'll set the value in Dimension 1 to a relatively high value. In the neutral "Harry"-embedding, we don't know yet that Harry might be magical. We set the "Magic" value in Dimension 2 to a moderate value. That Harry is a royal figure is less probable; thus, we set Dimension 3 to a low value, and since "Harry" is a noun, we set the verb dimension to 0.0.</p>
+
+            <div class="matrix matrix-x matrix-labeled-4d">
+                <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+            </div>
+
+            <p>Within the embedding of "visits" the verb dimension is dominant, as "visits" is a verb.</p> 
+
+            <div class="matrix matrix-x matrix-labeled-4d">
+                <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+            </div>
+            
+            <p>Finally, "Hogwarts" has a strong magical presence, so we set the value in Dimension 2 to a high value.</p>
+
+            <div class="matrix matrix-x matrix-labeled-4d">
+                <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+            </div>  
+            
+            <p>Let's write down the entire input matrix $X$ for the sentence "Harry visits Hogwarts" by just stacking the embeddings of the three words on top of each other:</p>
+
+            <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (N=3 × d=4)">
+                <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+            </div>
+
+            <!-- Chapter -->
+            <h2><a href="#">The Attention Mechanism</a></h2>
+            
+            <p class="text-base text-neutral-300 leading-relaxed mb-6">
+                The <strong>Attention Mechanism</strong> is the architectural core of the Transformer model, enabling it to process sequential data (such as language or audio) by capturing contextual dependencies regardless of their distance in a sequence. Unlike traditional recurrent architectures that process tokens step-by-step, Self-Attention allows every token to look at, weigh, and aggregate information from every other token simultaneously.
+            </p>
+
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">The QKV Paradigm</h3>
+            <p class="text-base text-neutral-300 leading-relaxed mb-4">
+                This dynamic routing of information is achieved through the <strong>Query-Key-Value (QKV)</strong> framework, where linear projections map the input data into distinct functional roles:
+            </p>
+
+            <ul class="custom-lucide-list mb-6">
+                <li class="text-neutral-300 text-sm">
+                    <span class="text-white font-semibold">Query ($Q$):</span> Represents the current token actively searching for relevant contextual hooks.
+                </li>
+                <li class="text-neutral-300 text-sm">
+                    <span class="text-white font-semibold">Key ($K$):</span> Represents the semantic profile or "address" offered by every token in the sequence.
+                </li>
+                <li class="text-neutral-300 text-sm">
+                    <span class="text-white font-semibold">Value ($V$):</span> Contains the actual information payload or sensory content of the tokens.
+                </li>
+            </ul>
+
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Mathematical Inversion and Bottleneck</h3>
+            <p class="text-base text-neutral-300 leading-relaxed">
+                By computing the dot-product of the Queries and Keys ($Q \cdot K^T$), the model generates a raw compatibility matrix. This matrix is normalized via the <strong>Softmax</strong> function to produce a probability distribution, the Attention Scores, representing how much focus one token should allocate to another. Finally, these scores are multiplied by the Value matrix ($V$) to compute a weighted sum. This process physically transforms each token's static vector embedding within the latent space, updating its coordinates based on the gravity of its surrounding context, thus changing its meaning. 
+            </p>
+            
+            <p class="text-sm text-neutral-500 italic mt-4">
+                *Note for the architecture critique: While mathematically elegant, computing this $N \times N$ attention matrix creates a quadratic computational bottleneck relative to sequence length ($N$), which serves as the primary catalyst for modern efficiency research in alternative sequence models like SSMs.
+            </p>
+
+            <p>For each of these matrices, there are corresponding weight matrices $W_Q$, $W_K$, and $W_V$. Those matrices are learned during training and are static during inference.</p>
+
+            <h2>Query Matrix Generation ($Q = X \cdot W_Q$)</h2>
+            <h3>Input $X$ multiplied by weights $W_Q$. Note the asymmetric shapes: $(3 \times 4) \cdot (4 \times 4) = (3 \times 4)$.</h3>
+
+            <div class="formula-block">
+                <div class="matrix-equation">
+                    <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (N=3 × d=4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+                    </div>
+                    <div class="operator">·</div>
+                    <div class="matrix matrix-w" data-dim="W_Q (d=4 × d=4)">
+                        <div class="cell">0.5</div><div class="cell">0.2</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                        <div class="cell">0.1</div><div class="cell">1.0</div><div class="cell">0.1</div><div class="cell">0.0</div>
+                        <div class="cell">0.0</div><div class="cell">0.3</div><div class="cell">1.5</div><div class="cell">0.0</div>
+                        <div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">1.0</div>
+                    </div>
+                    <div class="operator">=</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Q (N=3 × d=4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">1.1</div><div class="cell">1.55</div><div class="cell">0.85</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.41</div><div class="cell">0.12</div><div class="cell">0.01</div><div class="cell">3.5</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.65</div><div class="cell">4.16</div><div class="cell">0.7</div><div class="cell">0.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                The first column of the $W_Q$ matrix is static and could be applied to all words of the input matrix (context) to get their query values regarding their attention to the Person's dimension (first column = first dimension).
+                The result is shown in the first column of the $Q$ matrix. "Harry" wants some more information about the Person dimension, so it has a high value of 1.1. "visits" is a verb and has no interest in the Person dimension, so it has a low value of 0.41. "Hogwarts" is a magical school and has some interest in the Person dimension, so it has a moderate value of 0.65.
+            </p>
+
+            <h2>Key Matrix Generation ($K = X \cdot W_K$)</h2>
+
+            <div class="formula-block">
+                <div class="matrix-equation">
+                    <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+                    </div>
+                    <div class="operator">·</div>
+                    <div class="matrix matrix-w" data-dim="W_K (4 × 4)">
+                        <div class="cell">0.4</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                        <div class="cell">0.2</div><div class="cell">2.0</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                        <div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">3.0</div><div class="cell">0.0</div>
+                        <div class="cell">0.0</div><div class="cell">0.2</div><div class="cell">0.0</div><div class="cell">0.5</div>
+                    </div>
+                    <div class="operator">=</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="K (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">1.0</div><div class="cell">2.0</div><div class="cell">1.5</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.06</div><div class="cell">0.9</div><div class="cell">0.0</div><div class="cell">1.75</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">1.0</div><div class="cell">8.0</div><div class="cell">0.6</div><div class="cell">0.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                When a word asks via $Q$ the context for more information regarding its dimensions, the other words in the context answer via $K$. The first column of the $W_K$ matrix is static and could be applied to all words of the input matrix (context) to get their key values regarding their attention to the Person's dimension (first column = first dimension).
+                The result is shown in the first column of the $K$ matrix. "Harry" has a high value of 1.0, "visits" has a low value of 0.06, and "Hogwarts" has a high value of 1.0. This means that "Harry" and "Hogwarts" are both relevant to answer the Person dimension, while "visits" is not.
+            </p>
+            
+            <p>
+                "Harry" asks via $Q$ for more information regarding the Person dimension, and "Hogwarts" answers via $K$ with a high value of 1.0. This means that "Hogwarts" is relevant to answer the Person dimension. We already know that "Hogwarts" is a magical school, so it makes sense that it has a high value in the Person dimension as it transforms the meaning of a neutral person "Harry" to "Harry Potter", the wizard.
+            </p>
+
+            <h2>The Transformation Into Square Hell: Attention Scores ($Q \cdot K^T$)</h2>
+
+            <p>
+                We want to know how much attention each word should pay to every other word in the sentence regarding all dimensions at once. 
+                Which of the rows of the $K$ matrix is most relevant to answer the questions of the rows of the $Q$ matrix? 
+                Which word is most relevant to answer the questions of "Harry" regarding all dimensions at once?
+            </p>
+
+            <p>
+                To find the best-fitting vector of the $K$ matrix for each row of the $Q$ matrix, we compute the dot product as single value representation of the similarity between the two vectors.
+                The value is relative. If it's high compared to other dot products, it means that the two vectors are similar and the word of the $K$ matrix is relevant to answer the questions of the word of the $Q$ matrix.
+            </p>
+
+            <p>
+                If we apply the dot product to all rows of the $Q$ matrix and all rows of the $K$ matrix, we have to transpose the $K$ matrix to align the dimensions for multiplication. 
+                That means we multiply the first row of the $Q$ matrix with the first column of the $K^T$ matrix, the second row of the $Q$ matrix with the second column of the $K^T$ matrix, and so on. The result is a square matrix of size $N \times N$, where each entry represents how much attention one word should pay to another word in the sentence.
+                The dimensions are completely eliminated in this step, and we are left with a pure sentence-length table of attention scores. The columns and rows of the resulting matrix correspond to the words in the sentence, and the values indicate the strength of attention one word should give to another.
+            </p>
+
+            <p>
+                Except for the high values of the self attention in the diagonal, the highest value is 14.01 in the first row and third column. This means that "Harry" should pay the most attention to "Hogwarts".
+            </p>
+
+            <div class="formula-block">
+                <div class="matrix-equation">
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Q (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">1.1</div><div class="cell">1.55</div><div class="cell">0.85</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.41</div><div class="cell">0.12</div><div class="cell">0.01</div><div class="cell">3.5</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.65</div><div class="cell">4.16</div><div class="cell">0.7</div><div class="cell">0.0</div>
+                    </div>
+                    <div class="operator">·</div>
+                    <div class="matrix matrix-x" data-dim="K^T (4 × 3)">
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
+                        <div class="row-label">Person</div><div class="cell">1.0</div><div class="cell">0.06</div><div class="cell">1.0</div>
+                        <div class="row-label">Magic</div><div class="cell">2.0</div><div class="cell">0.9</div><div class="cell">8.0</div>
+                        <div class="row-label">Royalty</div><div class="cell">1.5</div><div class="cell">0.0</div><div class="cell">0.6</div>
+                        <div class="row-label">Verb</div><div class="cell">0.0</div><div class="cell">1.75</div><div class="cell">0.0</div>
+                    </div>
+                    <div class="operator">=</div>
+                    <div class="matrix matrix-att matrix-labeled-att" data-dim="Scores (N=3 × N=3)">
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
+                        <div class="row-label">Harry</div><div class="cell">5.475</div><div class="cell">1.461</div><div class="cell">14.01</div>
+                        <div class="row-label">visits</div><div class="cell">0.665</div><div class="cell">6.257</div><div class="cell">1.378</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">10.02</div><div class="cell">3.783</div><div class="cell">34.35</div>
+                    </div>
+                </div>
+                <div class="calculation-box">
+                    <strong>The 4D Dot Product Verification for Harry -> Hogwarts:</strong><br>
+                    (1.1 * 1.0) + (1.55 * 8.0) + (0.85 * 0.6) + (0.0 * 0.0) = 1.1 + 12.4 + 0.51 + 0 = <span class="highlight">14.01</span>
+                </div>
+            </div>
+
+            <p>
+                In the attention scores matrix, the difference between $N$ and $d$ becomes brutally apparent. We multiply the Queries $(3 \times 4)$ by the transposed Keys $K^T$ $(4 \times 3)$. The dimensional width $d=4$ cancels out, creating a pure, square sentence-length table: <strong>$N \times N = 3 \times 3$</strong>.
+                That means that the matrix grows quadratically with the sentence length $N$. This is the reason why transformers have a quadratic complexity in terms of memory and computation, which can become a bottleneck for long sequences.
+                When you hear about energy and water consumption of LLMs, this is the reason why. The attention scores matrix is the most expensive part of the transformer architecture.
+                It demands a lot of memory and computation to calculate the attention scores for every pair of tokens in the input sequence, especially for long sequences. 
+                This is why researchers are exploring alternative architectures that can reduce this quadratic complexity, such as linear attention mechanisms or sparse attention patterns.
+            </p> 
+            
+            <p>
+                At this point, you also understand why LLMs try to limit the context window to a certain number of tokens. 
+                The longer the context, the more expensive the attention scores matrix becomes. 
+                At a certain time in conversation you get the message from your chatbot that this should be the last message in the conversation.
+                The conversation gets too expensive as the costs grow quadratically with the chat length.
+            </p>
+
+            <h2>Normalization: The Softmax Matrix (SOFTMAX$(Q \cdot K^T)$)</h2>
+            <p>The activation function converts the raw values row by row into probabilities. Because the value 14.01 massively dominates compared to the others, it pulls nearly all attention to itself after the exponential function ($e^x$).</p>
+            <div class="formula-block">
+                <div class="matrix-equation">
+                    <div class="matrix matrix-att matrix-labeled-att" data-dim="Normalized (3 × 3)">
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
+                        <div class="row-label">Harry</div><div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
+                        <div class="row-label">visits</div><div class="cell">0.0037</div><div class="cell">0.9885</div><div class="cell">0.0078</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.0000</div><div class="cell">0.0000</div><div class="cell">1.0000</div>
+                    </div>
+                </div>
+                <p><em>Note for your essay: Each row now sums up exactly to 1.0 (100%). Harry focuses 99.98% on Hogwarts. The verb "visits" focuses stably at 98.85% on itself due to the new 4th dimension, as its verb property is unique in the sentence.</em></p>
+            </div>
+
+            <h2>Value Matrix Generation ($V = X \cdot W_V$)</h2>
+            <div class="formula-block">
+                <div class="matrix-equation">
+                    <div class="matrix matrix-x matrix-labeled-4d" data-dim="X (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">2.0</div><div class="cell">1.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.1</div><div class="cell">0.1</div><div class="cell">0.0</div><div class="cell">3.5</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.5</div><div class="cell">4.0</div><div class="cell">0.2</div><div class="cell">0.0</div>
+                    </div>
+                    <div class="operator">·</div>
+                    <div class="matrix matrix-w" data-dim="W_V (4 × 4)">
+                        <div class="cell">0.2</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                        <div class="cell">0.0</div><div class="cell">0.8</div><div class="cell">0.0</div><div class="cell">0.0</div>
+                        <div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.5</div><div class="cell">0.0</div>
+                        <div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.0</div><div class="cell">0.6</div>
+                    </div>
+                    <div class="operator">=</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="V (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Multiplication with V for the Context Vector (SOFTMAX $\cdot V)$)</h2>
+            <p>We compute the context vector for "Harry": Row 1 of the Softmax matrix $(1 \times 3)$ multiplied by the entire $V$ matrix $(3 \times 4)$. The result is a new 4D feature vector $(1 \times 4)$.</p>
+            <div class="formula-block">
+                <div class="matrix-equation">
+                    <div class="matrix matrix-att matrix-labeled-att" data-dim="Softmax (Harry Row)">
+                        <div></div><div class="column-label">Harry</div><div class="column-label">visits</div><div class="column-label">Hogwarts</div>
+                        <div class="row-label">Harry</div><div class="cell">0.0002</div><div class="cell">0.0000</div><div class="cell">0.9998</div>
+                    </div>
+                    <div class="operator">·</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="V (3 × 4)">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">0.4</div><div class="cell">0.8</div><div class="cell">0.25</div><div class="cell">0.0</div>
+                        <div class="row-label">visits</div><div class="cell">0.02</div><div class="cell">0.08</div><div class="cell">0.0</div><div class="cell">2.1</div>
+                        <div class="row-label">Hogwarts</div><div class="cell">0.1</div><div class="cell">3.2</div><div class="cell">0.1</div><div class="cell">0.0</div>
+                    </div>
+
+                    <div class="operator">=</div>
+                    <div class="matrix matrix-qkv matrix-labeled-4d" data-dim="Context Vector">
+                        <div></div><div class="column-label">Person</div><div class="column-label">Magic</div><div class="column-label">Royalty</div><div class="column-label">Verb</div>
+                        <div class="row-label">Harry</div><div class="cell">0.1001</div><div class="cell">3.2001</div><div class="cell">0.1000</div><div class="cell">0.0000</div>
+                    </div>
+                </div>
+                <div class="calculation-box">
+                    <strong>Exact 4D Calculation Path for Harry's Context Payload:</strong><br>
+                    • Column 1 (Person): (0.0002 * 0.4)  + (0.0000 * 0.02) + (0.9998 * 0.1) = <strong>0.1</strong><br>
+                    • Column 2 (Magic):  (0.0002 * 0.8)  + (0.0000 * 0.08) + (0.9998 * 3.2) = <strong>3.2</strong><br>
+                    • Column 3 (Royalty):(0.0002 * 0.25) + (0.0000 * 0.0)  + (0.9998 * 0.1) = <strong>0.1</strong><br>
+                    • Column 4 (Verb):   (0.0002 * 0.0)  + (0.0000 * 2.1)  + (0.9998 * 0.0) = <strong>0.0</strong>
+                </div>
+            </div>
+
+            <h2>Final Residual Addition: Fusion of Identities</h2>
+
+            <p>We add the context vector to the original embedding of "Harry" to get the final contextualized embedding.</p>
+
+            <div class="calculation-box" style="background: rgba(59, 130, 246, 0.05); border-left-color: var(--qkv-color);">
+                x_Harry_final = x_Harry_static + x_Harry_context<br>
+                x_Harry_final = [2.0, 1.0, 0.5, 0.0] + [0.1, 3.2, 0.1, 0.0]<br>
+                <strong>x_Harry_final = [2.1, 4.2, 0.6, 0.0]</strong>
+            </div>
+
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>State of "Harry"</th>
+                        <th>4D Vector Coordinates [Person, Magic, Royalty, Verb]</th>
+                        <th>Phenomenology in Space</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Input Embedding</strong></td>
+                        <td><code>[2.0, 1.0, 0.5, 0.0]</code></td>
+                        <td>A static noun floating semantically unconstrained in space.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contextualized Result</strong></td>
+                        <td><code class="highlight">[2.1, 4.2, 0.6, 0.0]</code></td>
+                        <td><strong>Uniqueness:</strong> The magic axis triumphs. Harry has absorbed the substance of Hogwarts but structurally remains a noun (verb axis stays strictly at 0.0).</td>
+                    </tr>
+                </tbody>
+            </table>    
+            
+            <p> 
+                This result is in the latent space very close to the embedding of "wizard" (a magical person). Thus the model can reason that Harry is also a wizard though the sentence never explicitly stated this.
+                This is the magic of the attention mechanism. It allows the model to infer relationships and properties that are not explicitly mentioned in the input, by leveraging the context provided by other tokens in the sequence.
+            </p>
+
+            <!-- Image Container -->
+            <div class="relative rounded-3xl overflow-hidden border border-white/10 group mb-12">
+                <img src="../images/witch.webp" 
+                        alt="Julia the witch" 
+                        >
+                <!-- <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div> -->
+                <div class="absolute bottom-6 left-8">
+                    <p class="text-[10px] font-black uppercase tracking-[0.5em] text-black/80">Julia the witch</p>
+                </div>
+            </div>              
+        </article>
+
+        </main>
+
+        <!-- Footer placeholder -->
+        <div id="footer-placeholder"></div>
+    </div>
+
+</body>
+</html>

@@ -1,5 +1,15 @@
 [
   {
+    "id": "esultate_gioite",
+    "title": "Esultate, Gioite",
+    "background": "The song features the lyrics from the 1st cantata of Bach's Christmas Oratorio, translated into Italian:\n\nJauchzet, frohlocket, auf, preiset die Tage,\nRühmet, was heute der Höchste getan!\nLasset das Zagen, verbannet die Klage,\nStimmet voll Jauchzen und Fröhlichkeit an!\nDienet dem Höchsten mit herrlichen Chören,\nLasst uns den Namen des Herrschers verehren!   \n\nThe original comes almost word-for-word from a secular congratulatory cantata (BWV 214, “Tönet, ihr Pauken! Erschallet, Trompeten!”), which Bach composed in 1733 for the birthday of the Saxon Electress and Polish Queen Maria Josepha. He took this courtly, loud dance and ceremonial music and transplanted it directly before the altar of St. Thomas Church in Leipzig.\n\nNearly 300 years later, I did the same and set the text to contemporary loud dance music.",
+    "tags": [
+      "Christmas Oratorio"
+    ],
+    "content_id_check": false,
+    "lyrics": "Esultate, gioite, sorgete, lodate questi giorni,\nc'elebra-te ciò che oggi l'Altissimo ha compiuto!\nAbbandonate l'esitazione, bandite il lamento,\nintonate canti colmi di giubilo e letizia!\nServite l'Altissimo con splendidi cori,\nonoriamo il nome del Sovrano!"
+  },
+  {
     "id": "un_cuore_sincero",
     "title": "Un Cuore Sincero",
     "background": "I tear through my close-knit hometown, balancing high-speed thrills with warm, deeply rooted connections to the local shopkeepers and my friends.",

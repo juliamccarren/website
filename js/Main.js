@@ -157,9 +157,7 @@ async function loadAndDisplayFeatureSongs() {
     try {
         // Fetch all the feature songs by their specific IDs
         const songIds = [
-            'fuori_dai_piedi_live_v6',
-            'fuori_dai_piedi_live',
-            'fuori_dai_piedi'
+            'esultate_gioite'
         ];
 
         // Request all songs in parallel and wait for all to complete
@@ -1435,6 +1433,13 @@ function initNeuralFilterStrip() {
 
     // 4. FILTER-BUTTONS
     const filters = [
+        { 
+            label: 'Christmas Oratorio', 
+            action: async () => {
+                await filterArchiveByTag('Christmas Oratorio');
+                scrollToSongGrid();
+            } 
+        },        
         { 
             label: 'Made in Italy', 
             action: async () => {
