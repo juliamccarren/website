@@ -10,6 +10,16 @@
     "lyrics": "Esultate, gioite, sorgete, lodate questi giorni,\nc'elebra-te ciò che oggi l'Altissimo ha compiuto!\nAbbandonate l'esitazione, bandite il lamento,\nintonate canti colmi di giubilo e letizia!\nServite l'Altissimo con splendidi cori,\nonoriamo il nome del Sovrano!"
   },
   {
+    "id": "storia_di_natale_I",
+    "title": "Storia di Natale I",
+    "background": "This is the first part of the well-known Christmas story from the Gospel of Luke (Lk 2:1–5) about the birth of Jesus, describing the reason for Joseph and Mary's journey from Nazareth to Bethlehem, where Jesus was born as a result of the census ordered by the Roman Emperor Augustus.",
+    "tags": [
+      "Christmas Oratorio"
+    ],
+    "content_id_check": false,
+    "lyrics": "Racconta che in quei giorni un decreto di Cesare Augusto ordinò il censimento di tutta la terra. \n\nCiascuno andava nella propria città per farsi registrare.\n\nAnche Giuseppe, che era della casa e della famiglia di Davide, salì dalla Galilea, dalla città di Nazaret, in Giudecca, alla città di Davide chiamata Betlemme, per farsi registrare insieme a Maria, sua sposa, che era incinta."
+  },  
+  {
     "id": "un_cuore_sincero",
     "title": "Un Cuore Sincero",
     "background": "I tear through my close-knit hometown, balancing high-speed thrills with warm, deeply rooted connections to the local shopkeepers and my friends.",
