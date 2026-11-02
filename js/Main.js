@@ -157,7 +157,8 @@ async function loadAndDisplayFeatureSongs() {
     try {
         // Fetch all the feature songs by their specific IDs
         const songIds = [
-            'esultate_gioite'
+            'esultate_gioite',
+            'storia_di_natale_I'
         ];
 
         // Request all songs in parallel and wait for all to complete
