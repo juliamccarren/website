@@ -159,7 +159,8 @@ async function loadAndDisplayFeatureSongs() {
         const songIds = [
             'esultate_gioite',
             'storia_di_natale_I',
-            'notte_di_silenzio'
+            'notte_di_silenzio_2',
+            'o_sanctissima'
         ];
 
         // Request all songs in parallel and wait for all to complete
