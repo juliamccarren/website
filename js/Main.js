@@ -161,7 +161,8 @@ async function loadAndDisplayFeatureSongs() {
             'storia_di_natale_I',
             'notte_di_silenzio_2',
             'o_sanctissima',
-            'turbine_di_natale'
+            'turbine_di_natale',
+            'storia_di_natale_II'
         ];
 
         // Request all songs in parallel and wait for all to complete
