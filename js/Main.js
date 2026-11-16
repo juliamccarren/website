@@ -163,7 +163,8 @@ async function loadAndDisplayFeatureSongs() {
             'o_sanctissima',
             'turbine_di_natale',
             'storia_di_natale_II',
-            'moto_rossa_di_natale'
+            'moto_rossa_di_natale',
+            'il_segreto_della_notte_santa'
         ];
 
         // Request all songs in parallel and wait for all to complete
